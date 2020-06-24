@@ -31,5 +31,3 @@ class signup:
     driver.save_screenshot('successfully_registered_screenshot.png')
     driver.close()
 s=signup()
-# https://ads-release-3-13-np.groundtruth.com/login?subsession=924ba0de-a7fc-4d11-b615-cd074c5eafb2&returnUrl=%2F
-# https://ads-release-3-13-np.groundtruth.com/login?subsession=a6f7189a-0dca-4462-9242-75c9f4b9ad59&returnUrl=%2F
