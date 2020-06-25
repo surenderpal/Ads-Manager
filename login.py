@@ -13,7 +13,6 @@ from selenium.webdriver.support import expected_conditions as EC
 def loginAdsManager():
     driver=webdriver.Chrome()
     driver.get("http://ads-release-3-12-np.groundtruth.com/")
-    time.sleep(5)
     email=driver.find_element_by_xpath('//*[@id="inp-signin-usernameLogin"]')
     email.send_keys('surender.pal@groundtruth.com')
     pwd=driver.find_element_by_xpath('//*[@id="inp-signin-passwordLogin"]')
@@ -28,7 +27,7 @@ def loginAdsManager():
     tenant_dashboard = WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.CSS_SELECTOR,".app-screen #btn-appMenu-tenant-dashboard")))
     tenant_dashboard.click()
 
-    time.sleep(5)
+    time.sleep(3)
     driver.close()  #closing browser
-L=Login('http://ads-release-3-12-np.groundtruth.com','surender.pal@groundtruth.com','Surenderpal@1991')
+# L=Login('http://ads-release-3-12-np.groundtruth.com','surender.pal@groundtruth.com','Surenderpal@1991')
 loginAdsManager()
