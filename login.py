@@ -30,5 +30,5 @@ def loginAdsManager():
 
     time.sleep(5)
     driver.close()  #closing browser
-    # L=Login()
+L=Login('http://ads-release-3-12-np.groundtruth.com','surender.pal@groundtruth.com','Surenderpal@1991')
 loginAdsManager()
