@@ -4,6 +4,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC 
+from selenium.webdriver.support.select import Select
 driver=webdriver.Chrome()
 driver.get("http://ads-release-3-12-np.groundtruth.com/")
 
@@ -35,7 +36,16 @@ def universal_search():
     driver.find_element_by_xpath("//input[@id='inp-base-searchbox-new']").send_keys('Test',Keys.RETURN)
 
 loginAdsManager()
-universal_search()
-
+# universal_search()
+#tenant=WebDriverWait(driver,20).until(EC.element_to_be_clickable(By.XPATH,'.//label[text()="Tenant”]/..//span[@class="dropdown-title ng-binding"]'))
+#tenant.click()
 # time.sleep(5)
-# driver.close()  #closing browser
+driver.find_element_by_xpath("//label[text()='Tenant']/..//span[@class='dropdown-title ng-binding']").click()
+time.sleep(3)
+tenantTextbox = driver.find_element_by_xpath(".//input[@id='search-dropdown-list-Tenant']")
+tenantTextbox.send_keys('#DelCastillo')
+time.sleep(2)
+driver.find_element_by_xpath("//input[@name='Tenant-24556']").click()
+time.sleep(5)
+
+driver.close()  #closing browser
