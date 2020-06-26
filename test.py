@@ -29,13 +29,13 @@ def loginAdsManager():
     # L=Login('http://ads-release-3-12-np.groundtruth.com','surender.pal@groundtruth.com','Surenderpal@1991')
 
 # ---search Ads Manager(ribbon search bar)---
-def change_tenant():
+def universal_search():
     ribbon_search=WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.CSS_SELECTOR,".new-search-box-container #inp-base-searchbox-new")))
     ribbon_search.click()
-    base_searchbox=driver.find_element_by_xpath("//input[@id='inp-base-searchbox-new']").send_keys('Test',Keys.RETURN)
+    driver.find_element_by_xpath("//input[@id='inp-base-searchbox-new']").send_keys('Test',Keys.RETURN)
 
 loginAdsManager()
-change_tenant()
+universal_search()
 
 # time.sleep(5)
 # driver.close()  #closing browser
