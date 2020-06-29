@@ -82,6 +82,13 @@ def universal_search():
     time.sleep(5)
 
 
+# logout from Ads manager-----
+def logout():
+    driver.find_element_by_xpath("//button[@id='btn-userOptions-userOptionsMenuToggle']").click()
+    time.sleep(2)
+    driver.find_element_by_xpath("//ul/li/a[text()='Sign Out']").click()
+    time.sleep(4)
+
 # ---calling functions-----   
 loginAdsManager()
 select_tenant()
@@ -89,4 +96,5 @@ select_organization()
 select_account()
 select_tenant1()
 universal_search()
+logout()
 driver.close()  #closing browser
