@@ -81,6 +81,20 @@ def universal_search():
     driver.find_element_by_xpath("//input[@id='inp-base-searchbox-new']").send_keys('Test',Keys.RETURN)
     time.sleep(5)
 
+# --Date/Duration (live to date) on tenant Dashboard
+def live_to_date():
+    driver.find_element_by_xpath("//input[@name='daterange']").click()
+    time.sleep(3)
+    driver.find_element_by_xpath("//input[@name='daterangepicker_start']").clear()  #From Date range cleared
+    driver.find_element_by_xpath("//input[@name='daterangepicker_start']").send_keys('2020-12-31') #From Date range entered value
+    time.sleep(3)
+    driver.find_element_by_xpath("//input[@name='daterangepicker_end']").clear()    #To Date range cleared
+    driver.find_element_by_xpath("//input[@name='daterangepicker_end']").send_keys('2021-10-29') #To Date range entered value
+    time.sleep(3)
+    driver.find_element_by_xpath("//button[@class='applyBtn btn-sm btn-success']").click()
+    time.sleep(5)
+
+
 
 # logout from Ads manager-----
 def logout():
@@ -95,6 +109,8 @@ select_tenant()
 select_organization()
 select_account()
 select_tenant1()
-universal_search()
-logout()
+# universal_search()
+
+# columnPicker()
+# logout()
 driver.close()  #closing browser
