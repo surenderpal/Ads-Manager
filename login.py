@@ -94,7 +94,38 @@ def live_to_date():
     driver.find_element_by_xpath("//button[@class='applyBtn btn-sm btn-success']").click()
     time.sleep(5)
 
+# ---List of pending campaign's-------
+def pending_campaigns():
+    driver.find_element_by_xpath("//button[@id='btn-tenantDash-filterPending']").click()
+    time.sleep(4)
 
+# ---List of Active campaign's-------
+def active_campaigns():
+    driver.find_element_by_xpath("//button[@id='btn-tenantDash-filterActive']").click()
+    time.sleep(4)   
+
+# ---List of paused campaign's-------    
+def paused_campaigns():
+    driver.find_element_by_xpath("//button[@id='btn-tenantDash-filterPaused']").click()
+    time.sleep(4)  
+
+# ---List of expired campaign's-------
+def expired_campaigns():
+    driver.find_element_by_xpath("//button[@id='btn-tenantDash-filterExpired']").click()
+    time.sleep(4)    
+
+# ---Tenant Dashboard's search campaign bar -------    
+def tenantDashSearchCampaign():
+    driver.find_element_by_xpath("//input[@id='inp-tenantDash-searchCampaign']").clear()
+    driver.find_element_by_xpath("//input[@id='inp-tenantDash-searchCampaign']").send_keys('test')
+    time.sleep(5)
+
+# ------column's picker at tenant Dashboard-----------
+def columnPicker():
+    driver.find_element_by_xpath("//button[@id='btn-cm-columnPicker']").click()
+    driver.find_element_by_xpath("//*[@id='modal--column-picker']/div[1]/button").click()
+    time.sleep(3)
+    
 
 # logout from Ads manager-----
 def logout():
@@ -112,5 +143,5 @@ select_tenant1()
 # universal_search()
 
 # columnPicker()
-# logout()
+logout()
 driver.close()  #closing browser
