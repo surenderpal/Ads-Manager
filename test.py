@@ -118,7 +118,10 @@ def tenantDashSearchCampaign():
     time.sleep(5)
 def columnPicker():
     driver.find_element_by_xpath("//button[@id='btn-cm-columnPicker']").click()
-    driver.find_element_by_xpath("//*[@id='modal--column-picker']/div[1]/button").click()
+    WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.XPATH,".//div[@id='modal--column-picker']"))).click()
+    ec = driver.find_elements_by_xpath(".//input[contains(@id, 'inp-columnPickerModal') and not(@disabled)]")
+    for enabledCheckbox in ec:
+        enabledCheckbox.click()
     time.sleep(3)
 # ---calling functions-----   
 loginAdsManager()
@@ -129,7 +132,7 @@ loginAdsManager()
 # paused_campaigns()
 # expired_campaigns()
 # tenantDashSearchCampaign()
-# columnPicker()
+columnPicker()
 
 # select_tenant()
 # select_organization()
