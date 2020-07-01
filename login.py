@@ -123,8 +123,14 @@ def tenantDashSearchCampaign():
 # ------column's picker at tenant Dashboard-----------
 def columnPicker():
     driver.find_element_by_xpath("//button[@id='btn-cm-columnPicker']").click()
-    driver.find_element_by_xpath("//*[@id='modal--column-picker']/div[1]/button").click()
-    time.sleep(3)
+    WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.XPATH,".//div[@id='modal--column-picker']"))).click()
+    ec = driver.find_elements_by_xpath("//input[contains(@id, 'inp-columnPickerModal') and not(@disabled='disabled')]")
+    for enabledCheckbox in ec:
+        if enabledCheckbox.is_selected()==False:
+            enabledCheckbox.click()
+    time.sleep(2)
+    WebDriverWait(driver,20).until(EC.element_to_be_clickable((By.XPATH,"//button[@id='btn-columnPickerModal-save']"))).click()
+    time.sleep(10)
     
 
 # logout from Ads manager-----
@@ -142,6 +148,12 @@ select_account()
 select_tenant1()
 # universal_search()
 
-# columnPicker()
+live_to_date()
+active_campaigns()
+paused_campaigns()
+expired_campaigns()
+pending_campaigns()
+columnPicker()
+tenantDashSearchCampaign()
 logout()
 driver.close()  #closing browser
