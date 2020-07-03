@@ -26,9 +26,12 @@ def NewOrg_Account():
     # ----selecting  Manage Organization from hamburger------
     org = WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.CSS_SELECTOR,".app-screen #btn-appMenu-manageOrg")))
     org.click()
+    time.sleep(4)
+    driver.current_url() #URL containing organization id                                                                           
+    Organization_id=
     WebDriverWait(driver,20).until(EC.element_to_be_clickable((By.XPATH,"//button[@id='btn-orgList-newOrg']"))).click() #org model opens
     orgName=WebDriverWait(driver,20).until(EC.element_to_be_clickable((By.XPATH,"//input[@id='inp-newOrgModal-companyName']"))) #selects the org text box
-    orgName.send_keys("staging-3.1") #enters the value in the text box.
+    orgName.send_keys("staging-3.1000") #enters the value in the text box.
     driver.find_element_by_xpath("//button[@id='btn-newOrgModal-save']").click()
     name=WebDriverWait(driver,20).until(EC.element_to_be_clickable((By.XPATH,"//input[@id='inp-newAccountModal-name']")))
     name.send_keys('Test@123')
@@ -44,6 +47,25 @@ def NewOrg_Account():
     driver.find_element_by_xpath("//select/option[@value='string:USD']").click()                 #Currency dropdown value selected: USD
     driver.find_element_by_xpath("//select[@id='inp-newAccountModal-language']").click()         #Language dropdown
     driver.find_element_by_xpath("//select/option[text()='English']").click()
+    driver.find_element_by_xpath("//select[@id='inp-newAccountModal-accountType']").click()      #Type Accounts
+    driver.find_element_by_xpath("//select/option[text()='Direct Client']").click()              #Direct Client
+        # driver.find_element_by_xpath("//select/option[text()='Direct Agency']").click()              #Direct Agency
+        # driver.find_element_by_xpath("//select/option[text()='Platform CMR']").click()              #Platform CMR
+        # driver.find_element_by_xpath("//select/option[text()='Platform Reseller']").click()              #Platform Reseller
+        # driver.find_element_by_xpath("//select/option[text()='Platform Channel']").click()              #Platform Channel
+        # driver.find_element_by_xpath("//select/option[text()='Direct Programmatic']").click()              #Direct Programmatic
+        # driver.find_element_by_xpath("//select/option[text()='Platform Programmatic']").click()              #Platform Programmatic
+        # driver.find_element_by_xpath("//select/option[text()='Programmatic']").click()              #Programmatic
+        # driver.find_element_by_xpath("//select/option[text()='Self-Serve']").click()              #Self-Serve
+        # driver.find_element_by_xpath("//select/option[text()='Charity']").click()              #Charity
+    driver.find_element_by_xpath("//button[@id='btn-newAccountModal-save']").click()
+    time.sleep(5)
+    # ---clicking on hamburger menu----
+    hamburger = WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.CSS_SELECTOR, ".app-screen #btn-appMenu")))
+    hamburger.click()
+    # ----selecting  Manage Organization from hamburger------
+    org = WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.CSS_SELECTOR,".app-screen #btn-appMenu-manageOrg")))
+    org.click()
 NewOrg_Account()
 
 
