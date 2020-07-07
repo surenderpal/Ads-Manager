@@ -59,10 +59,19 @@ def reportFilter_SearchReports():
 reportFilter_SearchReports() 
 
 def pagination():
-    flag=driver.find_element_by_xpath("//span[text()='per page']")
+    flag=driver.find_element_by_xpath("//a[@id='btn-baseFooter-privacyPolicy']")
     driver.execute_script("arguments[0].scrollIntoView;",flag)
     print('scrolling the windows@@')
+    driver.find_element_by_xpath("//select[@class='jss263']").click()
+    driver.find_element_by_xpath("//option[@value='25']").click()
+    time.sleep(5)
+    driver.find_element_by_xpath("//option[@value='15']").click()
+    time.sleep(5)
+    driver.find_element_by_xpath("//option[@value='10']").click()
+    time.sleep(5)
     driver.find_element_by_xpath("//span[@class='MuiButton-label' and text()='>']").click()
+    time.sleep(2)
+    driver.find_element_by_xpath("//span[@class='MuiButton-label' and text()='<']").click()
     time.sleep(2)
 
 pagination()
