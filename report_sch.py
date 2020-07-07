@@ -43,26 +43,23 @@ def ReportsColumnSort():
 # ReportsColumnSort()
 
 
+def reportFilter_SearchReports():
+    time.sleep(2)
+    driver.find_element_by_xpath("//button/span[text()='Pending']").click()
+    time.sleep(2)
+    driver.find_element_by_xpath("//button/span[text()='Active']").click()
+    time.sleep(2)
+    driver.find_element_by_xpath("//button/span[text()='Paused']").click()
+    time.sleep(2)
+    driver.find_element_by_xpath("//button/span[text()='Expired']").click()
+    time.sleep(2)
+    driver.find_element_by_xpath("//button/span[text()='All']").click()
+    time.sleep(2)
+    driver.find_element_by_xpath("//input[@placeholder='Search Reports']").send_keys("CBD=FALSE")
+reportFilter_SearchReports()
 
-def reportFilter():
-#     pending=WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.XPATH,"//button[@id='btn-tenantDash-filterPending']")))
-#     pending.click()
-    # time.sleep(2)
-    Active=WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.ID, "btn-tenantDash-filterActive")))
-    Active.click()
-    # Paused=WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.ID, "#btn-tenantDash-filterPaused")))
-    # Paused.click()
-    # Expired=WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.ID, "#btn-tenantDash-filterExpired")))
-    # Expired.click()
-    # driver.find_element_by_xpath("//button[@id='btn-tenantDash-filterPending']").click()
-    # print('Sorting by Pending')
-    # driver.find_element_by_xpath("//button[@id='btn-tenantDash-filterActive']").click()
-    # print('Sorting by Active')
-    # driver.find_element_by_xpath("//button[@id='btn-tenantDash-filterPaused']").click()
-    # print('Sorting by Paused')
-    # driver.find_element_by_xpath("//button[@id='btn-tenantDash-filterExpired']").click()
-    # print('Sorting by Expired')
+def pagination():
+    driver.find_element_by_xpath("//span[@class='MuiButton-label' and text()='>']").click()
 
-reportFilter()
 time.sleep(2)
 driver.close()
