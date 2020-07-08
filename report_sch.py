@@ -75,10 +75,21 @@ def pagination():
     driver.find_element_by_xpath("//span[@class='MuiButton-label' and text()='<']").click()
     time.sleep(2)
 
-
+def actions():
+        driver.find_element_by_xpath("//*[@class='MuiButtonBase-root MuiIconButton-root jss249']").click() #clicked on gear icon
+        # driver.find_element_by_xpath("//ul/li[text()='Edit' and @role='menuitem']").click()     #clicked on edit 
+        driver.find_element_by_xpath("//ul/li[text()='Pause' and @role='menuitem']").click()     #clicked on Pause 
+        time.sleep(8)
+        # driver.find_element_by_xpath("//button[@class='MuiButtonBase-root MuiIconButton-root jss1099']").click() #clicked on back button
+        # WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//button[@class='MuiButtonBase-root MuiIconButton-root jss1099']"))).click()
+        time.sleep(4)
+        driver.find_element_by_xpath("//*[@class='MuiButtonBase-root MuiIconButton-root jss249']").click() #clicked on gear icon
+        driver.find_element_by_xpath("//ul/li[text()='Pause' and @role='menuitem']").click()     #clicked on edit 
+        time.sleep(4)
 OpenReporScheduler()
-reportFilter_SearchReports() 
-ReportsColumnSort()
-pagination()
+# reportFilter_SearchReports() 
+# ReportsColumnSort()
+# pagination()
+actions()
 time.sleep(2)
 driver.close()
