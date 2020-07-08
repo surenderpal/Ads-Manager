@@ -75,6 +75,7 @@ def pagination():
     driver.find_element_by_xpath("//span[@class='MuiButton-label' and text()='<']").click()
     time.sleep(2)
 
+
 def actions():
         driver.find_element_by_xpath("//*[@class='MuiButtonBase-root MuiIconButton-root jss249']").click() #clicked on gear icon
         # driver.find_element_by_xpath("//ul/li[text()='Edit' and @role='menuitem']").click()     #clicked on edit 
