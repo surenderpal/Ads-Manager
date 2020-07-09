@@ -57,14 +57,11 @@ def reportFilter_SearchReports():
     # driver.find_element_by_xpath("//input[@placeholder='Search Reports']").send_keys("CBD=FALSE")
     print('All Report filtered based on status')
 def pagination():
-        # time.sleep(5)
-        # flag=driver.find_element_by_xpath("//a[@id='btn-baseFooter-privacyPolicy']")
-        # driver.execute_script("arguments[0].scrollIntoView;",flag)
+        time.sleep(5)
         driver.execute_script("window.scrollBy(0,document.body.scrollHeight)")
         print('scrolling the windows till the bottom of the page')
-        # driver.find_element_by_xpath("//select[@class='jss263']").click()
-        WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//select[@class='jss263']"))).click()
-        # driver.find_element_by_xpath("//select[@class='jss263']").click()          #clicked on drop-down for selecting no of records
+        time.sleep(3)
+        driver.find_element_by_xpath("//div/select[@class='jss374']").click()
         driver.find_element_by_xpath("//option[@value='25']").click()
         driver.find_element_by_xpath("//span[@class='copyright']").click()
         time.sleep(3)
@@ -123,9 +120,9 @@ def CreateReport():
 
 
 OpenReporScheduler()
-CreateReport()
-# reportFilter_SearchReports() 
-# ReportsColumnSort()
-# pagination()
-# actions()
+# CreateReport()
+reportFilter_SearchReports() 
+ReportsColumnSort()
+pagination()
+actions()
 driver.close()
