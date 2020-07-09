@@ -106,14 +106,26 @@ def actions():
 def CreateReport():
         driver.find_element_by_xpath("//button/span[text()='Create Report']").click()
         time.sleep(2)
-        driver.find_element_by_xpath("//label[text()='Report Name']/../../div//input").send_keys("Welcome to reports")
-
+        driver.find_element_by_xpath("//label[text()='Report Name']/../../div//input").send_keys("Welcome to reports") #report name
+        # driver.find_element_by_xpath("//label[text()='Report Type']/../../div//input").click() # report type
+        # driver.find_element_by_xpath("//input[@value='Location']").click()              #dropdown location value selected
+        # driver.find_element_by_xpath("//input[@id='mui-autocomplete-7539']").send_keys("Location")              #dropdown Product value selected 
+        # driver.find_element_by_xpath("//input[@value='Daily Trend']").click()           #dropdown Daily Trend value selected         
+        driver.find_element_by_xpath("gt-report-scheduler-create > div > div[class*='sc-'] > div[class*='sc-'] > div:nth-child(1) > div > div > input").click()
+        # driver.find_element_by_xpath("").click()
+        # driver.find_element_by_xpath("").click()
+        # driver.find_element_by_xpath("").click()
+        # driver.find_element_by_xpath("").click()
+        # driver.find_element_by_xpath("").click()
+        # driver.find_element_by_xpath("").click()
+        # driver.find_element_by_xpath("").click()
+        time.sleep(5)
 
 
 OpenReporScheduler()
-# CreateReport()
-reportFilter_SearchReports() 
-ReportsColumnSort()
-pagination()
-actions()
+CreateReport()
+# reportFilter_SearchReports() 
+# ReportsColumnSort()
+# pagination()
+# actions()
 driver.close()
