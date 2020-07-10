@@ -1,5 +1,6 @@
 from selenium import webdriver
 import time
+from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -70,35 +71,27 @@ def pagination():
         time.sleep(5)
         driver.find_element_by_xpath("//option[@value='10']").click()
         driver.find_element_by_xpath("//span[@class='copyright']").click()
-        time.sleep(5)
-        driver.find_element_by_xpath("//span[@class='MuiButton-label' and text()='>']").click()
-        time.sleep(2)
-        driver.find_element_by_xpath("//span[@class='MuiButton-label' and text()='<']").click()
-        time.sleep(2)
+        # time.sleep(5)
+        # driver.find_element_by_xpath("//span[@class='MuiButton-label' and text()='>']").click()
+        # time.sleep(2)
+        # driver.find_element_by_xpath("//span[@class='MuiButton-label' and text()='<']").click()
+        # time.sleep(2)
         print('Pagination is tested')
 
 
 def actions():
+        driver.find_element_by_tag_name('body').send_keys(Keys.HOME)
+        driver.find_element_by_xpath("//td[@class='MuiTableCell-root MuiTableCell-body jss230 action']").click() #gear icon
+        time.sleep(2)
+        # driver.find_element_by_xpath("//div/ul/li[text()='Resume']").click() # clicked on Resume drop-down option
+        # driver.find_element_by_xpath("//div/ul/li[2][text()='Pause' and @role='menuitem']").click()      #clicked on Pause drop-down
+        # driver.find_element_by_xpath("//ul/li[text()='Edit']").click() # clicked on Edit drop-down option
+        driver.find_element_by_xpath("//div/ul/li[text()='Delete']").click()     #clicked on Delete drop-down
+        time.sleep(2)
+        # driver.find_element_by_xpath("//button/span[text()='Cancel']").click()  #clicked on cancel button gear dialog box        
+        driver.find_element_by_xpath("//button/span[text()='Delete']").click()        
         time.sleep(5)
-        driver.find_element_by_xpath("//*[@class='MuiButtonBase-root MuiIconButton-root jss249']").click() #clicked on gear icon
-        # driver.find_element_by_xpath("//ul/li[text()='Edit' and @role='menuitem']").click()     #clicked on edit 
-        # driver.find_element_by_xpath("//ul/li[text()='Pause' and @role='menuitem']").click()      #clicked on Pause 
-        # driver.find_element_by_xpath("//ul/li[text()='Resume' and @role='menuitem']").click()     #clicked on Resume
-        # driver.find_element_by_xpath("//ul/li[text()='Delete' and @role='menuitem']").click()     #clicked on Delete
-        time.sleep(2)
-        WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//span[text()='Delete']"))).click()  #click on Delete button on dialog box
-        # driver.find_element_by_xpath("//span[text()='Delete']").click()                         #click on Delete button on dialog box
-        # driver.find_element_by_xpath("//span[text()='Cancel']").click()                         #click on Cancel button on dialog box
-        WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//span[text()='Cancel']"))).click()  #click on Cancel button on dialog box
-        time.sleep(2)
-        # print("clicked to pause the report")
-        # driver.find_element_by_xpath("//button[@class='MuiButtonBase-root MuiIconButton-root jss1099']").click() #clicked on back button
-        # WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//button[@class='MuiButtonBase-root MuiIconButton-root jss1099']"))).click()
-        time.sleep(4)
-        # driver.find_element_by_xpath("//*[@class='MuiButtonBase-root MuiIconButton-root jss249']").click() #clicked on gear icon
-        # driver.find_element_by_xpath("//ul/li[text()='Pause' and @role='menuitem']").click()     #clicked on edit 
-        print('clicked on gear icon and selected the desired goal')
-        time.sleep(4)
+        # driver.find_element_by_xpath("")
 
 def CreateReport():
         driver.find_element_by_xpath("//button/span[text()='Create Report']").click()
