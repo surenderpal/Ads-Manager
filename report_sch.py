@@ -80,6 +80,7 @@ def pagination():
 
 
 def actions():
+        time.sleep(4)
         driver.find_element_by_tag_name('body').send_keys(Keys.HOME)
         driver.find_element_by_xpath("//td[@class='MuiTableCell-root MuiTableCell-body jss230 action']").click() #gear icon
         time.sleep(2)
@@ -93,27 +94,8 @@ def actions():
         time.sleep(5)
         # driver.find_element_by_xpath("")
 
-def CreateReport():
-        driver.find_element_by_xpath("//button/span[text()='Create Report']").click()
-        time.sleep(2)
-        driver.find_element_by_xpath("//label[text()='Report Name']/../../div//input").send_keys("Welcome to reports") #report name
-        # driver.find_element_by_xpath("//label[text()='Report Type']/../../div//input").click() # report type
-        # driver.find_element_by_xpath("//input[@value='Location']").click()              #dropdown location value selected
-        # driver.find_element_by_xpath("//input[@id='mui-autocomplete-7539']").send_keys("Location")              #dropdown Product value selected 
-        # driver.find_element_by_xpath("//input[@value='Daily Trend']").click()           #dropdown Daily Trend value selected         
-        driver.find_element_by_xpath("gt-report-scheduler-create > div > div[class*='sc-'] > div[class*='sc-'] > div:nth-child(1) > div > div > input").click()
-        # driver.find_element_by_xpath("").click()
-        # driver.find_element_by_xpath("").click()
-        # driver.find_element_by_xpath("").click()
-        # driver.find_element_by_xpath("").click()
-        # driver.find_element_by_xpath("").click()
-        # driver.find_element_by_xpath("").click()
-        # driver.find_element_by_xpath("").click()
-        time.sleep(5)
-
 
 OpenReporScheduler()
-# CreateReport()
 reportFilter_SearchReports() 
 ReportsColumnSort()
 pagination()
