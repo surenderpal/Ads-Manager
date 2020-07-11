@@ -45,10 +45,19 @@ def DeviceType(type):
 for mobile == //button/div[text()='Mobile']"
 for ctv== //button/div[text()='CTV']
 '''
+def TargetAudience():
+    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@id='adgroup-name']"))).clear() # clear Adgroup Name
+    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@id='adgroup-name']"))).send_keys('Automation@@') # entered input value
+    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@placeholder='Select a brand, category, behavioral, custom or location group audience']"))).click() #click on Audience
+    time.sleep(10)
+    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//a[text()='Behavior (100)']"))).click() #Behavior
+    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//span[text()='Millennials']"))).click()
+    time.sleep(10)
 
 
 Login('gt.surender@protonmail.com','Groundtruth@9')
 NewCampaign('Automated campaign')
 TargetingTactics()
 DeviceType("//button/div[text()='Mobile']")
+TargetAudience()
 driver.close()
