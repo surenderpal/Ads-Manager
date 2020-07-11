@@ -36,8 +36,11 @@ def TargetingTactics(): #TTName--pased name as variable to select TTName
     time.sleep(5)
 
 def DeviceType(type):
+    # WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//button/div[text()='Mobile']"))).click()
     WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, type))).click()
-    # WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//button/div[text()='CTV']"))).click()
+    time.sleep(3)
+    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//button[@id='btn-adgTargetSup-next']"))).click()
+    time.sleep(3)
 '''
 for mobile == //button/div[text()='Mobile']"
 for ctv== //button/div[text()='CTV']
