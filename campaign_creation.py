@@ -52,7 +52,7 @@ def TargetAudience():
     time.sleep(10)
     WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//a[text()='Behavior (100)']"))).click() #Behavior
     WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//span[text()='Millennials']"))).click()
-    time.sleep(10)
+    # time.sleep(10)
 
 
 Login('gt.surender@protonmail.com','Groundtruth@9')
@@ -61,3 +61,4 @@ TargetingTactics()
 DeviceType("//button/div[text()='Mobile']")
 TargetAudience()
 driver.close()
+
