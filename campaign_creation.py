@@ -48,7 +48,28 @@ for ctv== //button/div[text()='CTV']
 def Targeting():
     WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@id='adgroup-name']"))).clear() # clear Adgroup Name
     WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@id='adgroup-name']"))).send_keys('Automation@@') # entered input value
-    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@id='inp-adGroupTargetingAud-lookalikeAudScale']"))).click() # Include lookalikes to increas sales
+    lookalikeAudScale=WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@id='inp-adGroupTargetingAud-lookalikeAudScale']"))).is_selected() # Include lookalikes to increas sales
+    print('By Default lookalikeAudScale is selected:',lookalikeAudScale)
+    driveToDest=driver.find_element_by_xpath("//input[@id='inp-adgTargetSup-measurementList']").is_selected() #Drive to Destination radio button
+    print("Select real world Drive-To locations (i.e. stores, restaurants) to measure foot traffic visitation:",driveToDest)
+    NoDriveTo=driver.find_element_by_xpath("//input[@id='inp-adgTargetSup-measurementNational']").is_selected() # No Drive-To location, conversion will occur online
+    print("No Drive-To location, conversion will occur online:",NoDriveTo)
+    demographics=driver.find_element_by_xpath("//input[@id='inp-adgTargetSup-selectAllDemographics']").is_selected()
+    print("Default Demographics checkbox is checked:",demographics)
+    delivery=driver.find_element_by_xpath("//input[@value='delivery']").is_selected() #delivery
+    print('Default Delivery is selected:',delivery)
+    click=driver.find_element_by_xpath("//input[@value='click']").is_slelcted() #click
+    print("Default click is selected:",click)
+    SAR=driver.find_element_by_xpath("//input[@value='sar']").is_selected() #SAR
+    print("Default SAR is selected:",SAR)
+    conversion=driver.find_element_by_xpath("//input[@value='conversion']").is_selected() #SAR
+    print("Default SAR is selected:",conversion)
+    Auto=driver.find_element_by_xpath("//input[@id='inp-adgTargetSup-optimizationAuto0']").is_selected()
+    print("Default Optimization Strategy is auto selected:",Auto)
+    Auto.click()
+    Auto.send_keys(0.2)
+    PubCategory=driver.find_element_by_xpath("").is_selected()
+    print("Default Publisher Category is sl")
     WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@placeholder='Select a brand, category, behavioral, custom or location group audience']"))).click() #click on Audience
     WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@placeholder='Select a brand, category, behavioral, custom or location group audience']"))).send_keys("Millennials") #click on Audience
     driver.find_element_by_xpath("//*[text()='Millennials']").click()
