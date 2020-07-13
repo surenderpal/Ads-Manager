@@ -58,8 +58,8 @@ def Targeting():
     print("Default Demographics checkbox is checked:",demographics)
     delivery=driver.find_element_by_xpath("//input[@value='delivery']").is_selected() #delivery
     print('Default Delivery is selected:',delivery)
-    click=driver.find_element_by_xpath("//input[@value='click']").is_slelcted() #click
-    print("Default click is selected:",click)
+    clk=driver.find_element_by_xpath("//input[@value='click']").is_slelcted() #click
+    print("Default click is selected:",clk)
     SAR=driver.find_element_by_xpath("//input[@value='sar']").is_selected() #SAR
     print("Default SAR is selected:",SAR)
     conversion=driver.find_element_by_xpath("//input[@value='conversion']").is_selected() #SAR
@@ -68,8 +68,11 @@ def Targeting():
     print("Default Optimization Strategy is auto selected:",Auto)
     Auto.click()
     Auto.send_keys(0.2)
-    PubCategory=driver.find_element_by_xpath("").is_selected()
-    print("Default Publisher Category is sl")
+    PubCategory=driver.find_element_by_xpath("//input[@id='inp-adgTargetSup-selectAllPublisherCats']").is_selected()
+    print("Default Publisher Category is selected:",PubCategory)
+    BuildAudience=driver.find_element_by_xpath("//input[@id='inp-adgTargetSup-buildAudience']").is_selected()
+    print("Default Build custom audience for remessaging users who see your ad",BuildAudience)
+
     WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@placeholder='Select a brand, category, behavioral, custom or location group audience']"))).click() #click on Audience
     WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@placeholder='Select a brand, category, behavioral, custom or location group audience']"))).send_keys("Millennials") #click on Audience
     driver.find_element_by_xpath("//*[text()='Millennials']").click()
