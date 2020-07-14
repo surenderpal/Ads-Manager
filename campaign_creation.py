@@ -93,3 +93,42 @@ Targeting()
 # demographics()
 # driver.close()
 
+    LookAlike=driver.find_element_by_xpath("//input[@id='inp-adGroupTargetingAud-lookalikeAudScale']").is_selected() #Include lookalikes to increas sales
+    print("Default Include lookalikes to increase scale:",LookAlike)
+    
+    driveToDest=driver.find_element_by_xpath("//input[@id='inp-adgTargetSup-measurementList']").is_selected() #Drive to Destination radio button
+    print("Select real world Drive-To locations (i.e. stores, restaurants) to measure foot traffic visitation:",driveToDest)
+    
+    NoDriveTo=driver.find_element_by_xpath("//input[@id='inp-adgTargetSup-measurementNational']").is_selected() # No Drive-To location, conversion will occur online
+    print("No Drive-To location, conversion will occur online:",NoDriveTo)
+    
+    demographics=driver.find_element_by_xpath("//input[@id='inp-adgTargetSup-selectAllDemographics']").is_selected()
+    print("Default Demographics checkbox is checked:",demographics)
+    
+    DeviceTageting=driver.find_element_by_xpath("//input[@id='inp-adgTargetSup-toggleAllTechnographics']").is_selected()
+    print('Default Device Targeting:', DeviceTageting)
+
+    delivery=driver.find_element_by_xpath("//input[@value='delivery']").is_selected() #delivery
+    print('Default Delivery is selected:',delivery)
+    
+    ele=driver.find_element_by_xpath("//input[@id='inp-adgTargetSup-optimizationGoal0']").is_selected() #click optimization starategy
+    print("Default click is selected:",ele)
+
+    SAR=driver.find_element_by_xpath("//input[@value='sar']").is_selected() #SAR
+    print("Default SAR is selected:",SAR)
+    
+    conversion=driver.find_element_by_xpath("//input[@value='conversion']").is_selected() #SAR
+    print("Default SAR is selected:",conversion)
+    
+    Auto=driver.find_element_by_xpath("//input[@id='inp-adgTargetSup-optimizationAuto0']").is_selected()
+    print("Default Optimization Strategy is auto selected:",Auto)
+    
+    # driver.find_element_by_xpath("//input[@id='inp-adgTargetSup-optimizationAuto0']").click()  #unchecked Auto 
+    # driver.find_element_by_xpath("//input[@id='inp-adgTargetSup-optimizationAuto0']").send_keys(0.2) #passed the values into the CTR Threshold
+    
+    PubCategory=driver.find_element_by_xpath("//input[@id='inp-adgTargetSup-selectAllPublisherCats']").is_selected()
+    print("Default Publisher Category is selected:",PubCategory)
+    
+    BuildAudience=driver.find_element_by_xpath("//input[@id='inp-adgTargetSup-buildAudience']").is_selected()
+    print("Default Build custom audience for remessaging users who see your ad:",BuildAudience)
+    #---------------
