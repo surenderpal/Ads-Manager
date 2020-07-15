@@ -3,6 +3,8 @@ import time
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.support.ui import Select
 
 driver=webdriver.Chrome()
 # driver=webdriver.Firefox()
@@ -50,30 +52,34 @@ def Targeting(): #Behavior, Brands, Category, Location Group
     WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@id='adgroup-name']"))).clear() # clear Adgroup Name
     WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@id='adgroup-name']"))).send_keys('Automation@@') # entered input value
     # -------Behavior-------------------
-    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@placeholder='Select a brand, category, behavioral, custom or location group audience']"))).click() #click on Audience
-    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@placeholder='Select a brand, category, behavioral, custom or location group audience']"))).clear() #click on Audience
-    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@placeholder='Select a brand, category, behavioral, custom or location group audience']"))).send_keys("Millennials") #click on Audience
-    # WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//a[contains(text()='Behavior')]"))).click()
-    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//li[contains(text(), 'Millennials')]"))).click()
-    time.sleep(10)
+    # WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@placeholder='Select a brand, category, behavioral, custom or location group audience']"))).click() #click on Audience
+    # WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@placeholder='Select a brand, category, behavioral, custom or location group audience']"))).clear() #click on Audience
+    # WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@placeholder='Select a brand, category, behavioral, custom or location group audience']"))).send_keys("Millennials") #click on Audience
+    # time.sleep(4)
+    # WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//li[contains(text(), 'Millennials')]"))).click()
+    # time.sleep(10)
     # -------Brands-------------------
-    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@placeholder='Select a brand, category, behavioral, custom or location group audience']"))).click() #click on Audience
-    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@placeholder='Select a brand, category, behavioral, custom or location group audience']"))).clear() #click on Audience
-    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@placeholder='Select a brand, category, behavioral, custom or location group audience']"))).send_keys("KFC") #click on Audience
-    # WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//a[contains(text()='Brand')]"))).click()
-    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//li[contains(text(),'KFC')]"))).click()
-    time.sleep(10)
+    # WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@placeholder='Select a brand, category, behavioral, custom or location group audience']"))).click() #click on Audience
+    # WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@placeholder='Select a brand, category, behavioral, custom or location group audience']"))).clear() #click on Audience
+    # WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@placeholder='Select a brand, category, behavioral, custom or location group audience']"))).send_keys("KFC") #click on Audience
+    # time.sleep(4)
+    # WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//li[contains(text(),'KFC')]"))).click()
+    # time.sleep(10)
     # -------Category-------------------
+    # WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@placeholder='Select a brand, category, behavioral, custom or location group audience']"))).click() #click on Audience
+    # WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@placeholder='Select a brand, category, behavioral, custom or location group audience']"))).clear() #click on Audience
+    # WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//*[contains(text(),'Category')]"))).click()
+    # WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@placeholder='Select a brand, category, behavioral, custom or location group audience']"))).send_keys("Potato Growers") #click on Audience
+    # time.sleep(4)
+    # WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//li[@class='autocomplete-item ng-binding ng-scope highlighted' and text()='Potato Growers']"))).click()
+    # time.sleep(10)
+
+    # element=driver.find_element_by_xpath("")
+    # # -------Location Group -------------------
     WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@placeholder='Select a brand, category, behavioral, custom or location group audience']"))).click() #click on Audience
-    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@placeholder='Select a brand, category, behavioral, custom or location group audience']"))).clear() #click on Audience
-    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@placeholder='Select a brand, category, behavioral, custom or location group audience']"))).send_keys("Potato Growers") #click on Audience
-    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//a[contains(text()='Category')]"))).click()
-    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//li[contains(text(),'Potato Growers')]"))).click()
-    time.sleep(10)
-    # -------Location Group -------------------
-    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@placeholder='Select a brand, category, behavioral, custom or location group audience']"))).click() #click on Audience
-    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@placeholder='Select a brand, category, behavioral, custom or location group audience']"))).clear() #click on Audience
+    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//*[contains(text(),'Location Group')]"))).click()    
     WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@placeholder='Select a brand, category, behavioral, custom or location group audience']"))).send_keys("French") #click on Audience
+    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//span[class='glyphicon glyphicon-chevron-right ng-scope']"))).click()
     WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//a[contains(text()='Location Group')]"))).click()    
     WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//li[contains(text(),'French')]"))).click()
     time.sleep(20)
@@ -91,44 +97,6 @@ TargetingTactics()
 DeviceType("//button/div[text()='Mobile']")
 Targeting()
 # demographics()
-# driver.close()
+driver.close()
 
-    LookAlike=driver.find_element_by_xpath("//input[@id='inp-adGroupTargetingAud-lookalikeAudScale']").is_selected() #Include lookalikes to increas sales
-    print("Default Include lookalikes to increase scale:",LookAlike)
     
-    driveToDest=driver.find_element_by_xpath("//input[@id='inp-adgTargetSup-measurementList']").is_selected() #Drive to Destination radio button
-    print("Select real world Drive-To locations (i.e. stores, restaurants) to measure foot traffic visitation:",driveToDest)
-    
-    NoDriveTo=driver.find_element_by_xpath("//input[@id='inp-adgTargetSup-measurementNational']").is_selected() # No Drive-To location, conversion will occur online
-    print("No Drive-To location, conversion will occur online:",NoDriveTo)
-    
-    demographics=driver.find_element_by_xpath("//input[@id='inp-adgTargetSup-selectAllDemographics']").is_selected()
-    print("Default Demographics checkbox is checked:",demographics)
-    
-    DeviceTageting=driver.find_element_by_xpath("//input[@id='inp-adgTargetSup-toggleAllTechnographics']").is_selected()
-    print('Default Device Targeting:', DeviceTageting)
-
-    delivery=driver.find_element_by_xpath("//input[@value='delivery']").is_selected() #delivery
-    print('Default Delivery is selected:',delivery)
-    
-    ele=driver.find_element_by_xpath("//input[@id='inp-adgTargetSup-optimizationGoal0']").is_selected() #click optimization starategy
-    print("Default click is selected:",ele)
-
-    SAR=driver.find_element_by_xpath("//input[@value='sar']").is_selected() #SAR
-    print("Default SAR is selected:",SAR)
-    
-    conversion=driver.find_element_by_xpath("//input[@value='conversion']").is_selected() #SAR
-    print("Default SAR is selected:",conversion)
-    
-    Auto=driver.find_element_by_xpath("//input[@id='inp-adgTargetSup-optimizationAuto0']").is_selected()
-    print("Default Optimization Strategy is auto selected:",Auto)
-    
-    # driver.find_element_by_xpath("//input[@id='inp-adgTargetSup-optimizationAuto0']").click()  #unchecked Auto 
-    # driver.find_element_by_xpath("//input[@id='inp-adgTargetSup-optimizationAuto0']").send_keys(0.2) #passed the values into the CTR Threshold
-    
-    PubCategory=driver.find_element_by_xpath("//input[@id='inp-adgTargetSup-selectAllPublisherCats']").is_selected()
-    print("Default Publisher Category is selected:",PubCategory)
-    
-    BuildAudience=driver.find_element_by_xpath("//input[@id='inp-adgTargetSup-buildAudience']").is_selected()
-    print("Default Build custom audience for remessaging users who see your ad:",BuildAudience)
-    #---------------
