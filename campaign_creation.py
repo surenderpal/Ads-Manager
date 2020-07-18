@@ -87,7 +87,7 @@ def SelectTargeting(AdGroupName,Behavior,Brands,Category,Location_Group): # AdGr
 
 def ExcludeTargeting(Behavior,Brands,Category,Location_Group): # Behavior,Brands,Category,Location_Group
     # WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//*[@id='audience-fields']/section/a[@class='show-exclude-fields' and contains(text(), 'Exclude Audiences')]"))).click() # click on Exclude link
-    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//a[@class='show-exclude-fields']"))).click()
+    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//[@class='show-exclude-fields']"))).click()
     # -------Behavior-------------------
     WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//section[1]/div/gt-autocomplete/div/div/input[@placeholder='Select a brand, category, behavioral, custom or location group audience']"))).click() #click on input box
     WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//section[1]/div/gt-autocomplete/div/div/input[@placeholder='Select a brand, category, behavioral, custom or location group audience']"))).clear() #clear input box
