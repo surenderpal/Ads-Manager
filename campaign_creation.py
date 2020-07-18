@@ -80,13 +80,14 @@ def SelectTargeting(AdGroupName,Behavior,Brands,Category,Location_Group): # AdGr
     WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//a[contains(text(), 'Location Group')]"))).click() #click on link
     time.sleep(4)
     WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//div[contains(@class, 'active')]//li[contains(text(), '"+Location_Group+"')]"))).click()
-    time.sleep(2)
+    time.sleep(5)
 
-# ========================================Exclude Targeting
+# ========================================Exclude Targeting=============================
 
 
 def ExcludeTargeting(Behavior,Brands,Category,Location_Group): # Behavior,Brands,Category,Location_Group
-    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//a[@class='show-exclude-fields' and contains(text(), 'Exclude Audiences')]"))).click() # click on Exclude link
+    # WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//*[@id='audience-fields']/section/a[@class='show-exclude-fields' and contains(text(), 'Exclude Audiences')]"))).click() # click on Exclude link
+    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//a[@class='show-exclude-fields']"))).click()
     # -------Behavior-------------------
     WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//section[1]/div/gt-autocomplete/div/div/input[@placeholder='Select a brand, category, behavioral, custom or location group audience']"))).click() #click on input box
     WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//section[1]/div/gt-autocomplete/div/div/input[@placeholder='Select a brand, category, behavioral, custom or location group audience']"))).clear() #clear input box
@@ -137,9 +138,10 @@ Login('gt.surender@protonmail.com','Groundtruth@9')
 NewCampaign('Automated campaign')
 TargetingTactics()
 DeviceType('CTV') # Pass Mobile or CTV
-# SelectTargeting('Automation@@','Millennials','Banana Republic','Potato Growers','French') # Pass AdGroupName, Behavior, Brands, Category, Location_Group
+SelectTargeting('Automation@@','Millennials','Banana Republic','Potato Growers','French') # Pass AdGroupName, Behavior, Brands, Category, Location_Group
 ExcludeTargeting('Millennials','Banana Republic','Potato Growers','French')
 # demographics()
+time.sleep(5)
 driver.close()
 
 # //a[contains(@class, 'show-exclude-fields')]
