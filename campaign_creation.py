@@ -126,6 +126,19 @@ def ExcludeTargeting(Behavior,Brands,Category,Location_Group): # Behavior,Brands
     WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//li[@class='autocomplete-item ng-binding ng-scope highlighted' and contains(text(),'"+Location_Group+"')]"))).click()
     time.sleep(2)
 
+def AdditionalLocationFilter(): #state, DMA, ZIP
+    driver.execute_script("window.scrollBy(0,document.body.scrollHeight)")
+    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@placeholder='Search and select state, DMA, or zipcode']"))).click() # Additional location fileter.
+    time.sleep(2)
+    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@placeholder='Search and select state, DMA, or zipcode']"))).clear()
+    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@placeholder='Search and select state, DMA, or zipcode']"))).send_keys('Alabama') #entered state value
+    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//*[@id='btn-gtAutocomplete-StateTab']"))).click() #click on State
+    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//div[@class='tab-pane ng-scope active']/li[contains(text(), 'Alabama')]"))).click() #clicked on state elelment
+    time.sleep(4)
+    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@placeholder='Search and select state, DMA, or zipcode']"))).clear()
+    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@placeholder='Search and select state, DMA, or zipcode']"))).send_keys('Butte-Bozeman, MT') #entered DMA value
+    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//*[@id='btn-gtAutocomplete-DMATab']"))).click()  #click on DMA tab
+    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//div[@class='tab-pane ng-scope active']/li[contains(text(), 'Butte-Bozeman, MT')]"))).click() #clicked on DMA elelment
 
 def demographics():
     # driver.execute_script("")
@@ -140,6 +153,7 @@ TargetingTactics()
 DeviceType('CTV') # Pass Mobile or CTV
 SelectTargeting('Automation@@','Millennials','Banana Republic','Potato Growers','French') # Pass AdGroupName, Behavior, Brands, Category, Location_Group
 ExcludeTargeting('Millennials','Banana Republic','Potato Growers','French')
+AdditionalLocationFilter()
 # demographics()
 time.sleep(5)
 driver.close()
