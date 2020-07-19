@@ -127,6 +127,7 @@ def ExcludeTargeting(Behavior,Brands,Category,Location_Group): # Behavior,Brands
     time.sleep(2)
 
 def AdditionalLocationFilter(state,DMA,ZIP): #state, DMA, ZIP
+    # -----Value entered using Input box
     driver.execute_script("window.scrollBy(0,document.body.scrollHeight)")
     WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@placeholder='Search and select state, DMA, or zipcode']"))).click() # Additional location fileter.
     time.sleep(2)
@@ -144,7 +145,12 @@ def AdditionalLocationFilter(state,DMA,ZIP): #state, DMA, ZIP
     WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@placeholder='Search and select state, DMA, or zipcode']"))).send_keys(ZIP) # entered zip 
     WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//li[@id='btn-gtAutocomplete-ZIP CodeTab']"))).click() #click on zip tab
     WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//div[contains(@class, 'active')]/li[contains(text(), '"+ZIP+"')]"))).click() #click on zip element
-    
+    # ===Vaule entered or file passed
+    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//span[@class='bulk-location-icon']"))).click() #click on Bulk location upload 
+    appendLocation=driver.find_element_by_xpath("//input[@id='inp-superformModal-appendData']").is_selected()
+    print('Default Append to existing location filters:',appendLocation)
+    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.ID, "btn-superformModal-uploadFile"))).click()
+
 def demographics():
     # driver.execute_script("")
     driver.find_element_by_id("//input[@id='inp-adgTargetSup-selectAllDemographics']").click() #demographic unchecked
