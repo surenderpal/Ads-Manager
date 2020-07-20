@@ -147,9 +147,11 @@ def AdditionalLocationFilter(state,DMA,ZIP): #state, DMA, ZIP
     WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//div[contains(@class, 'active')]/li[contains(text(), '"+ZIP+"')]"))).click() #click on zip element
     # ===Vaule entered or file passed
     WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//span[@class='bulk-location-icon']"))).click() #click on Bulk location upload 
-    appendLocation=driver.find_element_by_xpath("//input[@id='inp-superformModal-appendData']").is_selected()
-    print('Default Append to existing location filters:',appendLocation)
-    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.ID, "btn-superformModal-uploadFile"))).click()
+    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//a[contains(text(), 'Download template here')]"))).click() #download template
+    apdLoc=WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@id='inp-superformModal-appendData']"))).is_selected() #click on append
+    print('Default Append to existing location filters:',apdLoc)
+    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@id='inp-superformModal-appendData']"))).click() #click on append    
+
 
 def demographics():
     # driver.execute_script("")
