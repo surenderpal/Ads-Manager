@@ -5,6 +5,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support.ui import Select
+from selenium.webdriver.common.keys import Keys
 
 driver=webdriver.Chrome()
 # driver=webdriver.Firefox()
@@ -151,8 +152,10 @@ def AdditionalLocationFilter(state,DMA,ZIP): #state, DMA, ZIP
     apdLoc=WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@id='inp-superformModal-appendData']"))).is_selected() #click on append
     print('Default Append to existing location filters:',apdLoc)
     WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@id='inp-superformModal-appendData']"))).click() #click on append    
-
-
+    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//div[@id='btn-superformModal-uploadFile']"))).click() #clicked on browse button
+    time.sleep(4)
+    Geocoder=driver.find_element_by_xpath("//*[@id='btn-superformModal-uploadFile']/input")
+    Geocoder.send_key("/Users/surenderpal/Downloads/Geotarget.xlsx") #upload file 
 def demographics():
     # driver.execute_script("")
     driver.find_element_by_id("//input[@id='inp-adgTargetSup-selectAllDemographics']").click() #demographic unchecked
