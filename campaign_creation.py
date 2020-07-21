@@ -129,7 +129,12 @@ def ExcludeTargeting(Behavior,Brands,Category,Location_Group): # Behavior,Brands
 
 def AdditionalLocationFilter(state,DMA,ZIP): #state, DMA, ZIP
     # -----Value entered using Input box
-    driver.execute_script("window.scrollBy(0,document.body.scrollHeight)")
+    # driver.execute_script("window.scrollTo(0, 1000)") #scroll by pixel
+    flag=WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//section[@id='location-filter']")))
+    driver.execute_script("arguments[0].scrollIntoView();",flag)
+    # driver.find_element_by_xpath("//li[contains(text(), 'Drive-To Locations')]").click()
+    driver.execute_script("window.scrollBy(0,1000)","")
+
     WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@placeholder='Search and select state, DMA, or zipcode']"))).click() # Additional location fileter.
     time.sleep(2)
     WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@placeholder='Search and select state, DMA, or zipcode']"))).clear() 
@@ -146,16 +151,41 @@ def AdditionalLocationFilter(state,DMA,ZIP): #state, DMA, ZIP
     WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@placeholder='Search and select state, DMA, or zipcode']"))).send_keys(ZIP) # entered zip 
     WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//li[@id='btn-gtAutocomplete-ZIP CodeTab']"))).click() #click on zip tab
     WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//div[contains(@class, 'active')]/li[contains(text(), '"+ZIP+"')]"))).click() #click on zip element
-    # ===Vaule entered or file passed
-    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//span[@class='bulk-location-icon']"))).click() #click on Bulk location upload 
-    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//a[contains(text(), 'Download template here')]"))).click() #download template
-    apdLoc=WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@id='inp-superformModal-appendData']"))).is_selected() #click on append
-    print('Default Append to existing location filters:',apdLoc)
-    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@id='inp-superformModal-appendData']"))).click() #click on append    
-    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//div[@id='btn-superformModal-uploadFile']"))).click() #clicked on browse button
+    ## ===Vaule entered or file passed
+    # WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//span[@class='bulk-location-icon']"))).click() #click on Bulk location upload 
+    # WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//a[contains(text(), 'Download template here')]"))).click() #download template
+    # apdLoc=WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@id='inp-superformModal-appendData']"))).is_selected() #click on append
+    # print('Default Append to existing location filters:',apdLoc)
+    # WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@id='inp-superformModal-appendData']"))).click() #click on append    
+    # WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//div[@id='btn-superformModal-uploadFile']"))).click() #clicked on browse button
+    # time.sleep(4)
+    # Geocoder=driver.find_element_by_xpath("//*[@id='btn-superformModal-uploadFile']/input")
+    # Geocoder.send_key("/Users/surenderpal/Downloads/Geotarget.xlsx") #upload file 
+
+
+def driveToDesti():
+    flag=WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//section[@id='measurements']")))
+    driver.execute_script("arguments[0].scrollIntoView();",flag)
+    NDrveToLoc=driver.find_element_by_xpath("//input[@id='inp-adgTargetSup-measurementNational']").is_selected()
+    print('Default Select real world Drive-To locations (i.e. stores, restaurants) to measure foot traffic visitation:',NDrveToLoc)
+    drveToLoc=driver.find_element_by_xpath("//input[@id='inp-adgTargetSup-measurementList']").is_selected()
+    print('Default Select real world Drive-To locations (i.e. stores, restaurants) to measure foot traffic visitation:',drveToLoc)
+    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@id='inp-adgTargetSup-measurementList']"))).click()
     time.sleep(4)
-    Geocoder=driver.find_element_by_xpath("//*[@id='btn-superformModal-uploadFile']/input")
-    Geocoder.send_key("/Users/surenderpal/Downloads/Geotarget.xlsx") #upload file 
+    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@placeholder='Search and select a GroundTruth brand or your custom location group']"))).click() # click on the Drive to location
+
+    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@placeholder='Search and select a GroundTruth brand or your custom location group']"))).clear() #clear
+    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@placeholder='Search and select a GroundTruth brand or your custom location group']"))).send_keys('7-Eleven') #sent keys
+    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//li[@id='btn-gtAutocomplete-BrandTab']"))).click() #click on the Brand tab
+    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//div[@class='tab-pane ng-scope active']/li[@class='autocomplete-item ng-binding ng-scope highlighted' and contains(text(), '7-Eleven')]"))).click() # click on the element
+
+    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@placeholder='Search and select a GroundTruth brand or your custom location group']"))).clear() #clear
+    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@placeholder='Search and select a GroundTruth brand or your custom location group']"))).send_keys('Volvo') #send name
+    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//li[@id='btn-gtAutocomplete-Location GroupTab']"))).click()    #click on the Location group
+    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//div[@class='tab-pane ng-scope active']/li[@class='autocomplete-item ng-binding ng-scope highlighted' and contains(text(), 'Volvo')]"))).click() # click on the element
+    time.sleep(10)
+
+
 def demographics():
     # driver.execute_script("")
     driver.find_element_by_id("//input[@id='inp-adgTargetSup-selectAllDemographics']").click() #demographic unchecked
@@ -167,9 +197,10 @@ Login('gt.surender@protonmail.com','Groundtruth@9')
 NewCampaign('Automated campaign')
 TargetingTactics()
 DeviceType('CTV') # Pass Mobile or CTV
-SelectTargeting('Automation@@','Millennials','Banana Republic','Potato Growers','French') # Pass AdGroupName, Behavior, Brands, Category, Location_Group
-ExcludeTargeting('Millennials','Banana Republic','Potato Growers','French')
+# SelectTargeting('Automation@@','Millennials','Banana Republic','Potato Growers','French') # Pass AdGroupName, Behavior, Brands, Category, Location_Group
+# ExcludeTargeting('Millennials','Banana Republic','Potato Growers','French')
 AdditionalLocationFilter('Minnesota','Butte-Bozeman, MT','11')
+driveToDesti()
 # demographics()
 time.sleep(5)
 driver.close()
