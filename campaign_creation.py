@@ -197,8 +197,8 @@ Login('gt.surender@protonmail.com','Groundtruth@9')
 NewCampaign('Automated campaign')
 TargetingTactics()
 DeviceType('CTV') # Pass Mobile or CTV
-# SelectTargeting('Automation@@','Millennials','Banana Republic','Potato Growers','French') # Pass AdGroupName, Behavior, Brands, Category, Location_Group
-# ExcludeTargeting('Millennials','Banana Republic','Potato Growers','French')
+SelectTargeting('Automation@@','Millennials','Banana Republic','Potato Growers','French') # Pass AdGroupName, Behavior, Brands, Category, Location_Group
+ExcludeTargeting('Millennials','Banana Republic','Potato Growers','French')
 AdditionalLocationFilter('Minnesota','Butte-Bozeman, MT','11')
 driveToDesti()
 # demographics()
