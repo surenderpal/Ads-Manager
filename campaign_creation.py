@@ -81,8 +81,23 @@ def SelectTargeting(AdGroupName,Behavior,Brands,Category,Location_Group): # AdGr
     WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//a[contains(text(), 'Location Group')]"))).click() #click on link
     time.sleep(4)
     WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//div[contains(@class, 'active')]//li[contains(text(), '"+Location_Group+"')]"))).click()
-    time.sleep(5)
+    time.sleep(2)
+    lookalike=driver.find_element_by_xpath("//input[@id='inp-adGroupTargetingAud-lookalikeAudScale']").is_selected() #lookalike audience
+    print('Default Include lookalikes to increase scale:',lookalike)
+# lookalike audience to increase sales
 
+    driver.find_element_by_xpath("//input[@id='inp-adGroupTargetingAud-lookalikeAudScale']").click() #click on the look alike checkbox
+
+    select = Select(WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.ID, "inp-adGroupTargetingAud-selectedLookalikeAud")))) #selection box
+    select.select_by_visible_text('2x of original audience') #value
+    time.sleep(1)
+    select.select_by_visible_text('4x of original audience') #value
+    time.sleep(1)
+    select.select_by_visible_text('6x of original audience') #value
+    time.sleep(1)
+    select.select_by_visible_text('10x of original audience') #value
+    time.sleep(1)
+    select.select_by_visible_text('4x of original audience') #value
 # ========================================Exclude Targeting=============================
 
 
@@ -163,7 +178,7 @@ def AdditionalLocationFilter(state,DMA,ZIP): #state, DMA, ZIP
     # Geocoder.send_key("/Users/surenderpal/Downloads/Geotarget.xlsx") #upload file 
 
 
-def driveToDesti():
+def driveToDesti(Brand,Location_group): #brand, Location_group
     flag=WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//section[@id='measurements']")))
     driver.execute_script("arguments[0].scrollIntoView();",flag)
     NDrveToLoc=driver.find_element_by_xpath("//input[@id='inp-adgTargetSup-measurementNational']").is_selected()
@@ -175,14 +190,14 @@ def driveToDesti():
     WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@placeholder='Search and select a GroundTruth brand or your custom location group']"))).click() # click on the Drive to location
 
     WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@placeholder='Search and select a GroundTruth brand or your custom location group']"))).clear() #clear
-    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@placeholder='Search and select a GroundTruth brand or your custom location group']"))).send_keys('7-Eleven') #sent keys
+    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@placeholder='Search and select a GroundTruth brand or your custom location group']"))).send_keys(Brand) #sent keys Brand 
     WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//li[@id='btn-gtAutocomplete-BrandTab']"))).click() #click on the Brand tab
-    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//div[@class='tab-pane ng-scope active']/li[@class='autocomplete-item ng-binding ng-scope highlighted' and contains(text(), '7-Eleven')]"))).click() # click on the element
+    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//div[@class='tab-pane ng-scope active']/li[@class='autocomplete-item ng-binding ng-scope highlighted' and contains(text(), '"+Brand+"')]"))).click() # click on the element
 
     WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@placeholder='Search and select a GroundTruth brand or your custom location group']"))).clear() #clear
-    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@placeholder='Search and select a GroundTruth brand or your custom location group']"))).send_keys('Volvo') #send name
+    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@placeholder='Search and select a GroundTruth brand or your custom location group']"))).send_keys(Location_group) #send name Location_group
     WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//li[@id='btn-gtAutocomplete-Location GroupTab']"))).click()    #click on the Location group
-    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//div[@class='tab-pane ng-scope active']/li[@class='autocomplete-item ng-binding ng-scope highlighted' and contains(text(), 'Volvo')]"))).click() # click on the element
+    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//div[@class='tab-pane ng-scope active']/li[@class='autocomplete-item ng-binding ng-scope highlighted' and contains(text(), '"+Location_group+"')]"))).click() # click on the element
     time.sleep(10)
 
 
@@ -200,7 +215,7 @@ DeviceType('CTV') # Pass Mobile or CTV
 SelectTargeting('Automation@@','Millennials','Banana Republic','Potato Growers','French') # Pass AdGroupName, Behavior, Brands, Category, Location_Group
 ExcludeTargeting('Millennials','Banana Republic','Potato Growers','French')
 AdditionalLocationFilter('Minnesota','Butte-Bozeman, MT','11')
-driveToDesti()
+driveToDesti('7-Eleven','Volvo') 
 # demographics()
 time.sleep(5)
 driver.close()
