@@ -22,7 +22,8 @@ def NewCampaign(name):
     WebDriverWait(driver, 120).until(EC.element_to_be_clickable((By.XPATH,"//button[@id='btn-campDash-newCampaign']"))).click() #clicked on new campaign
     WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH,"//input[@name='campaignNameField']"))).send_keys(name) #campaign name
     # WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@value='adgroup-budget']"))).click() #adgroup budget
-    
+    AdGroup=WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@id='inp-createCampModal-budgetAdgLevel']"))).is_selected()
+    print("Default Ad group budgets. Set up an ad group specific budget for each targeting tactic:",AdGroup)
     #====for campaign budget enter budget in the text box================ 
     WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@value='campaign-budget']"))).click() #campaign budget
     WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@name='budgetField']"))).send_keys('5') # $ entered in campaign budget
@@ -198,7 +199,8 @@ def driveToDesti(Brand,Location_group): #brand, Location_group
     WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@placeholder='Search and select a GroundTruth brand or your custom location group']"))).send_keys(Location_group) #send name Location_group
     WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//li[@id='btn-gtAutocomplete-Location GroupTab']"))).click()    #click on the Location group
     WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//div[@class='tab-pane ng-scope active']/li[@class='autocomplete-item ng-binding ng-scope highlighted' and contains(text(), '"+Location_group+"')]"))).click() # click on the element
-    time.sleep(10)
+    time.sleep(2)
+    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH,"//button[@id='btn-adgTargetSup-next']"))).click() #next button
 
 
 def demographics():
@@ -219,5 +221,3 @@ driveToDesti('7-Eleven','Volvo')
 # demographics()
 time.sleep(5)
 driver.close()
-
-# //a[contains(@class, 'show-exclude-fields')]
