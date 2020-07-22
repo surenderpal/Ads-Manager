@@ -101,7 +101,7 @@ def SelectTargeting(AdGroupName,Behavior,Brands,Category,Location_Group): # AdGr
     select.select_by_visible_text('4x of original audience') #value
 # ========================================Exclude Targeting=============================
 
-
+# ========================================Exclude Targeting=============================
 def ExcludeTargeting(Behavior,Brands,Category,Location_Group): # Behavior,Brands,Category,Location_Grou
     driver.execute_script("window.scrollBy(0,document.body.scrollHeight)")
     WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//*[@id='audience-fields']/section/a[@class='show-exclude-fields' and contains(text(), 'Exclude Audiences')]"))).click() # click on Exclude link
@@ -202,6 +202,39 @@ def driveToDesti(Brand,Location_group): #brand, Location_group
     time.sleep(2)
     WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH,"//button[@id='btn-adgTargetSup-next']"))).click() #next button
 
+def Creative(): #name,ApiType,Tracker,CTUrl
+    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.ID, "btn-adgCreatives-newCreative"))).click() #clicked on new creative
+    time.sleep(2)
+    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.ID, "inp-creativesModal-creativeName"))).clear() #clear creative name
+    name=WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.ID, "inp-creativesModal-creativeName"))).get_attribute("ng-model") #getting the name of the creative.
+    print("Default Vast Tag name:",name)
+    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.ID, "inp-creativesModal-creativeName"))).send_keys("Vast Creative") #send key to the name 
+    time.sleep(2)
+    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.ID, "inp-creativeModalVideo-vastField"))).clear() # Vast Text Area
+    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.ID, "inp-creativeModalVideo-vastField"))).send_keys("https://ad.doubleclick.net/ddm/pfadx/N3175.3207085GROUNDTRUTH/B23223750.270292578;sz=0x0;ord=%%TIMESTAMP%%;dc_lat=;dc_rdid=;tag_for_child_directed_treatment=;tfua=;dcmt=text/xml;dc_sdk_apis=[APIFRAMEWORKS];dc_omid_p=[OMIDPARTNER]")
+    time.sleep(2)
+    load=WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.ID, "btn-creativeModalVideo-Videopload"))).get_property('disabled')
+    print('Default behaviour of Load button is:',load)
+
+    # Interstital=WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@ng-model='creativeInterstitial']"))).is_selected() #Interstital status
+    # print("Default Interstitial is:",Interstital)
+    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@ng-model='creativeInterstitial']"))).click() #Interstital clicked
+    # WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.ID, "btn-creativeModalVideo-Videopload"))).click() #click on the load button                                                                           
+    select=Select(WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.ID, "inp-creativeModalVideo-apiTypeSelect")))) #selection Box
+    select.select_by_visible_text('None')
+    time.sleep(2)
+    select.select_by_visible_text('VPAID1')
+    time.sleep(2)
+    select.select_by_visible_text('VPAID2')
+    time.sleep(2)
+    select.select_by_visible_text('MRAID1')
+    time.sleep(2)
+    select.select_by_visible_text('MRAID2')
+    time.sleep(2)
+    select.select_by_visible_text('ORMMA')
+    time.sleep(2)
+    select.select_by_visible_text('MRAID2')
+    time.sleep(2)
 
 def demographics():
     # driver.execute_script("")
@@ -215,9 +248,10 @@ NewCampaign('Automated campaign')
 TargetingTactics()
 DeviceType('CTV') # Pass Mobile or CTV
 SelectTargeting('Automation@@','Millennials','Banana Republic','Potato Growers','French') # Pass AdGroupName, Behavior, Brands, Category, Location_Group
-ExcludeTargeting('Millennials','Banana Republic','Potato Growers','French')
+# ExcludeTargeting('Millennials','Banana Republic','Potato Growers','French')
 AdditionalLocationFilter('Minnesota','Butte-Bozeman, MT','11')
 driveToDesti('7-Eleven','Volvo') 
+Creative()
 # demographics()
 time.sleep(5)
 driver.close()
