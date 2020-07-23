@@ -99,7 +99,6 @@ def SelectTargeting(AdGroupName,Behavior,Brands,Category,Location_Group): # AdGr
     select.select_by_visible_text('10x of original audience') #value
     time.sleep(1)
     select.select_by_visible_text('4x of original audience') #value
-# ========================================Exclude Targeting=============================
 
 # ========================================Exclude Targeting=============================
 def ExcludeTargeting(Behavior,Brands,Category,Location_Group): # Behavior,Brands,Category,Location_Grou
@@ -202,39 +201,41 @@ def driveToDesti(Brand,Location_group): #brand, Location_group
     time.sleep(2)
     WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH,"//button[@id='btn-adgTargetSup-next']"))).click() #next button
 
-def Creative(): #name,ApiType,Tracker,CTUrl
+def VastCreative(name,VastTagURL,ApiType,ExtTracker1,ExtTracker2,ClkThrUrl): #name,VastTagURL,ApiType,ExtTracker,ClkThrUrl
     WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.ID, "btn-adgCreatives-newCreative"))).click() #clicked on new creative
     time.sleep(2)
     WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.ID, "inp-creativesModal-creativeName"))).clear() #clear creative name
-    name=WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.ID, "inp-creativesModal-creativeName"))).get_attribute("ng-model") #getting the name of the creative.
-    print("Default Vast Tag name:",name)
-    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.ID, "inp-creativesModal-creativeName"))).send_keys("Vast Creative") #send key to the name 
+    # name=WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.ID, "inp-creativesModal-creativeName"))).get_attribute("ng-model") #getting the name of the creative.
+    # print("Default Vast Tag name:",name)
+    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.ID, "inp-creativesModal-creativeName"))).send_keys(name) #send key to the name   
     time.sleep(2)
     WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.ID, "inp-creativeModalVideo-vastField"))).clear() # Vast Text Area
-    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.ID, "inp-creativeModalVideo-vastField"))).send_keys("https://ad.doubleclick.net/ddm/pfadx/N3175.3207085GROUNDTRUTH/B23223750.270292578;sz=0x0;ord=%%TIMESTAMP%%;dc_lat=;dc_rdid=;tag_for_child_directed_treatment=;tfua=;dcmt=text/xml;dc_sdk_apis=[APIFRAMEWORKS];dc_omid_p=[OMIDPARTNER]")
+    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.ID, "inp-creativeModalVideo-vastField"))).send_keys(VastTagURL) # vast tag url
     time.sleep(2)
-    load=WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.ID, "btn-creativeModalVideo-Videopload"))).get_property('disabled')
+    load=WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.ID, "btn-creativeModalVideo-Videopload"))).get_property('disabled') #getting the status of the load button
     print('Default behaviour of Load button is:',load)
-
+    # Interstitial button default status and clicked --kirti will tell
     # Interstital=WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@ng-model='creativeInterstitial']"))).is_selected() #Interstital status
     # print("Default Interstitial is:",Interstital)
-    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@ng-model='creativeInterstitial']"))).click() #Interstital clicked
+    #WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, ".//div[@id='modal--adgroup-new-creative']//div[text()='Interstitial']"))).click() #Interstital clicked
     # WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.ID, "btn-creativeModalVideo-Videopload"))).click() #click on the load button                                                                           
     select=Select(WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.ID, "inp-creativeModalVideo-apiTypeSelect")))) #selection Box
-    select.select_by_visible_text('None')
+    select.select_by_visible_text(ApiType) #making api type MPAID2  
     time.sleep(2)
-    select.select_by_visible_text('VPAID1')
-    time.sleep(2)
-    select.select_by_visible_text('VPAID2')
-    time.sleep(2)
-    select.select_by_visible_text('MRAID1')
-    time.sleep(2)
-    select.select_by_visible_text('MRAID2')
-    time.sleep(2)
-    select.select_by_visible_text('ORMMA')
-    time.sleep(2)
-    select.select_by_visible_text('MRAID2')
-    time.sleep(2)
+    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@id='impressions-urls']"))).click() #click on the external impression text box
+    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@id='impressions-urls']"))).send_keys(ExtTracker1) # entering value to external impression text box    
+    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//button[@class='add-item']"))).click() #click on the + button
+    time.sleep(1)
+    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@id='impressions-urls']"))).send_keys(ExtTracker2) # entering value to external impression text box    
+    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//button[@class='add-item']"))).click() #click on the + button   
+    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@id='inp-creativeModalVideo-clickThroughURLField']"))).click() #click through URL
+    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@id='inp-creativeModalVideo-clickThroughURLField']"))).send_keys(ClkThrUrl) #value entered into click through URL
+    # WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//ul/li/span[contains(text(),'"+ExtTracker2+"')]/button[@class='remove-item']"))).click() #click on the - button
+    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//button[@id='btn-creativesModal-newCreativeSave']"))).click() #save button
+    print("creative added") #//ul/li/span[contains(text(),'https://stackoverflow.com/')]/button[@class='remove-item']
+    time.sleep(5)
+    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//button[@id='btn-adgTargetSup-creativesTabNext']"))).click() #click on Next button
+
 
 def demographics():
     # driver.execute_script("")
@@ -248,10 +249,10 @@ NewCampaign('Automated campaign')
 TargetingTactics()
 DeviceType('CTV') # Pass Mobile or CTV
 SelectTargeting('Automation@@','Millennials','Banana Republic','Potato Growers','French') # Pass AdGroupName, Behavior, Brands, Category, Location_Group
-# ExcludeTargeting('Millennials','Banana Republic','Potato Growers','French')
+ExcludeTargeting('Millennials','Banana Republic','Potato Growers','French')
 AdditionalLocationFilter('Minnesota','Butte-Bozeman, MT','11')
 driveToDesti('7-Eleven','Volvo') 
-Creative()
+VastCreative('Vast Creative','https://ad.doubleclick.net/ddm/pfadx/N3175.3207085GROUNDTRUTH/B23223750.270292578;sz=0x0;ord=%%TIMESTAMP%%;dc_lat=;dc_rdid=;tag_for_child_directed_treatment=;tfua=;dcmt=text/xml;dc_sdk_apis=[APIFRAMEWORKS];dc_omid_p=[OMIDPARTNER]','MRAID2','https://stackoverflow.com/','https://abcd.com/','https://www.groundtruth.com/')
 # demographics()
 time.sleep(5)
 driver.close()
