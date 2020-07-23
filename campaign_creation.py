@@ -234,6 +234,18 @@ def VastCreative(name,VastTagURL,ApiType,ExtTracker1,ExtTracker2,ClkThrUrl): #na
     WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//button[@id='btn-creativesModal-newCreativeSave']"))).click() #save button
     print("creative added") #//ul/li/span[contains(text(),'https://stackoverflow.com/')]/button[@class='remove-item']
     time.sleep(5)
+    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//div[@ng-click='cloneCreative(creative)']"))).click() #cloned the creative
+    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//button[@id='btn-simpleConfirmModal-confirm']"))).click() #confirmation model clicked
+    print('Creative cloned')
+
+
+
+
+# //ul/li[1]/div[2]/div[5] 
+# //ul[@class='creatives']/li/h4[contains(text(), 'Vast Creative ')]/div[@class='cta-container']/div[@ng-click='deleteCreative(creative)']
+# //div[@class='cta-container']/div[@ng-click='deleteCreative(creative)']
+
+    time.sleep(5)
     WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//button[@id='btn-adgTargetSup-creativesTabNext']"))).click() #click on Next button
 
 
@@ -252,6 +264,7 @@ SelectTargeting('Automation@@','Millennials','Banana Republic','Potato Growers',
 ExcludeTargeting('Millennials','Banana Republic','Potato Growers','French')
 AdditionalLocationFilter('Minnesota','Butte-Bozeman, MT','11')
 driveToDesti('7-Eleven','Volvo') 
+''' # ApiType='None','VPAID1','VPAID2','MRAID1','MRAID2','ORMMA' '''
 VastCreative('Vast Creative','https://ad.doubleclick.net/ddm/pfadx/N3175.3207085GROUNDTRUTH/B23223750.270292578;sz=0x0;ord=%%TIMESTAMP%%;dc_lat=;dc_rdid=;tag_for_child_directed_treatment=;tfua=;dcmt=text/xml;dc_sdk_apis=[APIFRAMEWORKS];dc_omid_p=[OMIDPARTNER]','MRAID2','https://stackoverflow.com/','https://abcd.com/','https://www.groundtruth.com/')
 # demographics()
 time.sleep(5)
