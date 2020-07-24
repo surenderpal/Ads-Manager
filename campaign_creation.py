@@ -246,7 +246,12 @@ def VastCreative(name,VastTagURL,ApiType,ExtTracker1,ExtTracker2,ClkThrUrl): #na
     # WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//div[@ng-click='pauseCreative(creative)']"))).click() #Pause Creative
     # WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//button[@id='btn-simpleConfirmModal-confirm']"))).click() # cofirmation model
     # print('Creative Paused')
-    #### 
+    ####  Creative Opened
+    # WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//div[@ng-click='openCreativeModal(creative)']"))).click() #Open Creative
+    # print('Creative Opened')
+    #### Creative display
+    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//a/i[@class='glyphicon glyphicon-picture creative-action-btn']"))).click() #Creative display
+    print("Creative Displayed")
     time.sleep(5)
 
 
