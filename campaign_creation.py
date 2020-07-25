@@ -272,6 +272,7 @@ def VastCreative(name,VastTagURL,ApiType,ExtTracker1,ExtTracker2,ClkThrUrl): #na
 def BudgetNschedule(): #Bid_type, BidPrice,  
     select=Select(WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//select[@id='inp-adgTargetSup-adgBidType']"))))
     select.select_by_visible_text("CPM")
+    print('Bid Type Selected: CPM')
     time.sleep(2)
     WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@id='inp-adgTargetSup-bidPrice']"))).clear() #clear bid price
     WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@id='inp-adgTargetSup-bidPrice']"))).send_keys(5) #Bid price
@@ -285,7 +286,12 @@ def BudgetNschedule(): #Bid_type, BidPrice,
     time.sleep(1)
     WebDriverWait(driver,40).until(EC.element_to_be_clickable((By.XPATH, "//button[contains(text(), 'Apply')]"))).click() # click on apply button
     # WebDriverWait(driver,40).until(EC.element_to_be_clickable((By.XPATH, "//input[@id='inp-adgTargetSup-budgetField_0']"))).send_keys("20") #Budget USD
+    # WebDriverWait(driver,40).until(EC.element_to_be_clickable((By.XPATH, "//input[@id='inp-adgTargetSup-bidPriceField_0']"))).send_keys(10000) #Impressions
+    select=Select(WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//select[@id='inp-adgTargetSup-selectedDaypart']"))))
+    select.select_by_visible_text('Happy Hour')
+    time.sleep(2)
 
+# //div[@class='dayparting-input-container']/button[contains(text(), '0')]
 
 def demographics():
     # driver.execute_script("")
