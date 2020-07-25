@@ -100,6 +100,8 @@ def SelectTargeting(AdGroupName,Behavior,Brands,Category,Location_Group): # AdGr
 #     time.sleep(1)
 #     select.select_by_visible_text('4x of original audience')  #value
 
+
+
 # ========================================Exclude Targeting=============================
 def ExcludeTargeting(Behavior,Brands,Category,Location_Group): # Behavior,Brands,Category,Location_Grou
     driver.execute_script("window.scrollBy(0,document.body.scrollHeight)")
@@ -254,21 +256,35 @@ def VastCreative(name,VastTagURL,ApiType,ExtTracker1,ExtTracker2,ClkThrUrl): #na
     # WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//button[@id='btn-simpleConfirmModal-confirm']"))).click() # cofirmation model
     # print('Creative Paused')
     ####  Creative Opened
-    # WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//div[@ng-click='openCreativeModal(creative)']"))).click() #Open Creative
-    # print('Creative Opened')
+    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//div[@ng-click='openCreativeModal(creative)']"))).click() #Open Creative
+    print('Creative Opened')
+    time.sleep(2)
+    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//button[@id='btn-creativesModal-newCreativeCancel']"))).click() # cancel button
     #### Creative display
-    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//a/i[@class='glyphicon glyphicon-picture creative-action-btn']"))).click() #Creative display
-    print("Creative Displayed")
-    time.sleep(5)
-
-
-# 
+    # WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//a/i[@class='glyphicon glyphicon-picture creative-action-btn']"))).click() 
+    # print("Creative Displayed")
+    time.sleep(3)
+    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//button[@id='btn-adgTargetSup-creativesTabNext']"))).click() #click on Next button
 # //ul/li[1]/div[2]/div[5] 
 # //ul[@class='creatives']/li/h4[contains(text(), 'Vast Creative ')]/div[@class='cta-container']/div[@ng-click='deleteCreative(creative)']
 # //div[@class='cta-container']/div[@ng-click='deleteCreative(creative)']
 
-    time.sleep(5)
-    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//button[@id='btn-adgTargetSup-creativesTabNext']"))).click() #click on Next button
+def BudgetNschedule(): #Bid_type, BidPrice,  
+    select=Select(WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//select[@id='inp-adgTargetSup-adgBidType']"))))
+    select.select_by_visible_text("CPM")
+    time.sleep(2)
+    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@id='inp-adgTargetSup-bidPrice']"))).clear() #clear bid price
+    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@id='inp-adgTargetSup-bidPrice']"))).send_keys(5) #Bid price
+    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@name='daterange']"))).click() #Timeframe
+    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@name='daterangepicker_start']"))).clear()
+    time.sleep(2)
+    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@name='daterangepicker_start']"))).send_keys('2020-07-25') #daterangepicker_start
+    time.sleep(2)
+    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@name='daterangepicker_end']"))).clear() # clear daterangepicker_end
+    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@name='daterangepicker_end']"))).send_keys("2020-09-30") #daterangepicker_end
+    time.sleep(1)
+    WebDriverWait(driver,40).until(EC.element_to_be_clickable((By.XPATH, "//button[contains(text(), 'Apply')]"))).click() # click on apply button
+    # WebDriverWait(driver,40).until(EC.element_to_be_clickable((By.XPATH, "//input[@id='inp-adgTargetSup-budgetField_0']"))).send_keys("20") #Budget USD
 
 
 def demographics():
@@ -289,5 +305,6 @@ driveToDesti('7-Eleven','Volvo')
 ''' # ApiType='None','VPAID1','VPAID2','MRAID1','MRAID2','ORMMA' '''
 VastCreative('Vast Creative','https://ad.doubleclick.net/ddm/pfadx/N3175.3207085GROUNDTRUTH/B23223750.270292578;sz=0x0;ord=%%TIMESTAMP%%;dc_lat=;dc_rdid=;tag_for_child_directed_treatment=;tfua=;dcmt=text/xml;dc_sdk_apis=[APIFRAMEWORKS];dc_omid_p=[OMIDPARTNER]','MRAID2','https://stackoverflow.com/','https://abcd.com/','https://www.groundtruth.com/')
 # demographics()
+BudgetNschedule()
 time.sleep(5)
-driver.close()
+driver.quit()
