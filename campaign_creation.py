@@ -234,6 +234,13 @@ def VastCreative(name,VastTagURL,ApiType,ExtTracker1,ExtTracker2,ClkThrUrl): #na
     WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//button[@id='btn-creativesModal-newCreativeSave']"))).click() #save button
     print("Creative Added") #//ul/li/span[contains(text(),'https://stackoverflow.com/')]/button[@class='remove-item']
     time.sleep(5)
+    FreqCap=WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@ng-change='frequencyCappingChange(creative)']"))).is_selected() #Default Frequency cap
+    print('Default Impression Frequency Cap:',FreqCap)
+    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@ng-change='frequencyCappingChange(creative)']"))).click() #Frequency cap
+    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@ng-disabled='creative.frequencyUnlimited']"))).send_keys(10) #impresion cap
+    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@ng-model='creative.freqCapDuration']"))).clear()
+    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@ng-model='creative.freqCapDuration']"))).send_keys(5) # Imp cap Hour
+    # print('Default Impression Frequency Cap',FrequencyCap)
     #### creative clonned
     # WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//div[@ng-click='cloneCreative(creative)']"))).click() #cloned the creative
     # WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//button[@id='btn-simpleConfirmModal-confirm']"))).click() #confirmation model clicked
@@ -255,7 +262,7 @@ def VastCreative(name,VastTagURL,ApiType,ExtTracker1,ExtTracker2,ClkThrUrl): #na
     time.sleep(5)
 
 
-
+# 
 # //ul/li[1]/div[2]/div[5] 
 # //ul[@class='creatives']/li/h4[contains(text(), 'Vast Creative ')]/div[@class='cta-container']/div[@ng-click='deleteCreative(creative)']
 # //div[@class='cta-container']/div[@ng-click='deleteCreative(creative)']
