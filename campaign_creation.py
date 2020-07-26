@@ -26,7 +26,7 @@ def NewCampaign(name):
     print("Default Ad group budgets. Set up an ad group specific budget for each targeting tactic:",AdGroup)
     #====for campaign budget enter budget in the text box================ 
     WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@value='campaign-budget']"))).click() #campaign budget
-    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@name='budgetField']"))).send_keys('5') # $ entered in campaign budget
+    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@name='budgetField']"))).send_keys('50') # $ entered in campaign budget
     WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//button[@id='btn-campaignCreateModal-submit']"))).click() #save button
     time.sleep(2)
 
@@ -234,14 +234,9 @@ def VastCreative(name,VastTagURL,ApiType,ExtTracker1,ExtTracker2,ClkThrUrl): #na
     WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@id='inp-creativeModalVideo-clickThroughURLField']"))).send_keys(ClkThrUrl) #value entered into click through URL
     # WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//ul/li/span[contains(text(),'"+ExtTracker2+"')]/button[@class='remove-item']"))).click() #click on the - button
     WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//button[@id='btn-creativesModal-newCreativeSave']"))).click() #save button
-    print("Creative Added") #//ul/li/span[contains(text(),'https://stackoverflow.com/')]/button[@class='remove-item']
+    print("Creative Added")
     time.sleep(5)
-    FreqCap=WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@ng-change='frequencyCappingChange(creative)']"))).is_selected() #Default Frequency cap
-    print('Default Impression Frequency Cap:',FreqCap)
-    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@ng-change='frequencyCappingChange(creative)']"))).click() #Frequency cap
-    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@ng-disabled='creative.frequencyUnlimited']"))).send_keys(10) #impresion cap
-    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@ng-model='creative.freqCapDuration']"))).clear()
-    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@ng-model='creative.freqCapDuration']"))).send_keys(5) # Imp cap Hour
+
     # print('Default Impression Frequency Cap',FrequencyCap)
     #### creative clonned
     # WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//div[@ng-click='cloneCreative(creative)']"))).click() #cloned the creative
@@ -263,6 +258,12 @@ def VastCreative(name,VastTagURL,ApiType,ExtTracker1,ExtTracker2,ClkThrUrl): #na
     #### Creative display
     # WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//a/i[@class='glyphicon glyphicon-picture creative-action-btn']"))).click() 
     # print("Creative Displayed")
+    FreqCap=WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@ng-change='frequencyCappingChange(creative)']"))).is_selected() #Default Frequency cap
+    print('Default Impression Frequency Cap:',FreqCap)
+    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@ng-change='frequencyCappingChange(creative)']"))).click() #Frequency cap
+    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@ng-disabled='creative.frequencyUnlimited']"))).send_keys(10) #impresion cap
+    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@ng-model='creative.freqCapDuration']"))).clear()
+    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@ng-model='creative.freqCapDuration']"))).send_keys(5) # Imp cap Hour
     time.sleep(3)
     WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//button[@id='btn-adgTargetSup-creativesTabNext']"))).click() #click on Next button
 # //ul/li[1]/div[2]/div[5] 
@@ -275,7 +276,7 @@ def BudgetNschedule(): #Bid_type, BidPrice,
     print('Bid Type Selected: CPM')
     time.sleep(2)
     WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@id='inp-adgTargetSup-bidPrice']"))).clear() #clear bid price
-    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@id='inp-adgTargetSup-bidPrice']"))).send_keys(5) #Bid price
+    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@id='inp-adgTargetSup-bidPrice']"))).send_keys(25) #Bid price
     WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@name='daterange']"))).click() #Timeframe
     WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@name='daterangepicker_start']"))).clear()
     time.sleep(2)
@@ -302,6 +303,12 @@ def BudgetNschedule(): #Bid_type, BidPrice,
     time.sleep(2)
     WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//button[@id='btn-adgTargetSup-validateTrackingPixel']"))).click() #clicked on Validate All under Advanced settings
     print('Validated under advanced pixels')
+    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//button[@id='btn-adgTargetSup-BudSchedSave']"))).click() #click on next button.
+    time.sleep(2)
+    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//button[@id='btn-adgTargetSup-BudSchedSaveLaunch']"))).click() #click on the Save N Launch
+    print('Campaign Launched!!!')
+    time.sleep(10)
+
 def demographics():
     # driver.execute_script("")
     driver.find_element_by_id("//input[@id='inp-adgTargetSup-selectAllDemographics']").click() #demographic unchecked
