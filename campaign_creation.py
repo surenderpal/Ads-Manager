@@ -309,7 +309,28 @@ def BudgetNschedule(Bid_type,BidPrice,SDate,EDAte,DayParting): #Bid_type, BidPri
     print('Campaign Launched!!!')
     time.sleep(10)
 
-# def Reporting():
+def Reporting():
+    WebDriverWait(driver,40).until(EC.element_to_be_clickable((By.XPATH, "//a[@id='btn-cm-summaryTab']"))).click() #Summary tab reporting
+    time.sleep(2)
+    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//a[@id='btn-cm-locationTab']"))).click() # Location tab
+    time.sleep(2)
+    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//a[@id='btn-cm-audienceTab']"))).click() # Audience tab
+    time.sleep(2)
+    select=Select(WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//select[@id='cm-selectTableLevel']")))) #Level
+    select.select_by_visible_text('Ad Groups') #level Name
+    select1=Select(WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//select[@id='cm-selectReport']")))) #Report Name
+    select1.select_by_visible_text('Category')#Report Name Category
+    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@name='daterange']"))).click() #Duraion Date Range
+    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@name='daterangepicker_start']"))).send_keys('2020-08-01') #From Date
+    time.sleep(2)
+    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@name='daterangepicker_end']"))).send_keys('2020-09-21') #From Date
+    time.sleep(2)
+    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//button[contains(text(), 'Apply')]"))).click() #click on apply button
+
+
+
+
+
 def demographics():
     # driver.execute_script("")
     driver.find_element_by_id("//input[@id='inp-adgTargetSup-selectAllDemographics']").click() #demographic unchecked
@@ -329,5 +350,6 @@ driveToDesti('7-Eleven','Volvo')
 VastCreative('Vast Creative','https://ad.doubleclick.net/ddm/pfadx/N3175.3207085GROUNDTRUTH/B23223750.270292578;sz=0x0;ord=%%TIMESTAMP%%;dc_lat=;dc_rdid=;tag_for_child_directed_treatment=;tfua=;dcmt=text/xml;dc_sdk_apis=[APIFRAMEWORKS];dc_omid_p=[OMIDPARTNER]','MRAID2','https://stackoverflow.com/','https://abcd.com/','https://www.groundtruth.com/')
 # demographics()
 BudgetNschedule('CPM',22,'2020-07-30','2020-09-30','Happy Hour')
+Reporting()
 time.sleep(5)
 driver.quit()
