@@ -270,26 +270,26 @@ def VastCreative(name,VastTagURL,ApiType,ExtTracker1,ExtTracker2,ClkThrUrl): #na
 # //ul[@class='creatives']/li/h4[contains(text(), 'Vast Creative ')]/div[@class='cta-container']/div[@ng-click='deleteCreative(creative)']
 # //div[@class='cta-container']/div[@ng-click='deleteCreative(creative)']
 
-def BudgetNschedule(): #Bid_type, BidPrice,  
+def BudgetNschedule(Bid_type,BidPrice,SDate,EDAte,DayParting): #Bid_type, BidPrice, SDate,EDAte, DayParting 
     select=Select(WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//select[@id='inp-adgTargetSup-adgBidType']"))))
-    select.select_by_visible_text("CPM")
-    print('Bid Type Selected: CPM')
+    select.select_by_visible_text(Bid_type) #Bid_type
+    print('Bid Type Selected:',Bid_type)
     time.sleep(2)
     WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@id='inp-adgTargetSup-bidPrice']"))).clear() #clear bid price
-    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@id='inp-adgTargetSup-bidPrice']"))).send_keys(25) #Bid price
+    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@id='inp-adgTargetSup-bidPrice']"))).send_keys(BidPrice) #Bid price
     WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@name='daterange']"))).click() #Timeframe
     WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@name='daterangepicker_start']"))).clear()
     time.sleep(2)
-    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@name='daterangepicker_start']"))).send_keys('2020-07-25') #daterangepicker_start
+    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@name='daterangepicker_start']"))).send_keys(SDate) #daterangepicker_start 
     time.sleep(2)
     WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@name='daterangepicker_end']"))).clear() # clear daterangepicker_end
-    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@name='daterangepicker_end']"))).send_keys("2020-09-30") #daterangepicker_end
+    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@name='daterangepicker_end']"))).send_keys(EDAte) #daterangepicker_end EDAte
     time.sleep(1)
     WebDriverWait(driver,40).until(EC.element_to_be_clickable((By.XPATH, "//button[contains(text(), 'Apply')]"))).click() # click on apply button
     # WebDriverWait(driver,40).until(EC.element_to_be_clickable((By.XPATH, "//input[@id='inp-adgTargetSup-budgetField_0']"))).send_keys("20") #Budget USD
     # WebDriverWait(driver,40).until(EC.element_to_be_clickable((By.XPATH, "//input[@id='inp-adgTargetSup-bidPriceField_0']"))).send_keys(10000) #Impressions
     select=Select(WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//select[@id='inp-adgTargetSup-selectedDaypart']"))))
-    select.select_by_visible_text('Happy Hour')
+    select.select_by_visible_text(DayParting) #Day parting 
     time.sleep(2)
 # #########
     # WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//div[contains(text(), 'Sun')]/div//button[contains(text(), '11')]"))).click() # selecting whole Sun row
@@ -309,6 +309,7 @@ def BudgetNschedule(): #Bid_type, BidPrice,
     print('Campaign Launched!!!')
     time.sleep(10)
 
+# def Reporting():
 def demographics():
     # driver.execute_script("")
     driver.find_element_by_id("//input[@id='inp-adgTargetSup-selectAllDemographics']").click() #demographic unchecked
@@ -327,6 +328,6 @@ driveToDesti('7-Eleven','Volvo')
 ''' # ApiType='None','VPAID1','VPAID2','MRAID1','MRAID2','ORMMA' '''
 VastCreative('Vast Creative','https://ad.doubleclick.net/ddm/pfadx/N3175.3207085GROUNDTRUTH/B23223750.270292578;sz=0x0;ord=%%TIMESTAMP%%;dc_lat=;dc_rdid=;tag_for_child_directed_treatment=;tfua=;dcmt=text/xml;dc_sdk_apis=[APIFRAMEWORKS];dc_omid_p=[OMIDPARTNER]','MRAID2','https://stackoverflow.com/','https://abcd.com/','https://www.groundtruth.com/')
 # demographics()
-BudgetNschedule()
+BudgetNschedule('CPM',22,'2020-07-30','2020-09-30','Happy Hour')
 time.sleep(5)
 driver.quit()
