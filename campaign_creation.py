@@ -290,9 +290,18 @@ def BudgetNschedule(): #Bid_type, BidPrice,
     select=Select(WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//select[@id='inp-adgTargetSup-selectedDaypart']"))))
     select.select_by_visible_text('Happy Hour')
     time.sleep(2)
-
+# #########
+    # WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//div[contains(text(), 'Sun')]/div//button[contains(text(), '11')]"))).click() # selecting whole Sun row
+# ########
 # //div[@class='dayparting-input-container']/button[contains(text(), '0')]
-
+    driver.execute_script("window.scrollBy(0,document.body.scrollHeight)")
+    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//span[@ng-click='trackingPixelModel()']"))).click()
+    time.sleep(4)
+    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@id='inp-adgTrackingPixelModal-selectAll']"))).click() #click on select all tracking pixel
+    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//button[@id='btn-adgTrackingPixelModal-save']"))).click() #click on apply button
+    time.sleep(2)
+    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//button[@id='btn-adgTargetSup-validateTrackingPixel']"))).click() #clicked on Validate All under Advanced settings
+    print('Validated under advanced pixels')
 def demographics():
     # driver.execute_script("")
     driver.find_element_by_id("//input[@id='inp-adgTargetSup-selectAllDemographics']").click() #demographic unchecked
