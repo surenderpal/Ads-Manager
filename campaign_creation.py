@@ -1,12 +1,12 @@
 from selenium import webdriver
-import time
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support.ui import Select
 from selenium.webdriver.common.keys import Keys
-
+import time
+import random
 driver=webdriver.Chrome()
 # driver=webdriver.Firefox()
 driver.get("http://ads-release-3-13-np.groundtruth.com/")
@@ -317,18 +317,69 @@ def Reporting():
     WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//a[@id='btn-cm-audienceTab']"))).click() # Audience tab
     time.sleep(2)
     select=Select(WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//select[@id='cm-selectTableLevel']")))) #Level
-    select.select_by_visible_text('Ad Groups') #level Name
+    select.select_by_visible_text('Creatives') #level Name
     select1=Select(WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//select[@id='cm-selectReport']")))) #Report Name
     select1.select_by_visible_text('Category')#Report Name Category
     WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@name='daterange']"))).click() #Duraion Date Range
+    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@name='daterangepicker_start']"))).click()
+    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@name='daterangepicker_start']"))).clear()
     WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@name='daterangepicker_start']"))).send_keys('2020-08-01') #From Date
     time.sleep(2)
+    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@name='daterangepicker_end']"))).click()
+    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@name='daterangepicker_end']"))).clear()
     WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@name='daterangepicker_end']"))).send_keys('2020-09-21') #From Date
     time.sleep(2)
     WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//button[contains(text(), 'Apply')]"))).click() #click on apply button
-
-
-
+    time.sleep(2) 
+    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//button[@id='btn-cm-toggleChart']"))).click() # Hide Chart
+####### Matrix --------------------------------    
+    select_mat=Select(WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//select[@id='inp-columnChart-metrics']"))))
+    # select_mat=Select(WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//select[@id='inp-lineChartMulti-metric1']")))) #Matrix 1
+    select_mat.select_by_visible_text('Visitation Rate (VR)') #impression                            //select[@id='inp-columnChart-metrics']
+    time.sleep(2)
+    select_mat.select_by_visible_text('SAR') #Clicks
+    time.sleep(2)
+    select_mat.select_by_visible_text('CTR') #CTR
+    time.sleep(2)
+    # select_mat.select_by_visible_text('Daily Reach') #Daily Reach
+    # time.sleep(2)
+    # select_mat.select_by_visible_text('Cumulative Reach') #Cumulative Reach
+    # time.sleep(2)
+    # select_mat.select_by_visible_text('Total Spend') #Total Spend
+    # time.sleep(2)
+    # select_mat.select_by_visible_text('Secondary Actions') #Secondary Actions
+    # time.sleep(2)
+    # select_mat.select_by_visible_text('Visits') #Visits
+    # time.sleep(2)
+    # select_mat.select_by_visible_text('SAR') #SAR
+    # time.sleep(2)
+    # select_Mat2=Select(WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//select[@id='inp-lineChartMulti-metric2']")))) #Matrix2    
+    # select_Mat2.select_by_visible_text('Impressions') #Impressions
+    # time.sleep(2)
+    # select_Mat2.select_by_visible_text('Clicks') #Clicks
+    # time.sleep(2)
+    # select_Mat2.select_by_visible_text('CTR') #CTR
+    # time.sleep(2)
+    # select_Mat2.select_by_visible_text('Daily Reach') #Daily Reach
+    # time.sleep(2)
+    # select_Mat2.select_by_visible_text('Cumulative Reach') #Cumulative Reach
+    # time.sleep(2)
+    # select_Mat2.select_by_visible_text('Total Spend') #Total Spend
+    # time.sleep(2)
+    # select_Mat2.select_by_visible_text('Secondary Actions') #Secondary Actions
+    # time.sleep(2)
+    # select_Mat2.select_by_visible_text('Visits') #Visits
+    # time.sleep(2)
+    # select_Mat2.select_by_visible_text('SAR') #SAR
+    # time.sleep(2)
+####### Matrix --------------------------------    
+    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//button[@id='btn-cm-exportData']"))).click() # Export
+    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//button[@id='btn-exportModal-exportLocationReport']"))).click() # Location Reports
+    time.sleep(2)
+    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//button[@id='btn-exportModal-exportTableData']"))).click() #Table Data
+    time.sleep(2)
+    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//button[@id='btn-exportModal-exportReportData']"))).click() #Report Data
+    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//button[@id='btn-cm-toggleChart']"))).click() # Hide Chart
 
 
 def demographics():
