@@ -311,15 +311,20 @@ def BudgetNschedule(Bid_type,BidPrice,SDate,EDAte,DayParting): #Bid_type, BidPri
 
 def Reporting():
     WebDriverWait(driver,40).until(EC.element_to_be_clickable((By.XPATH, "//a[@id='btn-cm-summaryTab']"))).click() #Summary tab reporting
+    print('click on Summary tab')
     time.sleep(2)
     WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//a[@id='btn-cm-locationTab']"))).click() # Location tab
+    print('click on location tab')
     time.sleep(2)
     WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//a[@id='btn-cm-audienceTab']"))).click() # Audience tab
+    print('click on Audience tab')
     time.sleep(2)
     select=Select(WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//select[@id='cm-selectTableLevel']")))) #Level
-    select.select_by_visible_text('Creatives') #level Name
+    select.select_by_visible_text('Ad Groups') #level Name
+    print('selected Ad Groups level')
     select1=Select(WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//select[@id='cm-selectReport']")))) #Report Name
     select1.select_by_visible_text('Category')#Report Name Category
+    print('selected report name category')
     WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@name='daterange']"))).click() #Duraion Date Range
     WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@name='daterangepicker_start']"))).click()
     WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@name='daterangepicker_start']"))).clear()
@@ -331,16 +336,19 @@ def Reporting():
     time.sleep(2)
     WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//button[contains(text(), 'Apply')]"))).click() #click on apply button
     time.sleep(2) 
+    print('selected Duration')
     WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//button[@id='btn-cm-toggleChart']"))).click() # Hide Chart
+    print('clicked on Hide chart')
 ####### Matrix --------------------------------    
-    select_mat=Select(WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//select[@id='inp-columnChart-metrics']"))))
+    # select_mat=Select(WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//select[@id='inp-columnChart-metrics']"))))
+    # time.sleep(5)
     # select_mat=Select(WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//select[@id='inp-lineChartMulti-metric1']")))) #Matrix 1
-    select_mat.select_by_visible_text('Visitation Rate (VR)') #impression                            //select[@id='inp-columnChart-metrics']
-    time.sleep(2)
-    select_mat.select_by_visible_text('SAR') #Clicks
-    time.sleep(2)
-    select_mat.select_by_visible_text('CTR') #CTR
-    time.sleep(2)
+    # select_mat.select_by_visible_text('Visitation Rate (VR)') #impression                            //select[@id='inp-columnChart-metrics']
+    # time.sleep(2)
+    # select_mat.select_by_visible_text('SAR') #Clicks
+    # time.sleep(2)
+    # select_mat.select_by_visible_text('CTR') #CTR
+    # time.sleep(2)
     # select_mat.select_by_visible_text('Daily Reach') #Daily Reach
     # time.sleep(2)
     # select_mat.select_by_visible_text('Cumulative Reach') #Cumulative Reach
@@ -373,13 +381,35 @@ def Reporting():
     # select_Mat2.select_by_visible_text('SAR') #SAR
     # time.sleep(2)
 ####### Matrix --------------------------------    
+    driver.execute_script("window.scrollBy(0,document.body.scrollHeight)")
     WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//button[@id='btn-cm-exportData']"))).click() # Export
     WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//button[@id='btn-exportModal-exportLocationReport']"))).click() # Location Reports
     time.sleep(2)
     WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//button[@id='btn-exportModal-exportTableData']"))).click() #Table Data
     time.sleep(2)
     WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//button[@id='btn-exportModal-exportReportData']"))).click() #Report Data
-    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//button[@id='btn-cm-toggleChart']"))).click() # Hide Chart
+    time.sleep(2)
+    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//button[@class='close-modal-btn']"))).click() # report model close button
+    print('Export reports downloaded')
+    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//button[@id='btn-cm-columnPicker']"))).click() #column picker
+    time.sleep(2)
+    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//button[@id='btn-columnPickerModal-save']"))).click() #column picker apply button
+    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//div[@id='multi-select-dropdown']/div[@class='click-element']"))).click() #click on the filter column
+    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.NAME, "selectedTypes[]"))).click() #click on the filter column
+    print('Clicked on the filter column status')
+    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.NAME, "selectedTypes[]"))).click() # again click on the status
+    time.sleep(2)
+    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//div/input[contains(text(),'Active')]"))).click() #
+    time.sleep(2)
+    # WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, ""))).click() #
+    # time.sleep(2)
+    # WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, ""))).click() #
+    # time.sleep(2)
+    # WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, ""))).click() #
+    # time.sleep(2)
+
+
+
 
 
 def demographics():
