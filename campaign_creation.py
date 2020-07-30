@@ -8,9 +8,11 @@ from selenium.webdriver.common.keys import Keys
 import time
 import random
 driver=webdriver.Chrome()
+# r=random(range(100))
 # driver=webdriver.Firefox()
 driver.get("http://ads-release-3-13-np.groundtruth.com/")
 def Login(username,password):
+    driver.maximize_window()
     email=driver.find_element_by_xpath('//*[@id="inp-signin-usernameLogin"]')
     email.send_keys(username)
     pwd=driver.find_element_by_xpath('//*[@id="inp-signin-passwordLogin"]')
@@ -18,13 +20,15 @@ def Login(username,password):
     driver.find_element_by_xpath('//*[@id="btn-signin-signIn"]').click()
     time.sleep(3)
 
+
 def NewCampaign(name):
+    print(driver.title)
     WebDriverWait(driver, 120).until(EC.element_to_be_clickable((By.XPATH,"//button[@id='btn-campDash-newCampaign']"))).click() #clicked on new campaign
     WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH,"//input[@name='campaignNameField']"))).send_keys(name) #campaign name
     # WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@value='adgroup-budget']"))).click() #adgroup budget
     AdGroup=WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@id='inp-createCampModal-budgetAdgLevel']"))).is_selected()
     print("Default Ad group budgets. Set up an ad group specific budget for each targeting tactic:",AdGroup)
-    #====for campaign budget enter budget in the text box================ 
+#====for campaign budget enter budget in the text box================ 
     WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@value='campaign-budget']"))).click() #campaign budget
     WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@name='budgetField']"))).send_keys('50') # $ entered in campaign budget
     WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//button[@id='btn-campaignCreateModal-submit']"))).click() #save button
@@ -51,21 +55,21 @@ def SelectTargeting(AdGroupName,Behavior,Brands,Category,Location_Group): # AdGr
     
     WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@id='adgroup-name']"))).clear() # clear Adgroup Name
     WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@id='adgroup-name']"))).send_keys(AdGroupName) # enter Ad Group Name
-    # -------Behavior-------------------
+# -------Behavior-------------------
     WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@placeholder='Select a brand, category, behavioral, custom or location group audience']"))).click() #click on Input box
     WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@placeholder='Select a brand, category, behavioral, custom or location group audience']"))).clear() #clear input box
     WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@placeholder='Select a brand, category, behavioral, custom or location group audience']"))).send_keys(Behavior) #click on Audience
     time.sleep(4)
     WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//li[contains(text(), '"+Behavior+"')]"))).click() #Millennials
     time.sleep(2)
-    # -------Brands-------------------
+#-------Brands-------------------
     WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@placeholder='Select a brand, category, behavioral, custom or location group audience']"))).click() #click on Input box
     WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@placeholder='Select a brand, category, behavioral, custom or location group audience']"))).clear() #clear input box
     WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@placeholder='Select a brand, category, behavioral, custom or location group audience']"))).send_keys(Brands) #click on Audience
     time.sleep(4)
     WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//li[contains(text(),'"+Brands+"')]"))).click() # Banana Republic
     time.sleep(2)
-    # -------Category-------------------
+# -------Category-------------------
     WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@placeholder='Select a brand, category, behavioral, custom or location group audience']"))).click() #click on Input box
     WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@placeholder='Select a brand, category, behavioral, custom or location group audience']"))).clear() #clear input box
     WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//*[contains(text(),'Category')]"))).click() #click on link
@@ -73,16 +77,32 @@ def SelectTargeting(AdGroupName,Behavior,Brands,Category,Location_Group): # AdGr
     time.sleep(4)
     WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//div[contains(@class, 'active')]//li[contains(text(), '"+Category+"')]"))).click()
     time.sleep(2)                                                                                                           
-
-    # -------Location Group -------------------
-    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@placeholder='Select a brand, category, behavioral, custom or location group audience']"))).click() #click on Input box
-    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@placeholder='Select a brand, category, behavioral, custom or location group audience']"))).clear() #clear input box
-    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@placeholder='Select a brand, category, behavioral, custom or location group audience']"))).send_keys(Location_Group) #click on Location_Group
-    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//span[contains(@class, 'glyphicon-chevron-right')]"))).click() #click on right navigation bar
-    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//a[contains(text(), 'Location Group')]"))).click() #click on link
-    time.sleep(4)
-    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//div[contains(@class, 'active')]//li[contains(text(), '"+Location_Group+"')]"))).click()
+    
+    driver.find_element(By.LINK_TEXT, 'Add new location group').click() #new tab location Manager
+    handles=driver.window_handles
+    driver.switch_to.window(handles[1])
+    print(driver.title) #GT Location Manager, GT Ads Manager
+# perfomed operation on Location manager
+    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//button[@ng-click='vm.openCreateLocationGroupModal()']"))).click() #click on new location group
+    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@name='locationGroupName']"))).send_keys('Automation') # L G Name
     time.sleep(2)
+    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@name='locationGroupDescription']"))).send_keys('Description') # L G Description
+    time.sleep(2)
+    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//button[@ng-click='vm.save()']"))).click() # click on continue button
+    time.sleep(2)
+    driver.close()
+    driver.switch_to.window(handles[0])
+# # perfomed operation on Location manager
+
+    # # -------Location Group -------------------
+    # WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@placeholder='Select a brand, category, behavioral, custom or location group audience']"))).click() #click on Input box
+    # WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@placeholder='Select a brand, category, behavioral, custom or location group audience']"))).clear() #clear input box
+    # WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@placeholder='Select a brand, category, behavioral, custom or location group audience']"))).send_keys(Location_Group) #click on Location_Group
+    # WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//span[contains(@class, 'glyphicon-chevron-right')]"))).click() #click on right navigation bar
+    # WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//a[contains(text(), 'Location Group')]"))).click() #click on link
+    # time.sleep(4)
+    # WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//div[contains(@class, 'active')]//li[contains(text(), '"+Location_Group+"')]"))).click()
+    # time.sleep(2)
     lookalike=driver.find_element_by_xpath("//input[@id='inp-adGroupTargetingAud-lookalikeAudScale']").is_selected() #lookalike audience
     print('Default Include lookalikes to increase scale:',lookalike)
 # lookalike audience to increase sales
@@ -251,13 +271,20 @@ def VastCreative(name,VastTagURL,ApiType,ExtTracker1,ExtTracker2,ClkThrUrl): #na
     # WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//button[@id='btn-simpleConfirmModal-confirm']"))).click() # cofirmation model
     # print('Creative Paused')
     ####  Creative Opened
-    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//div[@ng-click='openCreativeModal(creative)']"))).click() #Open Creative
-    print('Creative Opened')
-    time.sleep(2)
-    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//button[@id='btn-creativesModal-newCreativeCancel']"))).click() # cancel button
+    # WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//div[@ng-click='openCreativeModal(creative)']"))).click() #Open Creative
+    # print('Creative Opened')
+    # time.sleep(2)
+    # WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//button[@id='btn-creativesModal-newCreativeCancel']"))).click() # cancel button
     #### Creative display
-    # WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//a/i[@class='glyphicon glyphicon-picture creative-action-btn']"))).click() 
-    # print("Creative Displayed")
+    # parentGUID=driver.current_window_handle #return hash key of parent window(Ads Manager)
+
+    WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//a/i[@class='glyphicon glyphicon-picture creative-action-btn']"))).click() #creative action button or Doc data link
+    handles=driver.window_handles
+    driver.switch_to.window(handles[1])
+    print(driver.title)
+    print("Doc Data Displayed:",driver.current_url)
+    driver.close()
+    driver.switch_to.window(handles[0])            
     FreqCap=WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@ng-change='frequencyCappingChange(creative)']"))).is_selected() #Default Frequency cap
     print('Default Impression Frequency Cap:',FreqCap)
     WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@ng-change='frequencyCappingChange(creative)']"))).click() #Frequency cap
@@ -266,9 +293,7 @@ def VastCreative(name,VastTagURL,ApiType,ExtTracker1,ExtTracker2,ClkThrUrl): #na
     WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//input[@ng-model='creative.freqCapDuration']"))).send_keys(5) # Imp cap Hour
     time.sleep(3)
     WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//button[@id='btn-adgTargetSup-creativesTabNext']"))).click() #click on Next button
-# //ul/li[1]/div[2]/div[5] 
-# //ul[@class='creatives']/li/h4[contains(text(), 'Vast Creative ')]/div[@class='cta-container']/div[@ng-click='deleteCreative(creative)']
-# //div[@class='cta-container']/div[@ng-click='deleteCreative(creative)']
+
 
 def BudgetNschedule(Bid_type,BidPrice,SDate,EDAte,DayParting): #Bid_type, BidPrice, SDate,EDAte, DayParting 
     select=Select(WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//select[@id='inp-adgTargetSup-adgBidType']"))))
@@ -294,7 +319,6 @@ def BudgetNschedule(Bid_type,BidPrice,SDate,EDAte,DayParting): #Bid_type, BidPri
 # #########
     # WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//div[contains(text(), 'Sun')]/div//button[contains(text(), '11')]"))).click() # selecting whole Sun row
 # ########
-# //div[@class='dayparting-input-container']/button[contains(text(), '0')]
     driver.execute_script("window.scrollBy(0,document.body.scrollHeight)")
     WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//span[@ng-click='trackingPixelModel()']"))).click()
     time.sleep(4)
@@ -404,7 +428,7 @@ def Reporting():
     # WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//div[@class='ng-binding ng-scope']/input[contains(text(),'Active')]"))).click() #
     time.sleep(2)
     # WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, ""))).click() #
-    # time.sleep(2)
+    # time.sleep(2) 
     # WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, ""))).click() #
     # time.sleep(2)
     # WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, ""))).click() #
@@ -422,11 +446,11 @@ def demographics():
 
 
 Login('gt.surender@protonmail.com','Groundtruth@9')
-NewCampaign('Automated campaign')
+NewCampaign('Automated campaign') #+random.randint(0,9)
 TargetingTactics()
 DeviceType('CTV') # Pass Mobile or CTV
 SelectTargeting('Automation@@','Millennials','Banana Republic','Potato Growers','French') # Pass AdGroupName, Behavior, Brands, Category, Location_Group
-ExcludeTargeting('Millennials','Banana Republic','Potato Growers','French')
+# ExcludeTargeting('Millennials','Banana Republic','Potato Growers','French')
 AdditionalLocationFilter('Minnesota','Butte-Bozeman, MT','11')
 driveToDesti('7-Eleven','Volvo') 
 ''' # ApiType='None','VPAID1','VPAID2','MRAID1','MRAID2','ORMMA' '''
