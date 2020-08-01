@@ -2,7 +2,6 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support.ui import Select
 from selenium.webdriver.common.keys import Keys
 import time
@@ -12,7 +11,7 @@ driver=webdriver.Chrome()
 # driver=webdriver.Firefox()
 driver.get("http://ads-release-3-13-np.groundtruth.com/")
 def Login(username,password):
-    driver.maximize_window()
+    # driver.maximize_window()
     email=driver.find_element_by_xpath('//*[@id="inp-signin-usernameLogin"]')
     email.send_keys(username)
     pwd=driver.find_element_by_xpath('//*[@id="inp-signin-passwordLogin"]')
