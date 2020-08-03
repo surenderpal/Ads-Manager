@@ -68,9 +68,6 @@ def SearchCampaign():
     time.sleep(2)
     driver.find_element_by_xpath("//div[@id='tableHeader-column-timeframe_end_string']/a[@ng-click='sort(item.field, true)']").click()    
 
-
-
-
 # c=CampaignDashboard
 StatusFilter()
 Pagination()
