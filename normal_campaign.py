@@ -19,9 +19,13 @@ class Login:
         time.sleep(3)
 L=Login()
 L.Alogin('gt.surender@protonmail.com','Groundtruth@9')
-
+# pop-up disabled
+def PopUp():
 
 # class CampaignDashboard:
+
+
+
 
 def StatusFilter():
     driver.find_element_by_id('btn-campDash-filterAll').click() #All filter
