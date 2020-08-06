@@ -78,8 +78,3 @@ def SearchCampaign():
 StatusFilter()
 Pagination()
 SearchCampaign()
-
-
-
-
-
