@@ -58,11 +58,48 @@ driver=webdriver.Chrome()
 # actions.move_to_element(genre).move_to_element(action).move_to_element(biography).move_to_element(music).move_to_element(fantasy).move_to_element(Fiction).move_to_element(Adventure).move_to_element(Comedy).move_to_element(War).click().perform()
 # print('learnt hover')
 
-##---double click------- 
-driver.get("https://testautomationpractice.blogspot.com/")
-driver.maximize_window()
-element=driver.find_element_by_xpath("//button[contains(text(), 'Copy Text')]")
-actions=ActionChains(driver)
-actions.double_click(element).perform()  #double click
-print('double clicked on element')
+##---double click pratice ------- 
 
+# driver.get("https://testautomationpractice.blogspot.com/")
+# driver.maximize_window()
+# element=driver.find_element_by_xpath("//button[contains(text(), 'Copy Text')]")
+# actions=ActionChains(driver)
+# actions.double_click(element).perform()  #double click
+# print('double clicked on element')
+
+##-----pratice right click-----
+
+# driver.get('https://swisnl.github.io/jQuery-contextMenu/demo.html')
+# time.sleep(3)
+# element=driver.find_element_by_xpath("//span[contains(text(), 'right click me')]")
+# actions=ActionChains(driver)
+# actions.context_click(element).perform()
+# print('Right clicke performed')
+
+
+##---Drag and drop-----
+
+# driver.get('http://dhtmlgoodies.com/scripts/drag-drop-custom/demo-drag-drop-3.html')
+# time.sleep(2)
+# source=driver.find_element_by_id("box6")
+# target=driver.find_element_by_id("box106")
+# actions=ActionChains(driver)
+# actions.drag_and_drop(source,target).perform()
+# print('Dragged and dropped!!!')
+
+driver.get("https://testautomationpractice.blogspot.com/")
+# driver.maximize_window()
+time.sleep(2)
+trash=driver.find_element_by_id('slider')
+# s=driver.find_element_by_id("draggable")
+s=driver.find_element_by_xpath("//*[@alt='the peaks of high tatras']")
+
+# t=driver.find_element_by_id("droppable")
+t=driver.find_element_by_id("trash")
+
+# driver.execute_script("arguments[0].scrollIntoView();",trash) #scroll page
+actions=ActionChains(driver)
+# actions.drag_and_drop(s,t).perform()
+actions.move_to_element(trash).perform()
+actions.drag_and_drop(s,t).perform()
+print('Drag and dropped')
