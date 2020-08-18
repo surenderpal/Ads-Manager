@@ -57,3 +57,12 @@ driver=webdriver.Chrome()
 # actions=ActionChains(driver)
 # actions.move_to_element(genre).move_to_element(action).move_to_element(biography).move_to_element(music).move_to_element(fantasy).move_to_element(Fiction).move_to_element(Adventure).move_to_element(Comedy).move_to_element(War).click().perform()
 # print('learnt hover')
+
+##---double click------- 
+driver.get("https://testautomationpractice.blogspot.com/")
+driver.maximize_window()
+element=driver.find_element_by_xpath("//button[contains(text(), 'Copy Text')]")
+actions=ActionChains(driver)
+actions.double_click(element).perform()  #double click
+print('double clicked on element')
+
