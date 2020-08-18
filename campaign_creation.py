@@ -6,7 +6,9 @@ from selenium.webdriver.support.ui import Select
 from selenium.webdriver.common.keys import Keys
 import time
 import random
+from selenium.webdriver import ActionChains
 driver=webdriver.Chrome()
+driver.maximize_window()
 # r=random(range(100))
 # driver=webdriver.Firefox()
 driver.get("http://ads-release-3-13-np.groundtruth.com/")
@@ -457,4 +459,8 @@ VastCreative('Vast Creative','https://ad.doubleclick.net/ddm/pfadx/N3175.3207085
 BudgetNschedule('CPM',22,'2020-07-30','2020-09-30','Happy Hour')
 Reporting()
 time.sleep(5)
-driver.quit()
+row=driver.find_element_by_id("tableBody-column-id")
+actions=ActionChains(driver)
+actions.double_click(row).perform()
+print('double clicked on row')
+# driver.quit()
