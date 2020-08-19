@@ -87,19 +87,73 @@ driver=webdriver.Chrome()
 # actions.drag_and_drop(source,target).perform()
 # print('Dragged and dropped!!!')
 
-driver.get("https://testautomationpractice.blogspot.com/")
-# driver.maximize_window()
-time.sleep(2)
-trash=driver.find_element_by_id('slider')
-# s=driver.find_element_by_id("draggable")
-s=driver.find_element_by_xpath("//*[@alt='the peaks of high tatras']")
 
-# t=driver.find_element_by_id("droppable")
-t=driver.find_element_by_id("trash")
+# # driver.maximize_window()
+# time.sleep(2)
+# trash=driver.find_element_by_id('slider')
+# # s=driver.find_element_by_id("draggable")
+# s=driver.find_element_by_xpath("//*[@alt='the peaks of high tatras']")
 
-# driver.execute_script("arguments[0].scrollIntoView();",trash) #scroll page
-actions=ActionChains(driver)
+# # t=driver.find_element_by_id("droppable")
+# t=driver.find_element_by_id("trash")
+
+# # driver.execute_script("arguments[0].scrollIntoView();",trash) #scroll page
+# actions=ActionChains(driver)
+# # actions.drag_and_drop(s,t).perform()
+# actions.move_to_element(trash).perform()
 # actions.drag_and_drop(s,t).perform()
-actions.move_to_element(trash).perform()
-actions.drag_and_drop(s,t).perform()
-print('Drag and dropped')
+# print('Drag and dropped')
+
+
+# driver.get("https://testautomationpractice.blogspot.com/")
+# time.sleep(2)
+# trash=driver.find_element_by_id('slider')
+# s=driver.find_element_by_xpath("//*[@alt='the peaks of high tatras']")
+# t=driver.find_element_by_id("trash")
+# actions=ActionChains(driver)
+# actions.move_to_element(trash).perform()
+# actions.drag_and_drop(s,t).perform()
+# print('Drag and dropped')
+
+
+##---how to upload the file------
+# driver.get('https://testautomationpractice.blogspot.com/')
+# time.sleep(5)
+# driver.maximize_window()
+# scroll=driver.find_element_by_id("HTML7")
+# # driver.execute_script("arguments[0].scrollIntoView();",scroll)
+# actions=ActionChains(driver)
+# actions.move_to_element(scroll).perform()
+# time.sleep(2)
+
+# # actions=ActionChains(driver)
+# # actions.move_to_element(scroll).perform()
+# driver.switch_to.frame(0)
+# driver.find_element_by_id("RESULT_FileUpload-10").send_keys("/Users/surenderpal/Downloads/sukhoi.jpg") #frame_Id=FSForm
+# # /Users/surenderpal/Downloads/surender.png
+
+##2nd pratice-----
+
+# driver.get('https://filebin.net/')
+# time.sleep(4)
+# driver.switch_to.frame(1)
+# print('Switched to frame!!')
+# driver.find_element_by_id("fileField").send_keys('/Users/surenderpal/Downloads/sukhoi.jpg')
+
+##---3rd pratice-----
+
+# driver.get('https://safenote.co/upload-file')
+# time.sleep(4)
+# driver.switch_to.frame(driver.find_element_by_id("dropzoneFrom"))
+# actions=ActionChains(driver)
+# scroll=driver.find_element_by_xpath("//*[@class='jumbotron']")
+# actions.move_to_element(scroll).perform()
+# print('scrolling done!!!')
+# time.sleep(4)
+# driver.find_element_by_id('dropzoneFrom').send_keys('/Users/surenderpal/Downloads/sukhoi.jpg')
+
+##---4th pratice-----
+driver.get("https://gofile.io/uploadFiles")
+time.sleep(4)
+driver.find_element_by_xpath("//button[@class='btn btn-primary btn-lg']").send_keys('/Users/surenderpal/Downloads/VID-20200819-WA0006.mp4')
+print('file uploaded successfully!!!')
