@@ -5,9 +5,9 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support.select import Select
 from selenium.webdriver import ActionChains
+import openpyxl
 
-
-driver=webdriver.Chrome()
+# driver=webdriver.Chrome()
 # driver.get('https://location-software-np.groundtruth.com/')
 # time.sleep(2)
 # # driver.execute_script('window.scrollBy(0,5000),""') # scroll by pixel
@@ -152,8 +152,26 @@ driver=webdriver.Chrome()
 # time.sleep(4)
 # driver.find_element_by_id('dropzoneFrom').send_keys('/Users/surenderpal/Downloads/sukhoi.jpg')
 
-##---4th pratice-----
-driver.get("https://gofile.io/uploadFiles")
-time.sleep(4)
-driver.find_element_by_xpath("//button[@class='btn btn-primary btn-lg']").send_keys('/Users/surenderpal/Downloads/VID-20200819-WA0006.mp4')
-print('file uploaded successfully!!!')
+# ##---4th pratice-----
+# driver.get("https://gofile.io/uploadFiles")
+# time.sleep(4)
+# driver.find_element_by_xpath("//button[@class='btn btn-primary btn-lg']").send_keys('/Users/surenderpal/Downloads/VID-20200819-WA0006.mp4')
+# print('file uploaded successfully!!!')
+
+
+##--read data from excel----
+import openpyxl
+path="/Users/surenderpal/Downloads/DS 160.xlsx"
+# workbook=openpyxl.load_workbook(path)
+wb=openpyxl.load_workbook(path)
+# sheet=workbook.active
+# sheet=workbook.get_sheet_by_name("Info. for DS160")
+sheet=wb["Info. for DS160"]
+rows=sheet.max_row
+cols=sheet.max_column
+print(rows)
+print(cols)
+for r in range(1,rows+1):
+    for c in range(1, cols):
+        print(sheet.cell(row=r,column=c).value, end="       ")
+    print()
