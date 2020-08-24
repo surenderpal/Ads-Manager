@@ -160,18 +160,27 @@ import openpyxl
 
 
 ##--read data from excel----
+
+# import openpyxl
+# path="/Users/surenderpal/Downloads/DS 160.xlsx"
+# wb=openpyxl.load_workbook(path)
+# sheet=wb["Info. for DS160"]
+# rows=sheet.max_row
+# cols=sheet.max_column
+# print(rows)
+# print(cols)
+# for r in range(1,rows+1):
+#     for c in range(1, cols):
+#         print(sheet.cell(row=r,column=c).value, end="       ")
+#     print()
+
+## pratice --2 _------
 import openpyxl
-path="/Users/surenderpal/Downloads/DS 160.xlsx"
-# workbook=openpyxl.load_workbook(path)
+path='/Users/surenderpal/Downloads/Geotarget.xlsx'
 wb=openpyxl.load_workbook(path)
-# sheet=workbook.active
-# sheet=workbook.get_sheet_by_name("Info. for DS160")
-sheet=wb["Info. for DS160"]
-rows=sheet.max_row
-cols=sheet.max_column
-print(rows)
-print(cols)
-for r in range(1,rows+1):
-    for c in range(1, cols):
-        print(sheet.cell(row=r,column=c).value, end="       ")
-    print()
+sheet=wb['rahul']
+for r in range(1, 6):
+    for c in range(1,4):
+        sheet.cell(row=r,column=c).value='rahul'
+wb.save(path)
+
