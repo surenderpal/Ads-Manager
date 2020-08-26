@@ -1,0 +1,14 @@
+Wednesday August 26/08/2020 21:43:29 :CRITICAL:This is critical message
+Wednesday August 26/08/2020 21:43:29 :ERROR:This is error message
+Wednesday August 26/08/2020 21:43:29 :WARNING:This is warning message
+Wednesday August 26/08/2020 21:43:29 :INFO:This is info message
+2020-08-26 21:47:03,575: CRITICAL: This is critical message
+2020-08-26 21:47:03,575: ERROR: This is error message
+2020-08-26 21:47:03,575: WARNING: This is warning message
+2020-08-26 21:47:03,575: INFO: This is info message
+2020-08-26 21:47:03,575: DEBUG: This is debug message
+Wednesday August 26/08/2020 21:48:26 : CRITICAL: This is critical message
+Wednesday August 26/08/2020 21:48:26 : ERROR: This is error message
+Wednesday August 26/08/2020 21:48:26 : WARNING: This is warning message
+Wednesday August 26/08/2020 21:48:26 : INFO: This is info message
+Wednesday August 26/08/2020 21:48:26 : DEBUG: This is debug message
