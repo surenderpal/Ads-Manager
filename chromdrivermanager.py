@@ -9,7 +9,7 @@ from webdriver_manager.microsoft import EdgeChromiumDriverManager #with Edge
 # driver=webdriver.Edge(EdgeChromiumDriverManager().install()) #with Edgedriver 
 import time
 
-browserName = 'chrome'
+browserName = 'firefox'
 if browserName =='chrome':
     driver = webdriver.Chrome(ChromeDriverManager().install()) #for chrome 
 elif browserName == 'firefox':
