@@ -6,7 +6,7 @@ from webdriver_manager.microsoft import EdgeChromiumDriverManager #for edge
 from time import sleep
 
 # def browserName(bname):#bname
-bname='safari'
+bname='chrome'
 if bname=='chrome':
     driver=webdriver.Chrome(ChromeDriverManager().install()) #this will install latest chrome driver manager
 elif bname=='firefox':
@@ -31,4 +31,4 @@ class login():
         driver.find_element_by_name('password').send_keys(password)
         driver.find_element_by_id('btn-signin-signIn').click()
 l=login()
-l.AdManager('surender.pal@grounndtruth.com','Surenderpal@1991')
+l.AdManager('surender.pal@groundtruth.com','Surenderpal@1991')
