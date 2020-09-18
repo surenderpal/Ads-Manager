@@ -196,39 +196,73 @@ from time import sleep
 
 # pratice for links:
 # def browserName(bname):#bname
-bname='chrome'
-if bname=='chrome':
-    driver=webdriver.Chrome(ChromeDriverManager().install()) #this will install latest chrome driver manager
-elif bname=='firefox':
-    driver=webdriver.Firefox(executable_path=GeckoDriverManager().install()) #it will install latest firefox driver manager
-elif bname=='ie':
-    driver=webdriver.Ie(IEDriverManager().install())
-elif bname=='edge':
-    driver=webdriver.Edge(EdgeChromiumDriverManager().install())
-elif bname=='safari':
-    driver=webdriver.Safari()
-else:
-    print('Please pass the correct browser name' + bname)
-driver.get('https://ads-release-3-14-np.groundtruth.com/')
-# browserName('firefox')
+# bname='chrome'
+# if bname=='chrome':
+#     driver=webdriver.Chrome(ChromeDriverManager().install()) #this will install latest chrome driver manager
+# elif bname=='firefox':
+#     driver=webdriver.Firefox(executable_path=GeckoDriverManager().install()) #it will install latest firefox driver manager
+# elif bname=='ie':
+#     driver=webdriver.Ie(IEDriverManager().install())
+# elif bname=='edge':
+#     driver=webdriver.Edge(EdgeChromiumDriverManager().install())
+# elif bname=='safari':
+#     driver=webdriver.Safari()
+# else:
+#     print('Please pass the correct browser name' + bname)
+# driver.get('https://ads-release-3-14-np.groundtruth.com/')
+# # browserName('firefox')
 
 
-# login class to automate the login process
-class login():
-    driver.maximize_window()
-    def AdManager(self,username,password):
-        driver.find_element_by_name('username').send_keys(username)
-        driver.find_element_by_name('password').send_keys(password)
-        driver.find_element_by_id('btn-signin-signIn').click()
+# # login class to automate the login process
+# class login():
+#     driver.maximize_window()
+#     def AdManager(self,username,password):
+#         driver.find_element_by_name('username').send_keys(username)
+#         driver.find_element_by_name('password').send_keys(password)
+#         driver.find_element_by_id('btn-signin-signIn').click()
 
-def links():
-    links=driver.find_elements(By.TAG_NAME, "a")
-    print('total links on page',len(links))
-    for link in links:
-        print(link.text)
+# def links():
+#     links=driver.find_elements(By.TAG_NAME, "a")
+#     print('total links on page',len(links))
+#     for link in links:
+#         print(link.text)
     
 
-links()
-l=login()
-l.AdManager('surender.pal@groundtruth.com','Surenderpal@1991')
-sleep(5)
+# links()
+# l=login()
+# l.AdManager('surender.pal@groundtruth.com','Surenderpal@1991')
+# sleep(5)
+
+# def tax(state,grossIncome):
+#     if state=='Fedral':
+#         tax=(grossIncome*10)/100
+#         netIncome=grossIncome-tax
+#         print(netIncome)
+#     elif state=='la':
+#         tax=(grossIncome*20)/100
+#         netIncome=grossIncome-tax
+#         return netIncome
+#     elif state=='california':
+#         tax=(grossIncome*30)/100
+#         netIncome=grossIncome-tax
+#         return netIncome
+#     elif state=='mountain view':
+#         tax=(grossIncome*20)/100
+#         netIncome=grossIncome-tax
+#         return netIncome
+#     else:
+#         tax=(grossIncome*10)/100
+#         netIncome=grossIncome-tax
+#         return netIncome
+# tax('Fedral',2000)    
+def calculateTax(state,gross):
+    stateTax={'ca':10,'ny':9,'nj':6,'tx':5}
+    net=gross-(gross*.10)
+    if state in stateTax:
+        net=net-(gross * stateTax[state]/100)
+        print('your net income is: ',net)
+        return net
+    else:
+        print('Your state is not in list')
+        return None
+calculateTax('tx',100000)
