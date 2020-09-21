@@ -75,12 +75,41 @@ class TenantDashboard():
     def SelectTenant(self,TenName):
         wait=WebDriverWait(driver, 40)
         ''' Tenant selection '''
-        wait.until(EC.element_to_be_clickable((By.XPATH ,"//label[text()='Tenant']/..//span[@class='dropdown-title ng-binding']"))).click() #tenant selection
+        wait.until(EC.element_to_be_clickable((By.XPATH,"//label[text()='Tenant']/..//span[@class='dropdown-title ng-binding']"))).click() #tenant selection
         wait.until(EC.element_to_be_clickable((By.XPATH, "//input[@id='search-dropdown-list-Tenant']"))).send_keys(TenName)
         sleep(2)
-        driver.find_element_by_xpath("//input[@id='Tenant-0']").click()
+        wait.until(EC.element_to_be_clickable((By.XPATH,"//input[@id='Tenant-0']"))).click()
+        sleep(5)
+        print('Tenant selected: '+ TenName)
+
+    def SelectOrg(self,OrgName):
+        wait=WebDriverWait(driver, 40)
+        ''' Orgnization selection'''
+        wait.until(EC.element_to_be_clickable((By.XPATH, "//label[text()='Organization']/..//span[@class='dropdown-title ng-binding']"))).click() # org selection
+        wait.until(EC.element_to_be_clickable((By.XPATH, "//input[@id='search-dropdown-list-Organization']"))).send_keys(OrgName)
+        sleep(2)
+        driver.find_element_by_xpath("//input[@id='Organization-0']").click()
+        sleep(5)
+        print('Organization selected: '+OrgName)
+
+    def SelectAccount(self,AccountName):
+        wait=WebDriverWait(driver, 40)
+        ''' Account selection '''
+        wait.until(EC.element_to_be_clickable((By.XPATH,"//label[text()='Organization']/..//span[@class='dropdown-title ng-binding']"))).click() #account selected
+        wait.until(EC.element_to_be_clickable((By.XPATH,"//input[@id='search-dropdown-list-Organization']"))).send_keys(AccountName)
+        sleep(2)
+        driver.find_element_by_xpath("//input[@id='Organization-0']").click()
+        sleep(5)
+        print('Account selection: '+AccountName)
+
+
 
 t=TenantDashboard()
 t.hamburger()
 # t.links_Buttons()
 t.SelectTenant('#DelCastillo')
+t.SelectOrg('DelCastillo')
+t.SelectAccount('Del Castillo Agency')
+t.SelectTenant('#GatewayFantasticSams')
+t.SelectOrg('GatewayFantasticSams')
+t.SelectAccount('Fantastic Sams Brea')
