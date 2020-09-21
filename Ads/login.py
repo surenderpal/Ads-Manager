@@ -2,14 +2,16 @@ from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import Select
+from selenium.webdriver.support.ui import WebDriverWait
 from webdriver_manager.chrome import ChromeDriverManager 
 from webdriver_manager.firefox import GeckoDriverManager
 from webdriver_manager.microsoft import IEDriverManager
 from webdriver_manager.microsoft import EdgeChromiumDriverManager
 from time import sleep
 
-b_name ='safari'
+b_name ='chrome'
 if b_name == 'chrome':
     driver=webdriver.Chrome(ChromeDriverManager().install()) #this will install chrome
 elif b_name == 'firefox':
@@ -49,3 +51,36 @@ class AdsManager():
 A=AdsManager()
 A.linksInLoginPage('a')
 A.login('surender.pal@groundtruth.com','Surenderpal@1991')
+
+class TenantDashboard():
+    wait=WebDriverWait(driver, 40)
+    def links_Buttons(self):
+        links=driver.find_elements(By.TAG_NAME,'a')
+        print('Total link present on Tenant Dashboard page is:',len(links))
+        for link in links:   
+            print(link.text,link.get_attribute('href'))
+
+        inputs=driver.find_elements(By.TAG_NAME,"input")
+        print('Total no of input element present in Tenant Dashboard is:',len(inputs))
+
+        for input in inputs:    
+            print(input.get_attribute("placeholder"))
+
+    def hamburger(self):
+        wait=WebDriverWait(driver, 40)
+        wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, ".app-screen #btn-appMenu"))).click() #click on hamburger button
+        wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, ".app-screen #btn-appMenu-tenant-dashboard"))).click() #click on tenant dashboard
+        print('clicked on Hamburger Menu..')
+    
+    def SelectTenant(self,TenName):
+        wait=WebDriverWait(driver, 40)
+        ''' Tenant selection '''
+        wait.until(EC.element_to_be_clickable((By.XPATH ,"//label[text()='Tenant']/..//span[@class='dropdown-title ng-binding']"))).click() #tenant selection
+        wait.until(EC.element_to_be_clickable((By.XPATH, "//input[@id='search-dropdown-list-Tenant']"))).send_keys(TenName)
+        sleep(2)
+        driver.find_element_by_xpath("//input[@id='Tenant-0']").click()
+
+t=TenantDashboard()
+t.hamburger()
+# t.links_Buttons()
+t.SelectTenant('#DelCastillo')
