@@ -49,7 +49,7 @@ class AdsManager():
         else:
             print('Please enter valid credentials!!!')
 A=AdsManager()
-A.linksInLoginPage('a')
+# A.linksInLoginPage('a')
 A.login('surender.pal@groundtruth.com','Surenderpal@1991')
 
 class TenantDashboard():
@@ -75,12 +75,12 @@ class TenantDashboard():
     def SelectTenant(self,TenName):
         wait=WebDriverWait(driver, 40)
         ''' Tenant selection '''
-        wait.until(EC.element_to_be_clickable((By.XPATH,"//label[text()='Tenant']/..//span[@class='dropdown-title ng-binding']"))).click() #tenant selection
-        wait.until(EC.element_to_be_clickable((By.XPATH, "//input[@id='search-dropdown-list-Tenant']"))).send_keys(TenName)
+        wait.until(EC.element_to_be_clickable((By.XPATH ,"//label[text()='Tenant']/..//span[@class='dropdown-title ng-binding']"))).click() #tenant selection
+        wait.until(EC.element_to_be_clickable((By.XPATH, "//input[@id='search-dropdown-list-Tenant']"))).send_keys(TenName) #passed tenant name in input box
         sleep(2)
-        wait.until(EC.element_to_be_clickable((By.XPATH,"//input[@id='Tenant-0']"))).click()
+        driver.find_element_by_xpath("//input[@id='Tenant-0']").click() #click on input box.
         sleep(5)
-        print('Tenant selected: '+ TenName)
+        print('Tenant selected: ',TenName)
 
     def SelectOrg(self,OrgName):
         wait=WebDriverWait(driver, 40)
@@ -90,17 +90,17 @@ class TenantDashboard():
         sleep(2)
         driver.find_element_by_xpath("//input[@id='Organization-0']").click()
         sleep(5)
-        print('Organization selected: '+OrgName)
+        print('Organization selected: ', OrgName)
 
     def SelectAccount(self,AccountName):
         wait=WebDriverWait(driver, 40)
         ''' Account selection '''
-        wait.until(EC.element_to_be_clickable((By.XPATH,"//label[text()='Organization']/..//span[@class='dropdown-title ng-binding']"))).click() #account selected
-        wait.until(EC.element_to_be_clickable((By.XPATH,"//input[@id='search-dropdown-list-Organization']"))).send_keys(AccountName)
+        wait.until(EC.element_to_be_clickable((By.XPATH,"//label[text()='Account']/..//span[@class='dropdown-title ng-binding']"))).click() #account selected
+        wait.until(EC.element_to_be_clickable((By.XPATH,"//input[@id='search-dropdown-list-Account']"))).send_keys(AccountName)
         sleep(2)
-        driver.find_element_by_xpath("//input[@id='Organization-0']").click()
+        driver.find_element_by_xpath("//input[@id='Account-0']").click()
         sleep(5)
-        print('Account selection: '+AccountName)
+        print('Account selection: ',AccountName)
 
 
 
