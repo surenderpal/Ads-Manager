@@ -99,17 +99,50 @@ class TenantDashboard():
         wait.until(EC.element_to_be_clickable((By.XPATH,"//input[@id='search-dropdown-list-Account']"))).send_keys(AccountName)
         sleep(2)
         driver.find_element_by_xpath("//input[@id='Account-0']").click()
+        # driver.find_element(By.XPATH, "//input[@id='Account-0']").send_keys(Keys.ESCAPE)
         sleep(5)
         print('Account selection: ',AccountName)
+    def searchbox(self):
+        searchBox=driver.find_element(By.ID, "inp-base-searchbox-new")
+        searchBox.click()
+        searchBox.send_keys('test',Keys.ENTER)
+        # driver.back()
+
+        driver.find_elements(By.XPATH, "")
+        # if driver.find_element(By.ID, "inp-search-dateCreated-all").get_attribute('type') =='radio':
+
+        #     print('element is radio button and ')
+        #     driver.find_element(By.ID, "inp-search-dateCreated-all").is_selected():
+        #     driver.find_element(By.ID, "inp-search-dateCreated-all").get_attribute('')
+        #     print('Default value selected is: ',)
+        # driver.find_element(By.ID, "//input[@id='inp-search-dateCreated-week']").click()
+        
 
 
+
+    def pagination(self):
+        wait=WebDriverWait(driver, 40)
+        element=Select(wait.until(EC.element_to_be_clickable((By.XPATH, "//select[@class='ng-pristine ng-valid ng-not-empty ng-touched']"))))
+        select=Select(element)
+        select.select_by_visible_text('10')
+        sleep(2)
+        select.select_by_visible_text('25')
+        sleep(2)
+        select.select_by_visible_text('50')
+        sleep(2)
+        print('Total options available for the selection: ',len(select.options)) #print count of options
+        all_options=select.options
+        for option in all_options:
+            print(option.text)
 
 t=TenantDashboard()
 t.hamburger()
-# t.links_Buttons()
-t.SelectTenant('#DelCastillo')
-t.SelectOrg('DelCastillo')
-t.SelectAccount('Del Castillo Agency')
-t.SelectTenant('#GatewayFantasticSams')
-t.SelectOrg('GatewayFantasticSams')
-t.SelectAccount('Fantastic Sams Brea')
+# # t.links_Buttons()
+# t.SelectTenant('#DelCastillo')
+# t.SelectOrg('DelCastillo')
+# t.SelectAccount('Del Castillo Agency')
+# t.SelectTenant('#GatewayFantasticSams')
+# t.SelectOrg('GatewayFantasticSams')
+# t.SelectAccount('Fantastic Sams Brea')
+t.searchbox()
+t.pagination()
