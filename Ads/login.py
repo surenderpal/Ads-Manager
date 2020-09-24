@@ -121,7 +121,7 @@ class TenantDashboard():
         
 
     def TermAndPrivacyPolicy(self):
-        sleep(10)
+        sleep(40)
         terms=driver.find_element(By.ID, "btn-baseFooter-termsOfUse")
         if terms.tag_name == 'a':
             print('element is: ',terms.tag_name)
@@ -130,14 +130,33 @@ class TenantDashboard():
 
         if terms.is_displayed() and terms.is_enabled()==True:
             terms.click()
-            print(terms.'link is enabled, displayed and link is clicked')
+            print(terms.text,'link is enabled, displayed and',terms.text,'link is clicked')
             sleep(2)
             element=driver.find_element(By.ID, 'btn-termsConditions-close')
             driver.execute_script("arguments[0].scrollIntoView();", element)
             element.click()
         else:
-            print('Link is neither enable or displayed')
+            print(terms.text,'Link is neither enable or displayed')
+
+        privacy=driver.find_element(By.ID, 'btn-baseFooter-privacyPolicy')
+        if privacy.tag_name== 'a':
+            print(privacy.text)
+        else:
+            print(privacy.text,' it is not Link element')
         
+        
+        if privacy.is_displayed() and privacy.is_enabled() == True:
+            privacy.click()
+            print(privacy.text, 'Link is displayed, enabled and clicked')
+            sleep(10)
+            # handle=driver.current_window_handle()
+            handles=driver.window_handles()
+            driver.switch_to.window(handles[1])
+            print(driver.title)
+            driver.close()
+            driver.switch_to.window(handles[0])
+        else:
+            print(privacy.text,'Link is neither enable or displayed')
 
     def pagination(self):
         sleep(10)
