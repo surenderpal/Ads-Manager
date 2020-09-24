@@ -108,7 +108,9 @@ class TenantDashboard():
         searchBox.send_keys('test',Keys.ENTER)
         # driver.back()
 
-        driver.find_elements(By.XPATH, "")
+        DateCreated=driver.find_elements(By.XPATH, "//fieldset[@ng-show='searchFiltersUi.startDate.show']")
+        for date in DateCreated:
+            print(date.text)
         # if driver.find_element(By.ID, "inp-search-dateCreated-all").get_attribute('type') =='radio':
 
         #     print('element is radio button and ')
@@ -118,17 +120,38 @@ class TenantDashboard():
         # driver.find_element(By.ID, "//input[@id='inp-search-dateCreated-week']").click()
         
 
+    def TermAndPrivacyPolicy(self):
+        sleep(10)
+        terms=driver.find_element(By.ID, "btn-baseFooter-termsOfUse")
+        if terms.tag_name == 'a':
+            print('element is: ',terms.tag_name)
+        else:
+            print('element is not link it is: ',terms.tag_name)
 
+        if terms.is_displayed() and terms.is_enabled()==True:
+            terms.click()
+            print(terms.'link is enabled, displayed and link is clicked')
+            sleep(2)
+            element=driver.find_element(By.ID, 'btn-termsConditions-close')
+            driver.execute_script("arguments[0].scrollIntoView();", element)
+            element.click()
+        else:
+            print('Link is neither enable or displayed')
+        
 
     def pagination(self):
-        wait=WebDriverWait(driver, 40)
-        element=Select(wait.until(EC.element_to_be_clickable((By.XPATH, "//select[@class='ng-pristine ng-valid ng-not-empty ng-touched']"))))
+        sleep(10)
+        # wait=WebDriverWait(driver, 40)
+        
+        print('slept for 10 seconds')
+
+        element=driver.find_element(By.CLASS_NAME, "ng-pristine ng-valid ng-not-empty ng-touched")
         select=Select(element)
-        select.select_by_visible_text('10')
+        select.select_by_value('number:10')
         sleep(2)
-        select.select_by_visible_text('25')
+        select.select_by_value('number:25')
         sleep(2)
-        select.select_by_visible_text('50')
+        select.select_by_value('number:50')
         sleep(2)
         print('Total options available for the selection: ',len(select.options)) #print count of options
         all_options=select.options
@@ -136,7 +159,7 @@ class TenantDashboard():
             print(option.text)
 
 t=TenantDashboard()
-t.hamburger()
+# t.hamburger()
 # # t.links_Buttons()
 # t.SelectTenant('#DelCastillo')
 # t.SelectOrg('DelCastillo')
@@ -144,5 +167,6 @@ t.hamburger()
 # t.SelectTenant('#GatewayFantasticSams')
 # t.SelectOrg('GatewayFantasticSams')
 # t.SelectAccount('Fantastic Sams Brea')
-t.searchbox()
-t.pagination()
+# t.searchbox()
+t.TermAndPrivacyPolicy()
+# t.pagination()
