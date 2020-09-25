@@ -156,16 +156,9 @@ class TenantDashboard():
                 driver.switch_to.window(handle)
                 sleep(1)
                 if driver.title=='Privacy Policy - GroundTruth - GroundTruth':
-                    print('closed window title is: ',driver.title)
-                    driver.close()                    
-                    # driver.switch_to.window(handle)
-                    # print(driver.title)
-                    
-                # else:
-                #     print('else part: ',driver.title)
-                    # driver.close()
-                    # driver.switch_to.frame('_hjRemoteVarsFrame')
-                    # driver.fi
+                    print('Closed window title is: ',driver.title)
+                    driver.close()
+                    break                    
         else:
             print(privacy.text,'Link is neither enable or displayed')
 
