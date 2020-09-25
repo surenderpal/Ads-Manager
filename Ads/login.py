@@ -121,7 +121,7 @@ class TenantDashboard():
         
 
     def TermAndPrivacyPolicy(self):
-        sleep(40)
+        sleep(10)
         terms=driver.find_element(By.ID, "btn-baseFooter-termsOfUse")
         if terms.tag_name == 'a':
             print('element is: ',terms.tag_name)
@@ -147,14 +147,25 @@ class TenantDashboard():
         
         if privacy.is_displayed() and privacy.is_enabled() == True:
             privacy.click()
+            sleep(5)
             print(privacy.text, 'Link is displayed, enabled and clicked')
             sleep(10)
-            # handle=driver.current_window_handle()
-            handles=driver.window_handles()
-            driver.switch_to.window(handles[1])
-            print(driver.title)
-            driver.close()
-            driver.switch_to.window(handles[0])
+            # handle=driver.current_window_handle
+            handles=driver.window_handles
+            for handle in handles:
+                driver.switch_to.window(handle)
+                sleep(1)
+                if driver.title=='Privacy Policy - GroundTruth - GroundTruth':
+                    print('closed window title is: ',driver.title)
+                    driver.close()                    
+                    # driver.switch_to.window(handle)
+                    # print(driver.title)
+                    
+                # else:
+                #     print('else part: ',driver.title)
+                    # driver.close()
+                    # driver.switch_to.frame('_hjRemoteVarsFrame')
+                    # driver.fi
         else:
             print(privacy.text,'Link is neither enable or displayed')
 
