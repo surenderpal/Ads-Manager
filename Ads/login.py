@@ -114,7 +114,7 @@ class TenantDashboard():
         # if driver.find_element(By.ID, "inp-search-dateCreated-all").get_attribute('type') =='radio':
 
         #     print('element is radio button and ')
-        #     driver.find_element(By.ID, "inp-search-dateCreated-all").is_selected():
+        #     driver.find_element(By.ID, "inp-search-dateCreated-all").is_selectesd():
         #     driver.find_element(By.ID, "inp-search-dateCreated-all").get_attribute('')
         #     print('Default value selected is: ',)
         # driver.find_element(By.ID, "//input[@id='inp-search-dateCreated-week']").click()
@@ -162,28 +162,21 @@ class TenantDashboard():
         else:
             print(privacy.text,'Link is neither enable or displayed')
 
-    def pagination(self):
-        sleep(10)
-        # wait=WebDriverWait(driver, 40)
-        
-        print('slept for 10 seconds')
-
-        element=driver.find_element(By.CLASS_NAME, "ng-pristine ng-valid ng-not-empty ng-touched")
-        select=Select(element)
-        select.select_by_value('number:10')
-        sleep(2)
-        select.select_by_value('number:25')
-        sleep(2)
-        select.select_by_value('number:50')
-        sleep(2)
-        print('Total options available for the selection: ',len(select.options)) #print count of options
-        all_options=select.options
-        for option in all_options:
-            print(option.text)
-
+    def daterangepicker(self):
+        sleep(3)
+        # driver.find_element(By.NAME, "daterange").click()
+        driver.find_element_by_xpath("//input[@name='daterange']").click()
+        print('clicked on Date/Duration input box')
+        elements=driver.find_elements(By.CLASS_NAME, "input-mini form-control")
+        for element in elements:
+            if element.TAG_NAME =='input':
+                print('print elements are: ',element.text)
+                break
+        print('total input box: ',len(elements))
 t=TenantDashboard()
 # t.hamburger()
-# # t.links_Buttons()
+t.daterangepicker()
+# t.links_Buttons()
 # t.SelectTenant('#DelCastillo')
 # t.SelectOrg('DelCastillo')
 # t.SelectAccount('Del Castillo Agency')
@@ -191,5 +184,4 @@ t=TenantDashboard()
 # t.SelectOrg('GatewayFantasticSams')
 # t.SelectAccount('Fantastic Sams Brea')
 # t.searchbox()
-t.TermAndPrivacyPolicy()
-# t.pagination()
+# t.TermAndPrivacyPolicy()
