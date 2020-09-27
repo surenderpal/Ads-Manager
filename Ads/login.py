@@ -162,20 +162,23 @@ class TenantDashboard():
         else:
             print(privacy.text,'Link is neither enable or displayed')
 
-    def daterangepicker(self):
+    def LiveToDate(self,To,From):
+        sleep(5)
+        driver.find_element(By.NAME,'daterange').click()
         sleep(3)
-        # driver.find_element(By.NAME, "daterange").click()
-        driver.find_element_by_xpath("//input[@name='daterange']").click()
-        print('clicked on Date/Duration input box')
-        elements=driver.find_elements(By.CLASS_NAME, "input-mini form-control")
-        for element in elements:
-            if element.TAG_NAME =='input':
-                print('print elements are: ',element.text)
-                break
-        print('total input box: ',len(elements))
+        driver.find_element(By.NAME,'daterangepicker_start').clear()  #From Date range cleared
+        driver.find_element(By.NAME,'daterangepicker_start').send_keys(To) #From Date range entered value
+        sleep(3)
+        driver.find_element(By.NAME,'daterangepicker_end').clear()    #To Date range cleared
+        driver.find_element(By.NAME,'daterangepicker_end').send_keys(From) #To Date range entered value
+        sleep(3)
+        driver.find_element(By.XPATH,"//button[@class='applyBtn btn-sm btn-success']").click()
+        sleep(5)
+        
+
 t=TenantDashboard()
 # t.hamburger()
-t.daterangepicker()
+t.LiveToDate('2020-06-30','2020-10-29')
 # t.links_Buttons()
 # t.SelectTenant('#DelCastillo')
 # t.SelectOrg('DelCastillo')
