@@ -162,24 +162,44 @@ class TenantDashboard():
         else:
             print(privacy.text,'Link is neither enable or displayed')
 
-    def LiveToDate(self,To,From):
+    def LiveToDate(self,To,From,action,actiontype):
+        '''
+        applyBtn has actiontype = success  
+        cancelBtn has actiontype = default 
+        '''
         sleep(5)
         driver.find_element(By.NAME,'daterange').click()
-        sleep(3)
-        driver.find_element(By.NAME,'daterangepicker_start').clear()  #From Date range cleared
-        driver.find_element(By.NAME,'daterangepicker_start').send_keys(To) #From Date range entered value
-        sleep(3)
-        driver.find_element(By.NAME,'daterangepicker_end').clear()    #To Date range cleared
-        driver.find_element(By.NAME,'daterangepicker_end').send_keys(From) #To Date range entered value
-        sleep(3)
-        driver.find_element(By.XPATH,"//button[@class='applyBtn btn-sm btn-success']").click()
+        driver.find_element(By.NAME,'daterangepicker_start').clear()
+        driver.find_element(By.NAME,'daterangepicker_start').send_keys(To) 
+        driver.find_element(By.NAME,'daterangepicker_end').clear()    
+        driver.find_element(By.NAME,'daterangepicker_end').send_keys(From) 
+        sleep(2)
+        driver.find_element(By.XPATH,"//button[@class='"+action+" btn-sm btn-"+actiontype+"']").click() 
+        # driver.find_element(By.XPATH,"//button[@class='"+cancelBtn+" btn-sm btn-default']") 
         sleep(5)
-        
+
+    def campaignStatusFilter(self,filterType):
+        '''
+        filter type has these status
+        for all - All
+        for Pending - Pending
+        for Active - Active
+        for Paused - Paused
+        for Expired - Expired
+        '''
+        sleep(8)
+        button=driver.find_element(By.XPATH, "//button[@id='btn-tenantDash-filter"+filterType+"']")
+        if button.tag_name == 'button':
+            button.click()
+            print('Is ',button.text,'Button Enabled: ',button.is_enabled())
+            print('Is ',button.text,'Button Displayed: ',button.is_displayed())
+            print('Clicked button has status: ',button.text)
+            print()
+            sleep(2)
 
 t=TenantDashboard()
 # t.hamburger()
-t.LiveToDate('2020-06-30','2020-10-29')
-# t.links_Buttons()
+# t.links_Buttons() 
 # t.SelectTenant('#DelCastillo')
 # t.SelectOrg('DelCastillo')
 # t.SelectAccount('Del Castillo Agency')
@@ -187,4 +207,13 @@ t.LiveToDate('2020-06-30','2020-10-29')
 # t.SelectOrg('GatewayFantasticSams')
 # t.SelectAccount('Fantastic Sams Brea')
 # t.searchbox()
-# t.TermAndPrivacyPolicy()
+t.TermAndPrivacyPolicy()
+t.LiveToDate('2020-06-30','2020-10-29','applyBtn','success') 
+t.LiveToDate('2020-08-30','2020-12-29','cancelBtn','default')
+t.campaignStatusFilter('Pending')
+t.campaignStatusFilter('Active')
+t.campaignStatusFilter('Paused')
+t.campaignStatusFilter('Expired')
+t.campaignStatusFilter('All')
+sleep(30)
+driver.quit()
