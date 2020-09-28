@@ -150,7 +150,7 @@ class TenantDashboard():
             sleep(5)
             print(privacy.text, 'Link is displayed, enabled and clicked')
             sleep(10)
-            # handle=driver.current_window_handle
+            handle=driver.current_window_handle
             handles=driver.window_handles
             for handle in handles:
                 driver.switch_to.window(handle)
@@ -158,7 +158,8 @@ class TenantDashboard():
                 if driver.title=='Privacy Policy - GroundTruth - GroundTruth':
                     print('Closed window title is: ',driver.title)
                     driver.close()
-                    break                    
+                    break     
+            driver.switch_to.window(handle)            
         else:
             print(privacy.text,'Link is neither enable or displayed')
 
@@ -175,7 +176,7 @@ class TenantDashboard():
         driver.find_element(By.NAME,'daterangepicker_end').send_keys(From) 
         sleep(2)
         driver.find_element(By.XPATH,"//button[@class='"+action+" btn-sm btn-"+actiontype+"']").click() 
-        # driver.find_element(By.XPATH,"//button[@class='"+cancelBtn+" btn-sm btn-default']") 
+        print('Button clicked in Live to date functionaliy is ',actiontype,'applyBtn has actiontype = success and cancelBtn has actiontype = default')
         sleep(5)
 
     def campaignStatusFilter(self,filterType):
@@ -196,24 +197,99 @@ class TenantDashboard():
             print('Clicked button has status: ',button.text)
             print()
             sleep(2)
-
+        else:
+            print('Element is not button type for filtering campaign')
+    
+    def searchCampaign(self):
+        sleep(10)
+        element=driver.find_element(By.ID, 'inp-tenantDash-searchCampaign')
+        placeholder=element.get_attribute('placeholder')
+        print(element.tag_name)
+        if placeholder == 'Search Campaigns':
+            element.click() and element.clear()
+            element.send_keys('test')
+        else:
+            print('It is not search campaign element!')
+        rows=driver.find_elements(By.CLASS_NAME, "xad-table-row ng-scope")
+        print('lenth of total rows in table: ',len(rows))
+        if len(rows) == 0:
+            print('There are no campaigns that match the selected filters.')
+        else:
+            print('Campaigns that match the selection filters are listed below.')
+    def ColumnPicker(self,columnSelection,action):
+        '''
+        columnSelection type = Dimension, Delivery, Flight and budget, Total sec. actions, Visits
+        '''
+        sleep(20)
+        picker=driver.find_element(By.ID, "btn-cm-columnPicker")
+        if picker.tag_name == 'button':
+            picker.click()
+            sleep(5)
+            heading=driver.find_element(By.XPATH, "//div[contains(text(),'Customize Columns')]")
+            print('#'*50)
+            print('Column Picker Model Details')
+            print(heading.text)    
+            presets=driver.find_element(By.XPATH, "//h5[contains(text(),'Available Presets')]")
+            buttons=driver.find_elements(By.XPATH, "//div[@ng-click='vm.selectPreset(presetName)']")
+            
+            print('*'*10)
+            print(presets.text)
+            print('Total Available Presets are: ',len(buttons))
+            print()
+            for button in buttons:
+                button.click()
+                print('Pressed button is ',button.text)
+                sleep(1)
+            selection=driver.find_element(By.XPATH, "//div[@class='section-title ng-binding'][contains(text(),'"+columnSelection+"')]")
+            selection.click()
+            section=driver.find_element(By.XPATH, "//h5[contains(text(),'Sections')]")
+            print('*'*10)
+            print(section.text)
+            print()
+            checkboxes=driver.find_elements(By.NAME, "selectedHeaders[]")
+            check_text=driver.find_elements(By.XPATH, "//div[@class='section-item ng-scope']/label[@class='ng-binding']")
+            print('Count of checkboxes labels ',len(check_text))
+            print('Count of checkboxes available under',section.text,len(checkboxes))
+            for chktext in check_text:
+                print(chktext.text)
+            selection=driver.find_element(By.XPATH,"//h5[contains(text(),'Selected Columns')]")
+            print('*'*10)
+            print(selection.text)
+            print()
+            elements=driver.find_elements(By.XPATH, "//div[@class='selected-item ng-binding ng-scope']")
+            print('Element selected in ',selection.text,':',len(elements))
+            for element in elements:
+                print(element.text)
+        else:
+            print('Element is not button unable to click')
+        # close button
+        # //span[contains(text(),'×')]
+        # apply button
+        # //div[@class='footer-buttons']//button[contains(text(),'Apply')]
+        driver.find_element(By.XPATH, "//div[@class='footer-buttons']//button[contains(text(),'"+action+"')]").click() #Apply
 t=TenantDashboard()
+# t.ColumnPicker('Dimension') #Dimension, Delivery, Flight and budget, Total sec. actions, Visits
+t.ColumnPicker('Delivery','Apply')
+# t.ColumnPicker('Flight and budget')
+# t.ColumnPicker('Total sec. actions')
+# t.ColumnPicker('Visits')
 # t.hamburger()
 # t.links_Buttons() 
-# t.SelectTenant('#DelCastillo')
+# t.SelectTenant('#DelCastillo') #DelCastillo,DelCastillo,Del Castillo Agency
 # t.SelectOrg('DelCastillo')
 # t.SelectAccount('Del Castillo Agency')
 # t.SelectTenant('#GatewayFantasticSams')
 # t.SelectOrg('GatewayFantasticSams')
 # t.SelectAccount('Fantastic Sams Brea')
-# t.searchbox()
-t.TermAndPrivacyPolicy()
-t.LiveToDate('2020-06-30','2020-10-29','applyBtn','success') 
-t.LiveToDate('2020-08-30','2020-12-29','cancelBtn','default')
-t.campaignStatusFilter('Pending')
-t.campaignStatusFilter('Active')
-t.campaignStatusFilter('Paused')
-t.campaignStatusFilter('Expired')
-t.campaignStatusFilter('All')
+# # t.searchbox() #not working while executing all
+# # t.TermAndPrivacyPolicy() #not working while executing all
+# t.LiveToDate('2020-06-30','2020-10-29','applyBtn','success') 
+# t.LiveToDate('2020-08-30','2020-12-29','cancelBtn','default')
+# t.campaignStatusFilter('Pending')
+# t.campaignStatusFilter('Active')
+# t.campaignStatusFilter('Paused')
+# t.campaignStatusFilter('Expired')
+# t.campaignStatusFilter('All')
+# t.searchCampaign()
 sleep(30)
 driver.quit()
