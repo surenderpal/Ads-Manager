@@ -282,6 +282,7 @@ class TenantDashboard():
 
     def Export(self):
         sleep(5)
+        print("*"*50)
         export = driver.find_element(By.ID, 'btn-cm-exportData')
         if export.is_enabled() == False:
             print('Export button is disabled')
@@ -301,14 +302,23 @@ class TenantDashboard():
         print('Selct all campaign Count:',selectionCount.text) 
 
         rows=driver.find_elements(By.XPATH, "//div[contains(@id, 'tableBody-row')]") 
-        print('Total rows available in the table: ',len(rows))
+        print('Total rows available in the table except Xad header: ',len(rows))
         print()
         linksInXadTableRow=driver.find_elements(By.XPATH, "//a[@class='ng-scope']") #//a[@class='ng-scope']
+        tableHeaderColumnSar=driver.find_elements(By.XPATH, "//span[@ng-if='!item.sortable']")
+        print("*"*50)
         print('Count of links in Xad Table Row:',len(linksInXadTableRow))
         for link in linksInXadTableRow:
             # link.click()
             print('Link name is:',link.text)
-            sleep(5)
+        print("*"*50)
+        print('Count of Non links in Xad Table Row:',len(tableHeaderColumnSar))
+        for header in tableHeaderColumnSar:
+            print('Non-link Column name is:',header.text)
+        
+
+
+        
         # elements_Org_name=driver.find_element(By.XPATH, "//a[@class='ng-scope']/span[contains(text(),'Organization Name')]")
 '''        
         "//a[@class='ng-scope']/span[contains(text(),'Organization Name')]"
