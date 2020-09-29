@@ -280,7 +280,7 @@ class TenantDashboard():
             driver.find_element(By.XPATH, "//span[contains(text(),'×')]").click()
             print("Cancel button pressed on Column picker model")
 
-    def Export(self):
+    def ExportCampaignData(self):
         sleep(5)
         print("*"*50)
         export = driver.find_element(By.ID, 'btn-cm-exportData')
@@ -317,38 +317,9 @@ class TenantDashboard():
             print('Non-link Column name is:',header.text)
         
 
-
-        
-        # elements_Org_name=driver.find_element(By.XPATH, "//a[@class='ng-scope']/span[contains(text(),'Organization Name')]")
-'''        
-        "//a[@class='ng-scope']/span[contains(text(),'Organization Name')]"
-        "//a[@class='ng-scope']/span[contains(text(),'Organization ID')]" ---
-        "//a[@class='ng-scope']/span[contains(text(),'Account Name')]"
-        "//a[@class='ng-scope']/span[contains(text(),'Account ID')]"
-        "//a[@class='ng-scope']/span[contains(text(),'Days Remaining')]"
-        "//a[@class='ng-scope']/span[contains(text(),'Campaign Name')]"
-        "//a[@class='ng-scope']/span[contains(text(),'Campaign ID')]"
-        "//a[@class='ng-scope']/span[contains(text(),'Status')]"
-        "//a[@class='ng-scope']/span[contains(text(),'SF#')]"----
-        "//a[@class='ng-scope']/span[contains(text(),'Pacing')]"
-        "//span[contains(text(),'Conversions (pixel activity)')]"
-        "//a[@class='ng-scope']/span[contains(text(),'Start')]"
-        "//a[@class='ng-scope']/span[contains(text(),'End')]"
-        "//a[@class='ng-scope']/span[contains(text(),'Budget')]"
-        "//span[contains(text(),'Total Spent')]"
-        "//span[contains(text(),'Spent Today')]"
-        "//span[contains(text(),'Impressions')]"
-        "//span[contains(text(),'Clicks')]"
-        "//span[contains(text(),'CTR')]"
-        "//span[contains(text(),'Reach')]"
-        "//span[contains(text(),'Total Sec. Actions')]"
-        "//span[contains(text(),'SAR')]"
-        "//span[contains(text(),'Visits')]"
-        "//span[contains(text(),'VR')]"
-'''
 t=TenantDashboard()
-t.SelectOrg('3.15')
-t.Export()
+
+
 # t.ColumnPicker('Flight and budget')
 # t.ColumnPicker('Total sec. actions')
 # t.ColumnPicker('Visits')
@@ -371,5 +342,7 @@ t.Export()
 # t.campaignStatusFilter('All')
 # t.searchCampaign()
 # t.ColumnPicker('Delivery','Apply') #1st argument(Dimension, Delivery, Flight and budget, Total sec. actions, Visits) is to click on section and 2nd argument(Apply/Cancel) is for Apply/Cancel button
+t.SelectOrg('3.15')
+t.ExportCampaignData()
 sleep(30)
 driver.quit()
