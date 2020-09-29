@@ -54,6 +54,7 @@ A.login('surender.pal@groundtruth.com','Surenderpal@1991')
 
 class TenantDashboard():
     wait=WebDriverWait(driver, 40)
+
     def links_Buttons(self):
         links=driver.find_elements(By.TAG_NAME,'a')
         print('Total link present on Tenant Dashboard page is:',len(links))
@@ -102,6 +103,7 @@ class TenantDashboard():
         # driver.find_element(By.XPATH, "//input[@id='Account-0']").send_keys(Keys.ESCAPE)
         sleep(5)
         print('Account selection: ',AccountName)
+
     def searchbox(self):
         searchBox=driver.find_element(By.ID, "inp-base-searchbox-new")
         searchBox.click()
@@ -119,7 +121,6 @@ class TenantDashboard():
         #     print('Default value selected is: ',)
         # driver.find_element(By.ID, "//input[@id='inp-search-dateCreated-week']").click()
         
-
     def TermAndPrivacyPolicy(self):
         sleep(10)
         terms=driver.find_element(By.ID, "btn-baseFooter-termsOfUse")
@@ -216,9 +217,11 @@ class TenantDashboard():
             print('There are no campaigns that match the selected filters.')
         else:
             print('Campaigns that match the selection filters are listed below.')
+
     def ColumnPicker(self,columnSelection,action):
         '''
         columnSelection type = Dimension, Delivery, Flight and budget, Total sec. actions, Visits
+        action is for Apply/Cancel button
         '''
         sleep(20)
         picker=driver.find_element(By.ID, "btn-cm-columnPicker")
@@ -229,10 +232,11 @@ class TenantDashboard():
             print('#'*50)
             print('Column Picker Model Details')
             print(heading.text)    
+
+
             presets=driver.find_element(By.XPATH, "//h5[contains(text(),'Available Presets')]")
             buttons=driver.find_elements(By.XPATH, "//div[@ng-click='vm.selectPreset(presetName)']")
-            
-            print('*'*10)
+            print('*'*50)
             print(presets.text)
             print('Total Available Presets are: ',len(buttons))
             print()
@@ -242,41 +246,106 @@ class TenantDashboard():
                 sleep(1)
             selection=driver.find_element(By.XPATH, "//div[@class='section-title ng-binding'][contains(text(),'"+columnSelection+"')]")
             selection.click()
+
+
             section=driver.find_element(By.XPATH, "//h5[contains(text(),'Sections')]")
-            print('*'*10)
+            print('*'*50)
             print(section.text)
             print()
             checkboxes=driver.find_elements(By.NAME, "selectedHeaders[]")
             check_text=driver.find_elements(By.XPATH, "//div[@class='section-item ng-scope']/label[@class='ng-binding']")
             print('Count of checkboxes labels ',len(check_text))
             print('Count of checkboxes available under',section.text,len(checkboxes))
+            print()
             for chktext in check_text:
                 print(chktext.text)
+
+
             selection=driver.find_element(By.XPATH,"//h5[contains(text(),'Selected Columns')]")
-            print('*'*10)
+            print('*'*50)
             print(selection.text)
             print()
             elements=driver.find_elements(By.XPATH, "//div[@class='selected-item ng-binding ng-scope']")
             print('Element selected in ',selection.text,':',len(elements))
+            print()
             for element in elements:
                 print(element.text)
         else:
             print('Element is not button unable to click')
-        # close button
-        # //span[contains(text(),'×')]
-        # apply button
-        # //div[@class='footer-buttons']//button[contains(text(),'Apply')]
-        driver.find_element(By.XPATH, "//div[@class='footer-buttons']//button[contains(text(),'"+action+"')]").click() #Apply
+
+        if action == 'Apply':
+            driver.find_element(By.XPATH, "//div[@class='footer-buttons']//button[contains(text(),'"+action+"')]").click() #Apply
+            print("Apply button pressed on Column picker model")
+        else:
+            driver.find_element(By.XPATH, "//span[contains(text(),'×')]").click()
+            print("Cancel button pressed on Column picker model")
+
+    def Export(self):
+        sleep(5)
+        export = driver.find_element(By.ID, 'btn-cm-exportData')
+        if export.is_enabled() == False:
+            print('Export button is disabled')
+            
+        else:
+            print('Export button is enabled!!')
+
+        global_checkbox=driver.find_element(By.XPATH, "//input[@ng-change='globalCheckboxChanged(item)']")
+        if global_checkbox.tag_name == 'input' and global_checkbox.is_enabled() == True:
+            global_checkbox.click()
+            print('Clicked on global checkbox')
+            export.click()
+            print('Downloaded the campaigns data')
+            print()
+    
+        selectionCount = driver.find_element(By.XPATH, "//strong[@class='ng-binding']")
+        print('Selct all campaign Count:',selectionCount.text) 
+
+        rows=driver.find_elements(By.XPATH, "//div[contains(@id, 'tableBody-row')]") 
+        print('Total rows available in the table: ',len(rows))
+        print()
+        linksInXadTableRow=driver.find_elements(By.XPATH, "//a[@class='ng-scope']") #//a[@class='ng-scope']
+        print('Count of links in Xad Table Row:',len(linksInXadTableRow))
+        for link in linksInXadTableRow:
+            # link.click()
+            print('Link name is:',link.text)
+            sleep(5)
+        # elements_Org_name=driver.find_element(By.XPATH, "//a[@class='ng-scope']/span[contains(text(),'Organization Name')]")
+'''        
+        "//a[@class='ng-scope']/span[contains(text(),'Organization Name')]"
+        "//a[@class='ng-scope']/span[contains(text(),'Organization ID')]" ---
+        "//a[@class='ng-scope']/span[contains(text(),'Account Name')]"
+        "//a[@class='ng-scope']/span[contains(text(),'Account ID')]"
+        "//a[@class='ng-scope']/span[contains(text(),'Days Remaining')]"
+        "//a[@class='ng-scope']/span[contains(text(),'Campaign Name')]"
+        "//a[@class='ng-scope']/span[contains(text(),'Campaign ID')]"
+        "//a[@class='ng-scope']/span[contains(text(),'Status')]"
+        "//a[@class='ng-scope']/span[contains(text(),'SF#')]"----
+        "//a[@class='ng-scope']/span[contains(text(),'Pacing')]"
+        "//span[contains(text(),'Conversions (pixel activity)')]"
+        "//a[@class='ng-scope']/span[contains(text(),'Start')]"
+        "//a[@class='ng-scope']/span[contains(text(),'End')]"
+        "//a[@class='ng-scope']/span[contains(text(),'Budget')]"
+        "//span[contains(text(),'Total Spent')]"
+        "//span[contains(text(),'Spent Today')]"
+        "//span[contains(text(),'Impressions')]"
+        "//span[contains(text(),'Clicks')]"
+        "//span[contains(text(),'CTR')]"
+        "//span[contains(text(),'Reach')]"
+        "//span[contains(text(),'Total Sec. Actions')]"
+        "//span[contains(text(),'SAR')]"
+        "//span[contains(text(),'Visits')]"
+        "//span[contains(text(),'VR')]"
+'''
 t=TenantDashboard()
-# t.ColumnPicker('Dimension') #Dimension, Delivery, Flight and budget, Total sec. actions, Visits
-t.ColumnPicker('Delivery','Apply')
+t.SelectOrg('3.15')
+t.Export()
 # t.ColumnPicker('Flight and budget')
 # t.ColumnPicker('Total sec. actions')
 # t.ColumnPicker('Visits')
 # t.hamburger()
 # t.links_Buttons() 
 # t.SelectTenant('#DelCastillo') #DelCastillo,DelCastillo,Del Castillo Agency
-# t.SelectOrg('DelCastillo')
+# t.SelectOrg('3.15')#DelCastillo
 # t.SelectAccount('Del Castillo Agency')
 # t.SelectTenant('#GatewayFantasticSams')
 # t.SelectOrg('GatewayFantasticSams')
@@ -291,5 +360,6 @@ t.ColumnPicker('Delivery','Apply')
 # t.campaignStatusFilter('Expired')
 # t.campaignStatusFilter('All')
 # t.searchCampaign()
+# t.ColumnPicker('Delivery','Apply') #1st argument(Dimension, Delivery, Flight and budget, Total sec. actions, Visits) is to click on section and 2nd argument(Apply/Cancel) is for Apply/Cancel button
 sleep(30)
 driver.quit()
