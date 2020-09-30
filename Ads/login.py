@@ -316,10 +316,17 @@ class TenantDashboard():
         for header in tableHeaderColumnSar:
             print('Non-link Column name is:',header.text)
         
+    def pagination(self):
+        print('*' * 50)
+        sleep(10)
+        buttons=driver.find_elements(By.XPATH, "//ul[@max-size='5']/li/a")
+        print('total button are:',len(buttons))
+        for a in buttons:
+            print(a.text)
+
 
 t=TenantDashboard()
-
-
+t.pagination()
 # t.ColumnPicker('Flight and budget')
 # t.ColumnPicker('Total sec. actions')
 # t.ColumnPicker('Visits')
@@ -342,7 +349,7 @@ t=TenantDashboard()
 # t.campaignStatusFilter('All')
 # t.searchCampaign()
 # t.ColumnPicker('Delivery','Apply') #1st argument(Dimension, Delivery, Flight and budget, Total sec. actions, Visits) is to click on section and 2nd argument(Apply/Cancel) is for Apply/Cancel button
-t.SelectOrg('3.15')
-t.ExportCampaignData()
+# t.SelectOrg('3.15')
+# t.ExportCampaignData()    
 sleep(30)
 driver.quit()
