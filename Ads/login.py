@@ -114,12 +114,11 @@ class TenantDashboard():
             print('Caption(Dashboard) is incorrect and failed')
         
         TenantName=driver.find_element(By.XPATH, "//div[contains(text(),'Test Tenant')]").text
-        if TenantName == 'Test Tenant':
+        if TenantName == 'Test Tenant': #how to create a dynamic value here for test tenant.
             print('Test passed, displayed tenant name is:',TenantName)
         else:
             print('Test failed, displayed tenant name is:',TenantName)
 
-        
 
     def searchbox(self):
         searchBox=driver.find_element(By.ID, "inp-base-searchbox-new")
