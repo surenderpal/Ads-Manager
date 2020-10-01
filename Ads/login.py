@@ -320,13 +320,45 @@ class TenantDashboard():
         print('*' * 50)
         sleep(10)
         buttons=driver.find_elements(By.XPATH, "//ul[@max-size='5']/li/a")
-        print('total button are:',len(buttons))
+        f = 'First'
+        l = 'Last'
+        next_button='›'
+        previous_button='‹'
+
+        paginationLinkCount=len(buttons) + 1
+        print('Total button are:',paginationLinkCount)
+        if f == buttons[0].text and l == buttons[-1].text and next_button == buttons[-2].text and previous_button == buttons[1].text:
+            print('First,<,> and Last button names are matching successfully!!!')
+        print('Buttons used in pagination are listed below:')
+        print('#'*10)
         for a in buttons:
             print(a.text)
+        print('#'*10)
+        first = driver.find_element(By.XPATH, "//a[contains(text(),'First')]")
+        previous = driver.find_element(By.XPATH,"//a[contains(text(),'‹')]")
+        if first.is_enabled() == True and previous.is_enabled() == True:
+            print('Button(First) and Previous (<) are disabled by default')
+        else:
+            print('By Default no buttons are disabled under pagination!!')
+
+        element=WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.XPATH, "//div[@class='pagination-select']/select[@ng-change='vm.updateItemsPerPage()']")))
+        select=Select(element)
+
+        print('No of options available in dropdown per page:',len(select.options))
+        for option in select.options:
+            print('Options are:',option.text)
+
+
+        if int(select.first_selected_option.text) == 10:
+            print('Test Passed, By default selection is 10!!')
+        else:
+            print('Test Failed, Default selection values in incorrect')
+        select.select_by_value("number:25")
+        print('Value selected is:25')
 
 
 t=TenantDashboard()
-t.pagination()
+
 # t.ColumnPicker('Flight and budget')
 # t.ColumnPicker('Total sec. actions')
 # t.ColumnPicker('Visits')
@@ -350,6 +382,7 @@ t.pagination()
 # t.searchCampaign()
 # t.ColumnPicker('Delivery','Apply') #1st argument(Dimension, Delivery, Flight and budget, Total sec. actions, Visits) is to click on section and 2nd argument(Apply/Cancel) is for Apply/Cancel button
 # t.SelectOrg('3.15')
-# t.ExportCampaignData()    
-sleep(30)
+# t.ExportCampaignData()  
+# t.pagination()  
+sleep(10)
 driver.quit()
