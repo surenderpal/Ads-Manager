@@ -104,6 +104,23 @@ class TenantDashboard():
         sleep(5)
         print('Account selection: ',AccountName)
 
+    def TenantTitleSection(self):
+        sleep(10)
+        caption=driver.find_element(By.XPATH, "//div[contains(text(),'Dashboard')]").text
+        # print(caption)
+        if caption == 'Dashboard':
+            print('Caption(Dashboard) is correct and passed!!')
+        else:
+            print('Caption(Dashboard) is incorrect and failed')
+        
+        TenantName=driver.find_element(By.XPATH, "//div[contains(text(),'Test Tenant')]").text
+        if TenantName == 'Test Tenant':
+            print('Test passed, displayed tenant name is:',TenantName)
+        else:
+            print('Test failed, displayed tenant name is:',TenantName)
+
+        
+
     def searchbox(self):
         searchBox=driver.find_element(By.ID, "inp-base-searchbox-new")
         searchBox.click()
@@ -358,7 +375,7 @@ class TenantDashboard():
 
 
 t=TenantDashboard()
-
+t.TenantTitleSection()
 # t.ColumnPicker('Flight and budget')
 # t.ColumnPicker('Total sec. actions')
 # t.ColumnPicker('Visits')
