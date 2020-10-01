@@ -119,16 +119,29 @@ class TenantDashboard():
         else:
             print('Test failed, displayed tenant name is:',TenantName)
 
-
     def searchbox(self):
-        searchBox=driver.find_element(By.ID, "inp-base-searchbox-new")
-        searchBox.click()
-        searchBox.send_keys('test',Keys.ENTER)
-        # driver.back()
+        sleep(10)
+        searchCampaignInputBox=driver.find_element(By.XPATH, "//input[@id='inp-tenantDash-searchCampaign']")
+        if searchCampaignInputBox.tag_name == 'input':
+            print('Tag(input) is correct')
+            searchCampaignInputBox.click()
+            searchCampaignInputBox.clear()
+            searchCampaignInputBox.send_keys('cpg')
+            # emptyCampaignMessage = driver.find_element(By.XPATH, "//div[contains(text(),'There are no campaigns that match the selected fil')]").text
+            # print(emptyCampaignMessage)
 
-        DateCreated=driver.find_elements(By.XPATH, "//fieldset[@ng-show='searchFiltersUi.startDate.show']")
-        for date in DateCreated:
-            print(date.text)
+        else:
+            print('Tag(input) is Incorrect')
+
+
+        # searchBox=driver.find_element(By.ID, "inp-base-searchbox-new")
+        # searchBox.click()
+        # searchBox.send_keys('test',Keys.ENTER)
+        # # driver.back()
+
+        # DateCreated=driver.find_elements(By.XPATH, "//fieldset[@ng-show='searchFiltersUi.startDate.show']")
+        # for date in DateCreated:
+        #     print(date.text)
         # if driver.find_element(By.ID, "inp-search-dateCreated-all").get_attribute('type') =='radio':
 
         #     print('element is radio button and ')
@@ -374,7 +387,9 @@ class TenantDashboard():
 
 
 t=TenantDashboard()
-t.TenantTitleSection()
+t.SelectOrg('3.15')#DelCastillo
+t.searchbox() #not working while executing all
+
 # t.ColumnPicker('Flight and budget')
 # t.ColumnPicker('Total sec. actions')
 # t.ColumnPicker('Visits')
@@ -386,6 +401,7 @@ t.TenantTitleSection()
 # t.SelectTenant('#GatewayFantasticSams')
 # t.SelectOrg('GatewayFantasticSams')
 # t.SelectAccount('Fantastic Sams Brea')
+# t.TenantTitleSection()
 # # t.searchbox() #not working while executing all
 # # t.TermAndPrivacyPolicy() #not working while executing all
 # t.LiveToDate('2020-06-30','2020-10-29','applyBtn','success') 
