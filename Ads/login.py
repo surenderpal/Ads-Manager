@@ -127,8 +127,12 @@ class TenantDashboard():
             searchCampaignInputBox.click()
             searchCampaignInputBox.clear()
             searchCampaignInputBox.send_keys('cpg')
-            # emptyCampaignMessage = driver.find_element(By.XPATH, "//div[contains(text(),'There are no campaigns that match the selected fil')]").text
-            # print(emptyCampaignMessage)
+            sleep(5)
+            searchTableRowData=driver.find_elements(By.XPATH, "//input[@ng-model='row.checked']")
+            if searchTableRowData == []:
+                print('There are no campaigns that match the selected filters.')
+            else:
+                print('Campaigns with matched data is available')
 
         else:
             print('Tag(input) is Incorrect')
@@ -389,7 +393,7 @@ class TenantDashboard():
 t=TenantDashboard()
 t.SelectOrg('3.15')#DelCastillo
 t.searchbox() #not working while executing all
-
+t.searchCampaign()
 # t.ColumnPicker('Flight and budget')
 # t.ColumnPicker('Total sec. actions')
 # t.ColumnPicker('Visits')
@@ -402,7 +406,7 @@ t.searchbox() #not working while executing all
 # t.SelectOrg('GatewayFantasticSams')
 # t.SelectAccount('Fantastic Sams Brea')
 # t.TenantTitleSection()
-# # t.searchbox() #not working while executing all
+# # t.searchbox()
 # # t.TermAndPrivacyPolicy() #not working while executing all
 # t.LiveToDate('2020-06-30','2020-10-29','applyBtn','success') 
 # t.LiveToDate('2020-08-30','2020-12-29','cancelBtn','default')
