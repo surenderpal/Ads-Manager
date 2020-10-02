@@ -119,25 +119,9 @@ class TenantDashboard():
         else:
             print('Test failed, displayed tenant name is:',TenantName)
 
-    def searchbox(self):
+    def SearchAdsManager(self):
         sleep(10)
-        searchCampaignInputBox=driver.find_element(By.XPATH, "//input[@id='inp-tenantDash-searchCampaign']")
-        if searchCampaignInputBox.tag_name == 'input':
-            print('Tag(input) is correct')
-            searchCampaignInputBox.click()
-            searchCampaignInputBox.clear()
-            searchCampaignInputBox.send_keys('cpg')
-            sleep(5)
-            searchTableRowData=driver.find_elements(By.XPATH, "//input[@ng-model='row.checked']")
-            if searchTableRowData == []:
-                print('There are no campaigns that match the selected filters.')
-            else:
-                print('Campaigns with matched data is available')
-
-        else:
-            print('Tag(input) is Incorrect')
-
-
+        pass
         # searchBox=driver.find_element(By.ID, "inp-base-searchbox-new")
         # searchBox.click()
         # searchBox.send_keys('test',Keys.ENTER)
@@ -234,22 +218,27 @@ class TenantDashboard():
         else:
             print('Element is not button type for filtering campaign')
     
-    def searchCampaign(self):
+    def searchCampaign(self,campaignName):
         sleep(10)
-        element=driver.find_element(By.ID, 'inp-tenantDash-searchCampaign')
-        placeholder=element.get_attribute('placeholder')
-        print(element.tag_name)
-        if placeholder == 'Search Campaigns':
-            element.click() and element.clear()
-            element.send_keys('test')
+        searchCampaignInputBox=driver.find_element(By.XPATH, "//input[@id='inp-tenantDash-searchCampaign']")
+        if searchCampaignInputBox.tag_name == 'input':
+            print('Search Campaigns is of Input type')
+            placeholder=searchCampaignInputBox.get_attribute('placeholder')
+            if placeholder == 'Search Campaigns':
+                print('Placeholder inside the search campaigns is correct and passed the test!!')
+            else:
+                print('Placeholder is incorrect inside thsearch campaigns.')
+            searchCampaignInputBox.click()
+            searchCampaignInputBox.clear()
+            searchCampaignInputBox.send_keys(campaignName)
+            sleep(5)
+            searchTableRowData=driver.find_elements(By.XPATH, "//input[@ng-model='row.checked']")
+            if searchTableRowData == []:
+                print('There are no campaigns that match the selected filters.')
+            else:
+                print('Campaigns with matched data is available')
         else:
-            print('It is not search campaign element!')
-        rows=driver.find_elements(By.CLASS_NAME, "xad-table-row ng-scope")
-        print('lenth of total rows in table: ',len(rows))
-        if len(rows) == 0:
-            print('There are no campaigns that match the selected filters.')
-        else:
-            print('Campaigns that match the selection filters are listed below.')
+            print('Search Campaigns is not of Input type')
 
     def ColumnPicker(self,columnSelection,action):
         '''
@@ -392,8 +381,8 @@ class TenantDashboard():
 
 t=TenantDashboard()
 t.SelectOrg('3.15')#DelCastillo
-t.searchbox() #not working while executing all
-t.searchCampaign()
+t.searchCampaign('cpg') 
+# t.searchCampaign()
 # t.ColumnPicker('Flight and budget')
 # t.ColumnPicker('Total sec. actions')
 # t.ColumnPicker('Visits')
@@ -415,7 +404,7 @@ t.searchCampaign()
 # t.campaignStatusFilter('Paused')
 # t.campaignStatusFilter('Expired')
 # t.campaignStatusFilter('All')
-# t.searchCampaign()
+# t.searchCampaign('cpg') 
 # t.ColumnPicker('Delivery','Apply') #1st argument(Dimension, Delivery, Flight and budget, Total sec. actions, Visits) is to click on section and 2nd argument(Apply/Cancel) is for Apply/Cancel button
 # t.SelectOrg('3.15')
 # t.ExportCampaignData()  
