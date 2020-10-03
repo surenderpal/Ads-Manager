@@ -138,11 +138,12 @@ class TenantDashboard():
                 if asideText == aside.text and DateCreated == legend.text:
                     print('Search filter and Date created test is passed!')
                     checkBoxes=driver.find_elements(By.XPATH, "//fieldset[@ng-show='searchFiltersUi.dateCreated.show']/label/input")
-                    checkBoxesLabel=driver.find_elements(By.XPATH, "//fieldset[@ng-show='searchFiltersUi.dateCreated.show']/label/input[contains(@name, '2')]")
+                    checkBoxesLabel=driver.find_elements(By.XPATH, "//fieldset[@ng-show='searchFiltersUi.dateCreated.show']/label")
                     print('count of checkboxes under',DateCreated,':',len(checkBoxes))
-                    print(DateCreated,'filters are below:')
+                    print('Date created filters are below:')
                     for lable in checkBoxesLabel:
                         print(lable.text)
+                        sleep(1)
 
                     # for checkbox in checkBoxes:
                     #     checkbox.click()
@@ -156,11 +157,40 @@ class TenantDashboard():
         else:
             print('search Ads manager is not of Input type.')
         filterButtons=driver.find_elements(By.XPATH, "//div[@class='result-types']/button")
-        print('count of buttons on header:',len(filterButtons))
+        print('count of buttons inside header:',len(filterButtons))
+        sleep(4)
         for filter in filterButtons:
             print(filter.text)
-            # filter.click()
-            # sleep(2)
+            # if filter.text == 'Tenants':
+            #     filter.click()
+            #     print('Button clicked on:',filter.text)
+            #     result=driver.find_element(By.XPATH,"//p[@class='num-results']")
+            #     print(result.text)
+            #     sleep(4)
+            
+                
+            # elif filter.text == 'Organizations':
+            #     # filter.click()
+            #     print('Button clicked on:',filter.text)
+            #     sleep(4)
+            # elif filter.text == 'Accounts':
+            #     # filter.click()
+            #     print('Button clicked on:',filter.text)
+            #     sleep(4)
+            # elif filter.text == 'Campaigns':
+            #     # filter.click()
+            #     print('Button clicked on:',filter.text)
+            #     sleep(4)
+            # elif filter.text == 'Ad groups':
+            #     # filter.click()
+            #     print('Button clicked on:',filter.text)
+            #     sleep(4)
+            # elif filter.text == 'Creatives':
+            #     # filter.click()
+            #     print('Button clicked on:',filter.text)
+            #     sleep(4)
+            # else:
+            #     print('Button is not found!!')
 
         # driver.back()
 
