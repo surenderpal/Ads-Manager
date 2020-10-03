@@ -119,13 +119,43 @@ class TenantDashboard():
         else:
             print('Test failed, displayed tenant name is:',TenantName)
 
-    def SearchAdsManager(self):
+    def SearchAdsManager(self,search):
+        print('*' * 50)
         sleep(10)
-        pass
-        # searchBox=driver.find_element(By.ID, "inp-base-searchbox-new")
-        # searchBox.click()
-        # searchBox.send_keys('test',Keys.ENTER)
-        # # driver.back()
+        searchBox=driver.find_element(By.ID, "inp-base-searchbox-new")
+        if searchBox.tag_name == 'input':
+            print('search Ads manager is of Input type')
+            searchBox.clear() 
+            searchBox.send_keys(search,Keys.ENTER)
+            sleep(10)
+            aside = driver.find_element(By.XPATH, "//h3[contains(text(),'Search Filters')]")
+            legend = driver.find_element(By.XPATH, "//legend[contains(text(),'Date Created')]")
+            print(legend.text)
+            if aside.tag_name == 'h3':
+                print(aside.text,'is of h3 tag')
+                asideText='Search Filters'
+                DateCreated = 'DATE CREATED'
+                if asideText == aside.text and DateCreated == legend.text:
+                    print('Search filter and Date created test is passed!')
+                    checkBoxes=driver.find_elements(By.XPATH, "//fieldset[@ng-show='searchFiltersUi.dateCreated.show']/label/input")
+                    checkBoxesLabel=driver.find_elements(By.XPATH, "//fieldset[@ng-show='searchFiltersUi.dateCreated.show']/label/input[contains(@name, '2')]")
+                    print('count of checkboxes under',DateCreated,':',len(checkBoxes))
+                    print(DateCreated,'filters are below:')
+                    for lable in checkBoxesLabel:
+                        print(lable.text)
+                    # for checkbox in checkBoxes:
+                    #     checkbox.click()
+                    #     print(checkbox.text)
+                    #     sleep(10)
+                else:
+                    print('Search filter test is failed!')
+            else:
+                print(aside.text, 'is not of h3 tag')
+        else:
+            print('search Ads manager is not of Input type.')
+
+
+        # driver.back()
 
         # DateCreated=driver.find_elements(By.XPATH, "//fieldset[@ng-show='searchFiltersUi.startDate.show']")
         # for date in DateCreated:
@@ -380,8 +410,7 @@ class TenantDashboard():
 
 
 t=TenantDashboard()
-t.SelectOrg('3.15')#DelCastillo
-t.searchCampaign('cpg') 
+t.SearchAdsManager('test')
 # t.searchCampaign()
 # t.ColumnPicker('Flight and budget')
 # t.ColumnPicker('Total sec. actions')
