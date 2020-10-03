@@ -143,17 +143,24 @@ class TenantDashboard():
                     print(DateCreated,'filters are below:')
                     for lable in checkBoxesLabel:
                         print(lable.text)
+
                     # for checkbox in checkBoxes:
                     #     checkbox.click()
-                    #     print(checkbox.text)
-                    #     sleep(10)
+                    #     # print(checkbox.text)
+                    #     sleep(4)
+                    # code for clicking on the all checkboxes
                 else:
                     print('Search filter test is failed!')
             else:
                 print(aside.text, 'is not of h3 tag')
         else:
             print('search Ads manager is not of Input type.')
-
+        filterButtons=driver.find_elements(By.XPATH, "//div[@class='result-types']/button")
+        print('count of buttons on header:',len(filterButtons))
+        for filter in filterButtons:
+            print(filter.text)
+            # filter.click()
+            # sleep(2)
 
         # driver.back()
 
