@@ -187,9 +187,131 @@ class TenantDashboard():
             #             print('Search filter and Date created test is Failed!')
             #     else:
             #         print(aside.text, 'is not of h3 tag')
-            if campaignButton.text == 'Campaigns':
-                campaignButton.click()
-                print('clicked on campaigns button')
+
+
+            # elif campaignButton.text == 'Campaigns':
+            #     campaignButton.click()
+            #     print('clicked on campaigns button')
+            #     sleep(2)
+            #     text1=driver.find_element(By.XPATH, "//p[@class='num-results']").text
+            #     print(text1)
+            #     print('*' * 50)                
+            #     print('Left side content')
+            #     print()
+            #     SearchFiltersH = driver.find_element(By.XPATH, "//h3[contains(text(),'Search Filters')]")
+            #     StartDateH = driver.find_element(By.XPATH, "//legend[contains(text(),'Start Date')]")
+            #     datecreatedH = driver.find_element(By.XPATH, "//legend[contains(text(),'Date Created')]")
+            #     LastUpdatedH = driver.find_element(By.XPATH, "//legend[contains(text(),'Last Updated')]")
+
+            #     SearchFilterText ='Search Filters'
+            #     startDate = 'START DATE'
+            #     dateCreated = 'DATE CREATED'
+            #     lastUpdated = 'LAST UPDATED' 
+            #     if SearchFilterText == SearchFiltersH.text and startDate == StartDateH.text:
+            #         print('Search filter and start date are passed successfully!!')
+            #         startDateElements = driver.find_elements(By.XPATH, "//fieldset[@ng-show='searchFiltersUi.startDate.show']/label")
+            #         startDateCheckbox = driver.find_elements(By.XPATH, "//fieldset[@ng-show='searchFiltersUi.startDate.show']/label/input")
+            #         dateCreatedElements = driver.find_elements(By.XPATH, "//fieldset[@ng-show='searchFiltersUi.dateCreated.show']/label")
+            #         dateCreatedCheckbox = driver.find_elements(By.XPATH, "//fieldset[@ng-show='searchFiltersUi.dateCreated.show']/label/input")
+            #         lastUpdatedElements = driver.find_elements(By.XPATH, "//fieldset[@ng-show='searchFiltersUi.dateUpdated.show']/label")
+            #         lastUpdatedCheckbox = driver.find_elements(By.XPATH, "//fieldset[@ng-show='searchFiltersUi.dateUpdated.show']/label/input")
+            #         print(StartDateH.text,'options are listed below:')
+            #         print()
+            #         for elements in startDateElements:
+            #             print(elements.text)
+            #         for checkbox in startDateCheckbox:
+            #             print(type(checkbox)) #code to click on every radio button.
+            #             sleep(2)
+            #     else:
+            #         print('Search filter and start date are failed')
+
+            #     if dateCreated == datecreatedH.text:
+            #         print('Date created text matched successfully!!')
+            #         print(datecreatedH.text,'options are listed below:')
+            #         print()
+            #         for element in dateCreatedElements:
+            #             print(element.text)
+            #         for checkbox in dateCreatedCheckbox:
+            #             print(type(checkbox))
+            #             sleep(2)
+            #     else:
+            #         print("Date created text doesn't match")
+
+            #     if lastUpdated == LastUpdatedH.text:
+            #         print('Last updated text matched successfylly!!')
+            #         print(LastUpdatedH.text,'options are listed below:')
+            #         print()
+            #         for element in lastUpdatedElements:
+            #             print(element.text)
+            #         for checkbox in lastUpdatedCheckbox:
+            #             print(type(checkbox))
+            #             sleep(2)
+            #     else:
+            #         print("Last updated text doesn't match")
+
+            # if adGroupButton.text == 'Ad groups':
+            #     adGroupButton.click()
+            #     print('clicked on Adgroup button')
+            #     sleep(2)
+            #     text1=driver.find_element(By.XPATH, "//p[@class='num-results']").text
+            #     print(text1)
+            #     print('*' * 50)                
+            #     print('Left side content')
+            #     print()
+            #     SearchFiltersH = driver.find_element(By.XPATH, "//h3[contains(text(),'Search Filters')]")
+            #     StartDateH = driver.find_element(By.XPATH, "//legend[contains(text(),'Start Date')]")
+            #     datecreatedH = driver.find_element(By.XPATH, "//legend[contains(text(),'Date Created')]")
+            #     LastUpdatedH = driver.find_element(By.XPATH, "//legend[contains(text(),'Last Updated')]")
+
+            #     SearchFilterText ='Search Filters'
+            #     startDate = 'START DATE'
+            #     dateCreated = 'DATE CREATED'
+            #     lastUpdated = 'LAST UPDATED' 
+            #     if SearchFilterText == SearchFiltersH.text and startDate == StartDateH.text:
+            #         print('Search filter and start date are passed successfully!!')
+            #         startDateElements = driver.find_elements(By.XPATH, "//fieldset[@ng-show='searchFiltersUi.startDate.show']/label")
+            #         startDateCheckbox = driver.find_elements(By.XPATH, "//fieldset[@ng-show='searchFiltersUi.startDate.show']/label/input")
+            #         dateCreatedElements = driver.find_elements(By.XPATH, "//fieldset[@ng-show='searchFiltersUi.dateCreated.show']/label")
+            #         dateCreatedCheckbox = driver.find_elements(By.XPATH, "//fieldset[@ng-show='searchFiltersUi.dateCreated.show']/label/input")
+            #         lastUpdatedElements = driver.find_elements(By.XPATH, "//fieldset[@ng-show='searchFiltersUi.dateUpdated.show']/label")
+            #         lastUpdatedCheckbox = driver.find_elements(By.XPATH, "//fieldset[@ng-show='searchFiltersUi.dateUpdated.show']/label/input")
+            #         print(StartDateH.text,'options are listed below:')
+            #         print()
+            #         for elements in startDateElements:
+            #             print(elements.text)
+            #         for checkbox in startDateCheckbox:
+            #             print(type(checkbox)) #code to click on every radio button.
+            #             sleep(2)
+            #     else:
+            #         print('Search filter and start date are failed')
+
+            #     if dateCreated == datecreatedH.text:
+            #         print('Date created text matched successfully!!')
+            #         print(datecreatedH.text,'options are listed below:')
+            #         print()
+            #         for element in dateCreatedElements:
+            #             print(element.text)
+            #         for checkbox in dateCreatedCheckbox:
+            #             print(type(checkbox))
+            #             sleep(2)
+            #     else:
+            #         print("Date created text doesn't match")
+
+            #     if lastUpdated == LastUpdatedH.text:
+            #         print('Last updated text matched successfylly!!')
+            #         print(LastUpdatedH.text,'options are listed below:')
+            #         print()
+            #         for element in lastUpdatedElements:
+            #             print(element.text)
+            #         for checkbox in lastUpdatedCheckbox:
+            #             print(type(checkbox))
+            #             sleep(2)
+            #     else:
+            
+            #         print("Last updated text doesn't match")
+            if creativeButton.text == 'Creatives':
+                creativeButton.click()
+                print('clicked on Creatives button')
                 sleep(2)
                 text1=driver.find_element(By.XPATH, "//p[@class='num-results']").text
                 print(text1)
@@ -198,29 +320,41 @@ class TenantDashboard():
                 print()
                 SearchFiltersH = driver.find_element(By.XPATH, "//h3[contains(text(),'Search Filters')]")
                 StartDateH = driver.find_element(By.XPATH, "//legend[contains(text(),'Start Date')]")
-                # datecreatedH = driver.find_element(By.XPATH, "//legend[contains(text(),'Date Created')]")
-                # LastUpdatedH = driver.find_element(By.XPATH, "//legend[contains(text(),'Last Updated')]")
+                LastUpdatedH = driver.find_element(By.XPATH, "//legend[contains(text(),'Last Updated')]")
 
                 SearchFilterText ='Search Filters'
                 startDate = 'START DATE'
-                # dateCreated = 'DATE CREATED'
-                # lastUpdated = 'LAST UPDATED'
+                lastUpdated = 'LAST UPDATED' 
                 if SearchFilterText == SearchFiltersH.text and startDate == StartDateH.text:
                     print('Search filter and start date are passed successfully!!')
                     startDateElements = driver.find_elements(By.XPATH, "//fieldset[@ng-show='searchFiltersUi.startDate.show']/label")
                     startDateCheckbox = driver.find_elements(By.XPATH, "//fieldset[@ng-show='searchFiltersUi.startDate.show']/label/input")
+                    lastUpdatedElements = driver.find_elements(By.XPATH, "//fieldset[@ng-show='searchFiltersUi.dateUpdated.show']/label")
+                    lastUpdatedCheckbox = driver.find_elements(By.XPATH, "//fieldset[@ng-show='searchFiltersUi.dateUpdated.show']/label/input")
                     print(StartDateH.text,'options are listed below:')
                     print()
                     for elements in startDateElements:
                         print(elements.text)
-                    # for checkbox in startDateCheckbox:
-                    #     checkbox.click()
-                    #     sleep(2)
+                    for checkbox in startDateCheckbox:
+                        print(type(checkbox)) #code to click on every radio button.
+                        sleep(2)
                 else:
                     print('Search filter and start date are failed')
-
+                    
+                if lastUpdated == LastUpdatedH.text:
+                    print('Last updated text matched successfylly!!')
+                    print(LastUpdatedH.text,'options are listed below:')
+                    print()
+                    for element in lastUpdatedElements:
+                        print(element.text)
+                    for checkbox in lastUpdatedCheckbox:
+                        print(type(checkbox))
+                        sleep(2)
+                else:
+            
+                    print("Last updated text doesn't match")
             else:
-                print('Button is not of Tenant type')
+                print('Button is not of Creatives type')
               
         
     def TermAndPrivacyPolicy(self):
