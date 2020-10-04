@@ -120,90 +120,68 @@ class TenantDashboard():
             print('Test failed, displayed tenant name is:',TenantName)
 
     def SearchAdsManager(self,search):
-        print('*' * 50)
-        sleep(10)
-        searchBox=driver.find_element(By.ID, "inp-base-searchbox-new")
-        if searchBox.tag_name == 'input':
-            print('search Ads manager is of Input type')
-            searchBox.clear() 
-            searchBox.send_keys(search,Keys.ENTER)
+            print('*' * 50)
             sleep(10)
-            aside = driver.find_element(By.XPATH, "//h3[contains(text(),'Search Filters')]")
-            legend = driver.find_element(By.XPATH, "//legend[contains(text(),'Date Created')]")
-            print(legend.text)
-            if aside.tag_name == 'h3':
-                print(aside.text,'is of h3 tag')
-                asideText='Search Filters'
-                DateCreated = 'DATE CREATED'
-                if asideText == aside.text and DateCreated == legend.text:
-                    print('Search filter and Date created test is passed!')
-                    checkBoxes=driver.find_elements(By.XPATH, "//fieldset[@ng-show='searchFiltersUi.dateCreated.show']/label/input")
-                    checkBoxesLabel=driver.find_elements(By.XPATH, "//fieldset[@ng-show='searchFiltersUi.dateCreated.show']/label")
-                    print('count of checkboxes under',DateCreated,':',len(checkBoxes))
-                    print('Date created filters are below:')
-                    for lable in checkBoxesLabel:
-                        print(lable.text)
-                        sleep(1)
-
-                    # for checkbox in checkBoxes:
-                    #     checkbox.click()
-                    #     # print(checkbox.text)
-                    #     sleep(4)
-                    # code for clicking on the all checkboxes
-                else:
-                    print('Search filter test is failed!')
+            searchBox=driver.find_element(By.ID, "inp-base-searchbox-new")
+            if searchBox.tag_name == 'input':
+                print('search Ads manager is of Input type')
+                searchBox.clear() 
+                searchBox.send_keys(search,Keys.ENTER)
+                sleep(4)
             else:
-                print(aside.text, 'is not of h3 tag')
-        else:
-            print('search Ads manager is not of Input type.')
-        filterButtons=driver.find_elements(By.XPATH, "//div[@class='result-types']/button")
-        print('count of buttons inside header:',len(filterButtons))
-        sleep(4)
-        for filter in filterButtons:
-            print(filter.text)
-            # if filter.text == 'Tenants':
-            #     filter.click()
-            #     print('Button clicked on:',filter.text)
-            #     result=driver.find_element(By.XPATH,"//p[@class='num-results']")
-            #     print(result.text)
-            #     sleep(4)
-            
-                
-            # elif filter.text == 'Organizations':
-            #     # filter.click()
-            #     print('Button clicked on:',filter.text)
-            #     sleep(4)
-            # elif filter.text == 'Accounts':
-            #     # filter.click()
-            #     print('Button clicked on:',filter.text)
-            #     sleep(4)
-            # elif filter.text == 'Campaigns':
-            #     # filter.click()
-            #     print('Button clicked on:',filter.text)
-            #     sleep(4)
-            # elif filter.text == 'Ad groups':
-            #     # filter.click()
-            #     print('Button clicked on:',filter.text)
-            #     sleep(4)
-            # elif filter.text == 'Creatives':
-            #     # filter.click()
-            #     print('Button clicked on:',filter.text)
-            #     sleep(4)
-            # else:
-            #     print('Button is not found!!')
+                print('search Ads manager is not of Input type.')
+            filterButtons=driver.find_elements(By.XPATH, "//div[@class='result-types']/button")
+            print('count of buttons inside header:',len(filterButtons))
+            sleep(4)
+            for filter in filterButtons:
+                # print(filter.text)
+                if filter.text == 'Accounts':
+                    print('Button clicked on:',filter.text)
+                    result=driver.find_element(By.XPATH,"//p[@class='num-results']")
+                    print(result.text)
+                    print('#' * 40)
+                    print('Left side content')
+                    aside = driver.find_element(By.XPATH, "//h3[contains(text(),'Search Filters')]")
+                    legend = driver.find_element(By.XPATH, "//legend[contains(text(),'Date Created')]")
+                    if aside.tag_name == 'h3':
+                        print(aside.text,'is of h3 tag')
+                        asideText='Search Filters'
+                        DateCreated = 'DATE CREATED'
+                        if asideText == aside.text and DateCreated == legend.text:
+                            print('Search filter and Date created test is passed!')
+                            checkBoxes=driver.find_elements(By.XPATH, "//fieldset[@ng-show='searchFiltersUi.dateCreated.show']/label/input")
+                            checkBoxesLabel=driver.find_elements(By.XPATH, "//fieldset[@ng-show='searchFiltersUi.dateCreated.show']/label")
+                            print('count of checkboxes under',DateCreated,':',len(checkBoxes))
+                            print('Date created filters are below:')
+                            for lable in checkBoxesLabel:
+                                print(lable.text)
+                                sleep(1)
 
-        # driver.back()
+                            # for checkbox in checkBoxes:
+                            #     checkbox.click()
+                            #     # print(checkbox.text)
+                            #     sleep(4)
+                            # code for clicking on the all checkboxes
+                        else:
+                            print('Search filter and Date created test is Failed!')
+                    else:
+                        print(aside.text, 'is not of h3 tag')
+                        sleep(4)
+                else:
+                    print('Button is not found!!')
 
-        # DateCreated=driver.find_elements(By.XPATH, "//fieldset[@ng-show='searchFiltersUi.startDate.show']")
-        # for date in DateCreated:
-        #     print(date.text)
-        # if driver.find_element(By.ID, "inp-search-dateCreated-all").get_attribute('type') =='radio':
+            # driver.back()
 
-        #     print('element is radio button and ')
-        #     driver.find_element(By.ID, "inp-search-dateCreated-all").is_selectesd():
-        #     driver.find_element(By.ID, "inp-search-dateCreated-all").get_attribute('')
-        #     print('Default value selected is: ',)
-        # driver.find_element(By.ID, "//input[@id='inp-search-dateCreated-week']").click()
+            # DateCreated=driver.find_elements(By.XPATH, "//fieldset[@ng-show='searchFiltersUi.startDate.show']")
+            # for date in DateCreated:
+            #     print(date.text)
+            # if driver.find_element(By.ID, "inp-search-dateCreated-all").get_attribute('type') =='radio':
+
+            #     print('element is radio button and ')
+            #     driver.find_element(By.ID, "inp-search-dateCreated-all").is_selectesd():
+            #     driver.find_element(By.ID, "inp-search-dateCreated-all").get_attribute('')
+            #     print('Default value selected is: ',)
+            # driver.find_element(By.ID, "//input[@id='inp-search-dateCreated-week']").click()
         
     def TermAndPrivacyPolicy(self):
         sleep(10)
