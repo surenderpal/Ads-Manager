@@ -59,7 +59,7 @@ class campaignSetUp():
     '''
     setting up campaign for testing purpose
     '''
-    def newCampaign(self):
+    def newCampaignButton(self):
         '''
         this function will setup new campaign
         '''
@@ -69,9 +69,15 @@ class campaignSetUp():
             print('clicked on new campaign button')
         else:
             print('new campaign button is not found!!')
-        
+    def newCampaignModel(self,categoryName):
+        campaignName=driver.find_element(By.ID, "inp-createCampModal-campName")
+        campaignName.send_keys('RegressionTesting')
+        categoryCount = driver.find_elements(By.XPATH, "//li[contains(text(),'')]") #//ul[@class='autocomplete-suggestions not-tabbed ng-scope']//li[contains(text(), '')]
+        print('Category count is',len(categoryCount))
+        for category in categoryCount:
+            print(category.text)
 
 c=campaignSetUp()
-c.newCampaign()
-
-driver.close(10)
+c.newCampaignButton()
+c.newCampaignModel('Potato Growers')
+# driver.close()
