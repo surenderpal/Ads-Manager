@@ -72,7 +72,7 @@ class campaignSetUp():
     def newCampaignModel(self,categoryName):
         campaignName=driver.find_element(By.ID, "inp-createCampModal-campName")
         campaignName.send_keys('RegressionTesting')
-        # categoryCount = driver.find_elements(By.XPATH, "//li[contains(text(),'')]") #//ul[@class='autocomplete-suggestions not-tabbed ng-scope']//li[contains(text(), '')]
+        categoryCount = driver.find_elements(By.XPATH, "//li[contains(text(),'')]") #//ul[@class='autocomplete-suggestions not-tabbed ng-scope']//li[contains(text(), '')]
         print('Category count is',len(categoryCount))
         for category in categoryCount:
             print(category.text)
