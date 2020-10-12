@@ -59,7 +59,7 @@ class campaignSetUp():
     '''
     setting up campaign for testing purpose
     '''
-    def newCampaignButton(self):
+    def NewCampaignButton(self):
         '''
         this function will setup new campaign
         '''
@@ -69,15 +69,72 @@ class campaignSetUp():
             print('clicked on new campaign button')
         else:
             print('new campaign button is not found!!')
-    def newCampaignModel(self,categoryName):
-        campaignName=driver.find_element(By.ID, "inp-createCampModal-campName")
-        campaignName.send_keys('RegressionTesting')
-        categoryCount = driver.find_elements(By.XPATH, "//li[contains(text(),'')]") #//ul[@class='autocomplete-suggestions not-tabbed ng-scope']//li[contains(text(), '')]
-        print('Category count is',len(categoryCount))
-        for category in categoryCount:
-            print(category.text)
+    def NewCampaignModel(self,CampaignName,categoryName,BudgetType):
+        '''
+        this function is created by surender pal, it opens the campaign creation model, and fills the form,
+        campaignName is the name of campaign that user creates, campaign name can be anything.
+        categoryname is the name of category that user selects, user has to select from list,
+        BudgetType is the type of budget that user selects. budget can be of two types Ad Group and Campaign level #adgroup, campaign
+        '''
+        actions=ActionChains(driver)
+        ModelTitle = driver.find_element(By.XPATH, "//div[@id='modal--create-new-campaign']//div[text()='Create new campaign']") #model title
+        # labels that are listed in campaign creation model
+        labels=driver.find_elements(By.XPATH, "//label['inp-createCampModal']")
+        print('*' * 50)
+        print('Labels used are listed below:-')
+        for label in labels:
+            print(label.text)
+        
+        if ModelTitle.get_attribute('innerHTML') ==  'Create new campaign':
+            print('Passed, Model title!!')
+        
+            driver.find_element(By.ID, "inp-createCampModal-campName").send_keys('CampaignName') #campaign name  Regression-Automation-testing
+            category = driver.find_element(By.XPATH, "//input[@placeholder='Search and select a category']")
+            AdBudget = driver.find_element(By.XPATH, "//div[@class='radio-wrapper']/label[@for='inp-createCampModal-budgetAdgLevel']").text
+            CampaignBudget = driver.find_element(By.XPATH, "//div[@class='radio-wrapper']/label[@for='inp-createCampModal-budgetCampLevel']").text
+            if category.get_attribute('placeholder') == 'Search and select a category':
+                print('Passed!!,Placeholder inside Category')
+            else:
+                print('Failed!!,Placeholder inside Category')
+            category.click()
+            sleep(2)
+            category_li = driver.find_elements(By.XPATH, "//div[@class='gt-autocomplete-dropdown ng-scope']/ul/li")
+            print('Count of category:',len(category_li))
+            for li in category_li:
+                print(li.text)
+            driver.find_element(By.XPATH,"//li[contains(text(),'"+categoryName+"')]").send_keys(categoryName)# category name:- Potato Growers
+            # BudgetSetting = driver.find_element(By.XPATH, "//label[@class='budget-title']").get_attribute('innerHTML')#BudgetSetting
+            # print(BudgetSetting)
+            info=driver.find_element(By.XPATH, "//label[@class='budget-title']/span")#get_attribute('innerHTML')
+            actions.move_to_element(info).perform()
+            print(driver.find_element(By.XPATH, "//label[@class='budget-title']/span").get_attribute('innerHTML'))
+            print('Is Adgroup default selected:-',driver.find_element(By.XPATH, "//input[@value='"+BudgetType+"-budget']").is_selected())
+            driver.find_element_by_xpath("//input[@value='"+BudgetType+"-budget']").click() #adgroup, campaign BudgetType
+            sleep(2)
+            
+            driver.find_element_by_xpath("//input[@value='campaign-budget']").click()
+            
+            if AdBudget == 'Ad group budgets. Set up an ad group specific budget for each targeting tactic.':
+                print('Passed, Ad group text, text is: ',AdBudget)
+            else:
+                print('Failed, Ad group text')
+            sleep(2)
+            if CampaignBudget == 'Campaign budget. Set up one budget for all ad groups associated to this campaign.':
+                print('Passed, Campaign text, text is: ',CampaignBudget)
+                driver.find_element(By.NAME, "budgetField").clear()
+                driver.find_element(By.NAME, "budgetField").send_keys('10')
+                note = driver.find_element(By.XPATH, '//p').text
+                if note == 'Note: Selecting this options does not guarantee even budget distribution amongst each ad group. Once saved, this setting cannot be changed.':
+                    print('Passed, campaign Note!!, Note is: ',note)
+                else:
+                    print('Failed, campaign Note!!')
+            else:
+                print('Failed, Campaign text')
+        else:
+            print('Failed, Model title!!')
+        
 
 c=campaignSetUp()
-c.newCampaignButton()
-c.newCampaignModel('Potato Growers')
+c.NewCampaignButton()
+c.NewCampaignModel('Regression-Automation-testing','Pet Services','adgroup')
 # driver.close()
