@@ -76,35 +76,63 @@ class campaignSetUp():
         categoryname is the name of category that user selects, user has to select from list,
         BudgetType is the type of budget that user selects. budget can be of two types Ad Group and Campaign level #adgroup, campaign
         '''
+        # infoText='''A budget is the amount of money you want to spend on showing people your ads.Campaign budget is a budget you set once at the campaign level. The campaign budget will be shared across ad groups based on available inventory that each ad group is competing for. Spending will not be evenly divided across all ad groups.Ad group budgets are set for each ad group, when you setup the targeting tactics. This provides more granular budget control but has the risk of under delivery. You also have the option to convert ad group budgets to a single campaign budget after launching the campaign.'''
+        ToolTipText = '''A budget is the amount of money you want to spend on showing people your ads. 
+
+ Campaign budget is a budget you set once at the campaign level. The campaign budget will be shared across ad groups based on available inventory that each ad group is competing for. Spending will not be evenly divided across all ad groups. 
+
+ Ad group budgets are set for each ad group, when you setup the targeting tactics. This provides more granular budget control but has the risk of under delivery. You also have the option to convert ad group budgets to a single campaign budget after launching the campaign.'''
         actions=ActionChains(driver)
         ModelTitle = driver.find_element(By.XPATH, "//div[@id='modal--create-new-campaign']//div[text()='Create new campaign']") #model title
         # labels that are listed in campaign creation model
         labels=driver.find_elements(By.XPATH, "//label['inp-createCampModal']")
         print('*' * 50)
-        print('Labels used are listed below:-')
-        for label in labels:
-            print(label.text)
+        print('count of labels inside create new campaign model:',len(labels))
+
         
         if ModelTitle.get_attribute('innerHTML') ==  'Create new campaign':
             print('Passed, Model title!!')
-        
-            driver.find_element(By.ID, "inp-createCampModal-campName").send_keys('CampaignName') #campaign name  Regression-Automation-testing
             category = driver.find_element(By.XPATH, "//input[@placeholder='Search and select a category']")
             AdBudget = driver.find_element(By.XPATH, "//div[@class='radio-wrapper']/label[@for='inp-createCampModal-budgetAdgLevel']").text
             CampaignBudget = driver.find_element(By.XPATH, "//div[@class='radio-wrapper']/label[@for='inp-createCampModal-budgetCampLevel']").text
-            if category.get_attribute('placeholder') == 'Search and select a category':
-                print('Passed!!,Placeholder inside Category')
+            CampaignLabelName = driver.find_element(By.XPATH, "//div[@class='name-field']/label[@for='inp-createCampModal-campName']").get_attribute('innerHTML')
+            print('Campaign name label is:',CampaignLabelName)
+            CategoryLabelName = driver.find_element(By.XPATH, "//label[contains(text(),'Category')]").get_attribute('innerHTML')
+            print('Category name label is:',CategoryLabelName)
+            if CampaignLabelName == 'Campaign Name':
+                print('Passed, Campaign Name Label is correct!!')
+                driver.find_element(By.ID, "inp-createCampModal-campName").send_keys('CampaignName') #campaign name 
+                if CategoryLabelName == 'Category':
+                    print('Passed, Category Name Label is correct!!')
+                    if category.get_attribute('placeholder') == 'Search and select a category':
+                        print('Passed!!,Placeholder inside Category')
+                        category.click()
+                        sleep(2)
+                        category_li = driver.find_elements(By.XPATH, "//div[@class='gt-autocomplete-dropdown ng-scope']/ul/li")
+                        print('Count of category:',len(category_li))
+                        for li in category_li:
+                            print(li.text)
+                        driver.find_element(By.XPATH,"//li[contains(text(),'"+categoryName+"')]").send_keys(categoryName)# category name:- Potato Growers
+                    else:
+                        print('Failed!!,Placeholder inside Category')
+                else:
+                    print('Failed, Category Name lable is Incorrect') 
             else:
-                print('Failed!!,Placeholder inside Category')
-            category.click()
-            sleep(2)
-            category_li = driver.find_elements(By.XPATH, "//div[@class='gt-autocomplete-dropdown ng-scope']/ul/li")
-            print('Count of category:',len(category_li))
-            for li in category_li:
-                print(li.text)
-            driver.find_element(By.XPATH,"//li[contains(text(),'"+categoryName+"')]").send_keys(categoryName)# category name:- Potato Growers
+                print('Failed, Campaign Name lable is Incorrect')
             # BudgetSetting = driver.find_element(By.XPATH, "//label[@class='budget-title']").get_attribute('innerHTML')#BudgetSetting
             # print(BudgetSetting)
+
+
+            infoInnerText=driver.find_element(By.XPATH, "//label[@class= 'budget-title']/span")
+            iText = infoInnerText.get_attribute('uib-popover') #info text using get attribute
+
+            if iText == ToolTipText:
+                print('Passed, info sign inner text is correct')
+                print('info text',infoInnerText.get_attribute('uib-popover'))
+            else:
+                print('Failed, info sign inner text is incorrect!')
+                print('info text',infoInnerText.get_attribute('uib-popover'))
+            
             info=driver.find_element(By.XPATH, "//label[@class='budget-title']/span")#get_attribute('innerHTML')
             actions.move_to_element(info).perform()
             print(driver.find_element(By.XPATH, "//label[@class='budget-title']/span").get_attribute('innerHTML'))
