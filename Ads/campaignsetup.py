@@ -69,12 +69,14 @@ class campaignSetUp():
             print('clicked on new campaign button')
         else:
             print('new campaign button is not found!!')
-    def NewCampaignModel(self,CampaignName,categoryName,BudgetType):
+    def NewCampaignModel(self,CampaignName,categoryName,BudgetType): #campaignAction
         '''
         this function is created by surender pal, it opens the campaign creation model, and fills the form,
         campaignName is the name of campaign that user creates, campaign name can be anything.
         categoryname is the name of category that user selects, user has to select from list,
         BudgetType is the type of budget that user selects. budget can be of two types Ad Group and Campaign level #adgroup, campaign
+        BudgetType value="campaign-budget" , value="adgroup-budget" 
+        campaignAction is either 'Save' or '×'
         '''
         # infoText='''A budget is the amount of money you want to spend on showing people your ads.Campaign budget is a budget you set once at the campaign level. The campaign budget will be shared across ad groups based on available inventory that each ad group is competing for. Spending will not be evenly divided across all ad groups.Ad group budgets are set for each ad group, when you setup the targeting tactics. This provides more granular budget control but has the risk of under delivery. You also have the option to convert ad group budgets to a single campaign budget after launching the campaign.'''
         ToolTipText = '''A budget is the amount of money you want to spend on showing people your ads. 
@@ -92,13 +94,16 @@ class campaignSetUp():
         
         if ModelTitle.get_attribute('innerHTML') ==  'Create new campaign':
             print('Passed, Model title!!')
+            budgetSetting = 'Budget Setting'
             category = driver.find_element(By.XPATH, "//input[@placeholder='Search and select a category']")
-            AdBudget = driver.find_element(By.XPATH, "//div[@class='radio-wrapper']/label[@for='inp-createCampModal-budgetAdgLevel']").text
-            CampaignBudget = driver.find_element(By.XPATH, "//div[@class='radio-wrapper']/label[@for='inp-createCampModal-budgetCampLevel']").text
+            AdGroupBudgetLabel = driver.find_element(By.XPATH, "//div[@class='radio-wrapper']/label[@for='inp-createCampModal-budgetAdgLevel']").text
+            CampaignBudgetLabel = driver.find_element(By.XPATH, "//div[@class='radio-wrapper']/label[@for='inp-createCampModal-budgetCampLevel']").text
             CampaignLabelName = driver.find_element(By.XPATH, "//div[@class='name-field']/label[@for='inp-createCampModal-campName']").get_attribute('innerHTML')
-            print('Campaign name label is:',CampaignLabelName)
             CategoryLabelName = driver.find_element(By.XPATH, "//label[contains(text(),'Category')]").get_attribute('innerHTML')
-            print('Category name label is:',CategoryLabelName)
+            infoInnerText=driver.find_element(By.XPATH, "//label[@class= 'budget-title']/span").get_attribute('uib-popover') #tool tip text
+            info=driver.find_element(By.XPATH, "//label[@class='budget-title']/span")# info tool tip
+            note = driver.find_element(By.XPATH, '//p').text #Note warning inside campaign budget
+ 
             if CampaignLabelName == 'Campaign Name':
                 print('Passed, Campaign Name Label is correct!!')
                 driver.find_element(By.ID, "inp-createCampModal-campName").send_keys('CampaignName') #campaign name 
@@ -119,50 +124,63 @@ class campaignSetUp():
                     print('Failed, Category Name lable is Incorrect') 
             else:
                 print('Failed, Campaign Name lable is Incorrect')
-            # BudgetSetting = driver.find_element(By.XPATH, "//label[@class='budget-title']").get_attribute('innerHTML')#BudgetSetting
             # print(BudgetSetting)
 
+            # print(budgetSetting)# budgetSetting = Budget Setting
+            if driver.find_element(By.CLASS_NAME, 'budget-title').text == budgetSetting:
+                print('Passed, budget setting label text is correct')
+                actions.move_to_element(info).perform()
+                if infoInnerText == ToolTipText:
+                    print('Passed, info tool tip text is correct')
+                    print('Count of radio button available:-',len(driver.find_elements(By.NAME, "budget")))
+                    driver.find_element(By.NAME, "budget").is_selected() #default selection
+                    print('Is By Default Adgroup selected:-',driver.find_element(By.XPATH, "//input[@value='adgroup-budget']").is_selected())
+        
+                    budgets = driver.find_elements(By.NAME, "budget")
+                    if AdGroupBudgetLabel == 'Ad group budgets. Set up an ad group specific budget for each targeting tactic.':
+                        print('Passed, Ad group label is correct')
+                    else:
+                        print('Failed, Ad group label is incorrect')
 
-            infoInnerText=driver.find_element(By.XPATH, "//label[@class= 'budget-title']/span")
-            iText = infoInnerText.get_attribute('uib-popover') #info text using get attribute
-
-            if iText == ToolTipText:
-                print('Passed, info sign inner text is correct')
-                print('info text',infoInnerText.get_attribute('uib-popover'))
-            else:
-                print('Failed, info sign inner text is incorrect!')
-                print('info text',infoInnerText.get_attribute('uib-popover'))
-            
-            info=driver.find_element(By.XPATH, "//label[@class='budget-title']/span")#get_attribute('innerHTML')
-            actions.move_to_element(info).perform()
-            print(driver.find_element(By.XPATH, "//label[@class='budget-title']/span").get_attribute('innerHTML'))
-            print('Is Adgroup default selected:-',driver.find_element(By.XPATH, "//input[@value='"+BudgetType+"-budget']").is_selected())
-            driver.find_element_by_xpath("//input[@value='"+BudgetType+"-budget']").click() #adgroup, campaign BudgetType
-            sleep(2)
-            
-            driver.find_element_by_xpath("//input[@value='campaign-budget']").click()
-            
-            if AdBudget == 'Ad group budgets. Set up an ad group specific budget for each targeting tactic.':
-                print('Passed, Ad group text, text is: ',AdBudget)
-            else:
-                print('Failed, Ad group text')
-            sleep(2)
-            if CampaignBudget == 'Campaign budget. Set up one budget for all ad groups associated to this campaign.':
-                print('Passed, Campaign text, text is: ',CampaignBudget)
-                driver.find_element(By.NAME, "budgetField").clear()
-                driver.find_element(By.NAME, "budgetField").send_keys('10')
-                note = driver.find_element(By.XPATH, '//p').text
-                if note == 'Note: Selecting this options does not guarantee even budget distribution amongst each ad group. Once saved, this setting cannot be changed.':
-                    print('Passed, campaign Note!!, Note is: ',note)
+                    if CampaignBudgetLabel == 'Campaign budget. Set up one budget for all ad groups associated to this campaign.':
+                        print('Passed, Campaign Budget label is correct')
+                    else:
+                        print('Failed, Campaign Budget label is incorrect')
+                    # code for select budget
+                    for budget in budgets:
+                        print(budget.get_attribute('value'))
+                        if BudgetType == 'adgroup-budget':
+                            driver.find_element(By.ID, "btn-campaignCreateModal-submit").click()
+                        else:
+                            if BudgetType == 'campaign-budget':
+                                    driver.find_element_by_xpath("//input[@value='campaign-budget']").click()
+                                    note = driver.find_element(By.XPATH, '//p').text #Note warning inside campaign budget
+                                    if note == 'Note: Selecting this options does not guarantee even budget distribution amongst each ad group. Once saved, this setting cannot be changed.':
+                                        print('Passed, campaign Note!!, Note is: ',note)
+                                        driver.find_element(By.NAME, "budgetField").clear()
+                                        driver.find_element(By.NAME, "budgetField").send_keys('10')
+                                        # driver.find_element(By.ID, "btn-campaignCreateModal-submit").click()
+                                        # driver.find_element(By.XPATH, "//button/span[contains(text(),'Save')]").click()
+                                    else:
+                                        print('Failed, campaign Note!!')
+                            else:
+                                print('Failed, Wrong budget selected!!')
+                            break
+                     # action to save or to close 
+                    sleep(2)
+                    # driver.find_element(By.XPATH, "//button/span[contains(text(),'"+campaignAction+"')]").click()
+                    # print('clicked on campaign creation action:',campaignAction)
+                    driver.find_element(By.XPATH, "//button/span[contains(text(),'×')]").click()
                 else:
-                    print('Failed, campaign Note!!')
+                    print('Failed, info tool tip text is Incorrect')
             else:
-                print('Failed, Campaign text')
+                print('Failed, budget setting label text is Incorrect')
         else:
             print('Failed, Model title!!')
         
 
 c=campaignSetUp()
 c.NewCampaignButton()
-c.NewCampaignModel('Regression-Automation-testing','Pet Services','adgroup')
-# driver.close()
+c.NewCampaignModel('Regression-Automation-testing','Pet Services','campaign-budget')#,'x'
+sleep(60)
+driver.close()
