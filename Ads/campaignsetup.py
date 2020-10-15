@@ -185,10 +185,58 @@ class campaignSetUp():
                 print('Failed, budget setting label text is Incorrect')
         else:
             print('Failed, Model title!!')
+
+    def TargettingHeader(self):
+        '''
+        Targetting tatics header, testing verifying each details
+        '''
+        # sleep(5)
+        totalLabels = driver.find_elements(By.XPATH, "//div[@class='label' or @class = 'item-type']")
+        print('#' * 30)
+        print('Labels details are listed below:-')
+        print('Count of label on targeting tactics is:',len(totalLabels))
+        for lable in totalLabels:
+            print(lable.text)
+        print('#' * 30)
+        adGroup = driver.find_element(By.XPATH, "//div[contains(text(),'Ad Group')]").text
+        print('Adgroup',adGroup)
+        h2 = driver.find_element(By.XPATH, "//h2[contains(text(),'New Ad Group')]").text
+        print('Default Ad group name:',h2)
+        budgetlabel = driver.find_element(By.XPATH, "//div[contains(text(),'Budget')]").text
+        print('budget label text:',budgetlabel)
+        budgetvalue= driver.find_element(By.ID, "contextualHeader-adgroupBudgetValue").text
+        print('budgetAmount entered:-',budgetvalue)
+        usdLabelnearBudgetValue=driver.find_element(By.XPATH, "//span[@id='contextualHeader-adgroupBudgetUnit']").text
+        print('usd leveL below the budget:-',usdLabelnearBudgetValue)
+        totalSpentLable = driver.find_element(By.XPATH, "//div[contains(text(),'Total Spent')]").text
+        print('total spent label',totalSpentLable)
+        totalSpentvalue = driver.find_element(By.ID, "contextualHeader-adgroupTotalSpentValue").text
+        print('Total spent value:',totalSpentvalue)
+        usdLabelNearSpentValue = driver.find_element(By.ID, "contextualHeader-adgroupTotalSpentUnit").text
+        print('Usd lebel near spent value:',usdLabelNearSpentValue)
+        statuslable = driver.find_element(By.XPATH, "//div[contains(text(),'Status')]").text
+        print('status label text:',statuslable)
+        statusDefaultValue = driver.find_element(By.ID, "contextualHeader-adgroupStatusValue").text
+        print('Default value of status is:',statusDefaultValue)
+        targettingSectionHeading = driver.find_element(By.XPATH, "//div[@class='targeting-goals-view ng-scope']/h2").text
+        print('targetting section heading:',targettingSectionHeading)
+        actions=ActionChains(driver)
+        info=driver.find_element(By.XPATH, "//div[@class='targeting-goals-view ng-scope']/h2/span")
+        print('info text is',info.get_attribute('uib-popover'))
+        actions.move_to_element(info).perform()
+        noOftactics =  driver.find_elements(By.XPATH, "//div[@class='targeting-goals-view ng-scope']/ul/li")
+        print('Count of tactics available is',len(noOftactics))
+        tactisHeading=driver.find_elements(By.XPATH, "//div[@class='targeting-goals-view ng-scope']/ul/li//h3")
+        # tactisHeadingp = driver.find_elements(By.XPATH, "//div[@class='targeting-goals-view ng-scope']/ul/li//p")
+        for heading in tactisHeading:
+            print('Tactis Heading', heading.text)
+        
+        # radioButtons =  driver.find_elements(By.XPATH, "//div[@class='custom-radio']")
         
 
 c=campaignSetUp()
 c.NewCampaignButton()
-c.NewCampaignModel('Regression-Automation-testing','Pet Services','campaign-budget','×')# 'adgroup-budget','campaign-budget','×','Save'
+c.NewCampaignModel('Regression-Automation-testing','Pet Services','campaign-budget','Save')# 'adgroup-budget','campaign-budget','×','Save'
+c.TargettingHeader()
 sleep(20)
 driver.close()
