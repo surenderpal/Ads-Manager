@@ -232,7 +232,12 @@ class campaignSetUp():
             print('Tactis Heading', heading.text)
         
         # radioButtons =  driver.find_elements(By.XPATH, "//div[@class='custom-radio']")
-        
+        #radio buttons code
+        buttons = driver.find_elements(By.XPATH, "//h3[contains(text(),'')]")
+        for radio in buttons:
+            # radio.click()
+            print(radio.text)
+            sleep(2)       
 
 c=campaignSetUp()
 c.NewCampaignButton()
@@ -240,3 +245,4 @@ c.NewCampaignModel('Regression-Automation-testing','Pet Services','campaign-budg
 c.TargettingHeader()
 sleep(20)
 driver.close()
+
