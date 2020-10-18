@@ -245,4 +245,3 @@ c.NewCampaignModel('Regression-Automation-testing','Pet Services','campaign-budg
 c.TargettingHeader()
 sleep(20)
 driver.close()
-
