@@ -10,6 +10,7 @@ from webdriver_manager.firefox import GeckoDriverManager
 from webdriver_manager.microsoft import IEDriverManager
 from webdriver_manager.microsoft import EdgeChromiumDriverManager
 from time import sleep
+import re
 
 b_name ='chrome'
 if b_name == 'chrome':
@@ -154,7 +155,7 @@ class campaignSetUp():
                             if BudgetType == 'campaign-budget':
                                     driver.find_element_by_xpath("//input[@value='campaign-budget']").click()
                                     note = driver.find_element(By.XPATH, '//p').text #Note warning inside campaign budget
-                                    if note == 'Note: Selecting this options does not guarantee even budget distribution amongst each ad group. Once saved, this setting cannot be changed.':
+                                    if note == 'Note: Selecting this option does not guarantee even budget distribution amongst each ad group. Once saved, this setting cannot be changed.':
                                         print('Passed, campaign Note!!')
                                         budgetUsdLabel = 'Budget USD'
                                         if budgetUsdLabel == driver.find_element(By.XPATH, "//label[contains(text(),'Budget USD')]").get_attribute('innerHTML'):
@@ -190,6 +191,8 @@ class campaignSetUp():
         '''
         Targetting tatics header, testing verifying each details
         '''
+        print('*'*50)
+        print('Targeting tactics page details are below:- ')
         # sleep(5)
         totalLabels = driver.find_elements(By.XPATH, "//div[@class='label' or @class = 'item-type']")
         print('#' * 30)
@@ -197,47 +200,85 @@ class campaignSetUp():
         print('Count of label on targeting tactics is:',len(totalLabels))
         for lable in totalLabels:
             print(lable.text)
-        print('#' * 30)
+        # print('#' * 30)
         adGroup = driver.find_element(By.XPATH, "//div[contains(text(),'Ad Group')]").text
-        print('Adgroup',adGroup)
+        if adGroup == 'Ad Group':
+            print('Passed Ad group title')
+        else:('Failed Ad group title',adGroup)
         h2 = driver.find_element(By.XPATH, "//h2[contains(text(),'New Ad Group')]").text
-        print('Default Ad group name:',h2)
+        if h2 == 'New Ad Group':
+            print('Passed,Default Ad Group Name is correct')
+        else:
+            print('Failed,Default Ad Group Name is:',h2)
+
         budgetlabel = driver.find_element(By.XPATH, "//div[contains(text(),'Budget')]").text
-        print('budget label text:',budgetlabel)
+        if budgetlabel == 'Budget':
+            print('Passed, Budget label is correct')
+        else:
+            print('Passed, Budget label is correct')
+
         budgetvalue= driver.find_element(By.ID, "contextualHeader-adgroupBudgetValue").text
         print('budgetAmount entered:-',budgetvalue)
         usdLabelnearBudgetValue=driver.find_element(By.XPATH, "//span[@id='contextualHeader-adgroupBudgetUnit']").text
-        print('usd leveL below the budget:-',usdLabelnearBudgetValue)
+        if usdLabelnearBudgetValue == 'USD':
+            print('Passed, USD label near Budget value is correct')
+        else:
+            print('Failed, USD label near Budget value is Incorrect',usdLabelnearBudgetValue)
         totalSpentLable = driver.find_element(By.XPATH, "//div[contains(text(),'Total Spent')]").text
-        print('total spent label',totalSpentLable)
+        if totalSpentLable == 'Total Spent':
+            print('Passed, Total Spent label is correct')
+        else:
+            print('Failed, Total Spent label is Incorrect',totalSpentLable)
+
         totalSpentvalue = driver.find_element(By.ID, "contextualHeader-adgroupTotalSpentValue").text
         print('Total spent value:',totalSpentvalue)
         usdLabelNearSpentValue = driver.find_element(By.ID, "contextualHeader-adgroupTotalSpentUnit").text
-        print('Usd lebel near spent value:',usdLabelNearSpentValue)
+
+        if usdLabelNearSpentValue == 'USD':
+            print('Passed, USD label near total spent value is correct')
+        else:
+            print('Failed, USD label near total spent value is Incorrect',usdLabelNearSpentValue)
+        
         statuslable = driver.find_element(By.XPATH, "//div[contains(text(),'Status')]").text
-        print('status label text:',statuslable)
+        if statuslable == 'Status':
+            print('Status label is correct')
+        else:
+            print('Status lable is incorrect',statuslable)
+
+
         statusDefaultValue = driver.find_element(By.ID, "contextualHeader-adgroupStatusValue").text
         print('Default value of status is:',statusDefaultValue)
         targettingSectionHeading = driver.find_element(By.XPATH, "//div[@class='targeting-goals-view ng-scope']/h2").text
-        print('targetting section heading:',targettingSectionHeading)
+        if targettingSectionHeading == 'Start building your advertising campaign by selecting one of the following location targeting tactics':
+            print('Passed, Targeting tactics heading is correct')
+        else:
+            print('Failed, Targeting tactics heading is Incorrect',targettingSectionHeading)
+
         actions=ActionChains(driver)
         info=driver.find_element(By.XPATH, "//div[@class='targeting-goals-view ng-scope']/h2/span")
-        print('info text is',info.get_attribute('uib-popover'))
         actions.move_to_element(info).perform()
+        if info.get_attribute('uib-popover') == 'Note: you can add other types of tactics to your campaign as you continue through your set up.':
+            print('Passed, tooltip under the targeting tactics is correct')
+        else:
+            print('Failed, tooltip under the targeting tactics is Incorrect',info.get_attribute('uib-popover'))
+
         noOftactics =  driver.find_elements(By.XPATH, "//div[@class='targeting-goals-view ng-scope']/ul/li")
         print('Count of tactics available is',len(noOftactics))
-        tactisHeading=driver.find_elements(By.XPATH, "//div[@class='targeting-goals-view ng-scope']/ul/li//h3")
-        # tactisHeadingp = driver.find_elements(By.XPATH, "//div[@class='targeting-goals-view ng-scope']/ul/li//p")
-        for heading in tactisHeading:
-            print('Tactis Heading', heading.text)
-        
-        # radioButtons =  driver.find_elements(By.XPATH, "//div[@class='custom-radio']")
-        #radio buttons code
-        buttons = driver.find_elements(By.XPATH, "//h3[contains(text(),'')]")
-        for radio in buttons:
-            # radio.click()
-            print(radio.text)
-            sleep(2)       
+        tactisRadioButtonHeading=driver.find_elements(By.XPATH, "//div[@class='targeting-goals-view ng-scope']/ul/li//h3") # radio button headings
+        # tactisRadioButtonHeadingp = driver.find_elements(By.XPATH, "//div[@class='targeting-goals-view ng-scope']/ul/li//p") #tactics parag
+        # onPremiseP = ""
+        # locationP='"Send ads to people in real-time based on where they are e.g. People who are inside a fast food restaurant"'
+        for heading in tactisRadioButtonHeading:
+            print('%' * 50)
+            print('Tactis Heading is:-', heading.text)
+            heading.click() 
+            p=driver.find_element(By.XPATH, "//div[@class='textual-details']/div[@class='goal-label']//p[@xpath='1']").text            
+            print('Paragraph in the',heading.text,'is:',p)
+            #code for the under ao
+            ScrollElement=driver.find_element(By.ID, "btn-baseFooter-privacyPolicy")
+            driver.execute_script('arguments[0].scrollIntoView();',ScrollElement)
+            sleep(2)  
+
 
 c=campaignSetUp()
 c.NewCampaignButton()
