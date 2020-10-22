@@ -169,13 +169,13 @@ class campaignSetUp():
                             else:
                                 print('Failed, Wrong budget selected!!')
                             break
-                    clientContractLabelName= 'Client Contract / IO Number'
-                    if clientContractLabelName == driver.find_element(By.XPATH, "//label[contains(text(),'Client Contract / IO Number')]").get_attribute('innerHTML'):
-                        print('Passed, client contract/ IO number is correct!!')
-                        driver.find_element(By.XPATH,"//input[@id='inp-createCampModal-channelClientIoNumber']").clear()
-                        driver.find_element(By.XPATH,"//input[@id='inp-createCampModal-channelClientIoNumber']").send_keys('123sdeafsad')
-                    else:
-                        print('Failed, client contract/ IO number is correct!!')
+                    # clientContractLabelName= 'Client Contract / IO Number'
+                    # if clientContractLabelName == driver.find_element(By.XPATH, "//label[contains(text(),'Client Contract / IO Number')]").get_attribute('innerHTML'):
+                    #     print('Passed, client contract/ IO number is correct!!')
+                    #     driver.find_element(By.XPATH,"//input[@id='inp-createCampModal-channelClientIoNumber']").clear()
+                    #     driver.find_element(By.XPATH,"//input[@id='inp-createCampModal-channelClientIoNumber']").send_keys('123sdeafsad')
+                    # else:
+                    #     print('Failed, client contract/ IO number is correct!!')
 
                     sleep(4)
                     driver.find_element(By.XPATH, "//button/span[contains(text(),'"+ModelAction+"')]").click()
@@ -268,16 +268,24 @@ class campaignSetUp():
         # tactisRadioButtonHeadingp = driver.find_elements(By.XPATH, "//div[@class='targeting-goals-view ng-scope']/ul/li//p") #tactics parag
         # onPremiseP = ""
         # locationP='"Send ads to people in real-time based on where they are e.g. People who are inside a fast food restaurant"'
-        for heading in tactisRadioButtonHeading:
-            print('%' * 50)
-            print('Tactis Heading is:-', heading.text)
-            heading.click() 
-            p=driver.find_element(By.XPATH, "//div[@class='textual-details']/div[@class='goal-label']//p[@xpath='1']").text            
-            print('Paragraph in the',heading.text,'is:',p)
-            #code for the under ao
-            ScrollElement=driver.find_element(By.ID, "btn-baseFooter-privacyPolicy")
-            driver.execute_script('arguments[0].scrollIntoView();',ScrollElement)
-            sleep(2)  
+        print('%' * 50)
+        tactics = driver.find_elements(By.XPATH, "//div[@class='goal-label']/h3")
+        for tactic in tactics:
+            # sleep(2)
+            # tactic.click() #click on tactic i.e Location, Audience and Weather
+            print(tactic.text) #print clicked tatic name
+            # driver.execute_script('window.scrollBy(0,document.body.scrollHeight)') #scroll down each time
+            # sleep(2)
+            if tactic.text == 'Target by Location': #if tactic name is Location Target by Weather, Target by Audience
+                # driver.find_element(By.XPATH, "//h4[text()='On Premise Targeting']").click()
+                tactic.click()
+                subtactic= 'On Premise Targeting' # On Premise Targeting,Neighborhoods,Geotargets
+                countOfSubtactic=driver.find_elements(By.XPATH,"//h4[contains(text(),'')]")
+                print(len(countOfSubtactic)-1)
+                driver.find_element(By.XPATH,"//h4[contains(text(),'"+subtactic+"')]").click()
+                break
+            else:
+                print('inside sub tactic!!')                
 
 
 c=campaignSetUp()
