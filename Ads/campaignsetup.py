@@ -271,22 +271,21 @@ class campaignSetUp():
         print('%' * 50)
         tactics = driver.find_elements(By.XPATH, "//div[@class='goal-label']/h3")
         for tactic in tactics:
-            # sleep(2)
-            # tactic.click() #click on tactic i.e Location, Audience and Weather
-            print(tactic.text) #print clicked tatic name
-            # driver.execute_script('window.scrollBy(0,document.body.scrollHeight)') #scroll down each time
-            # sleep(2)
-            if tactic.text == 'Target by Location': #if tactic name is Location Target by Weather, Target by Audience
+            tacticOption= 'Target by Audience' #Location
+            tacticOption2 = 'Target by Audience' #Audience,Weather
+            if tactic.text == tacticOption: #if tactic name is Location Target by Weather, Target by Audience
                 # driver.find_element(By.XPATH, "//h4[text()='On Premise Targeting']").click()
+                print('Target by Location Paragraph:',driver.find_element(By.XPATH, "//div[@class='goal-label']/p").text)
                 tactic.click()
-                subtactic= 'On Premise Targeting' # On Premise Targeting,Neighborhoods,Geotargets
-                countOfSubtactic=driver.find_elements(By.XPATH,"//h4[contains(text(),'')]")
-                print(len(countOfSubtactic)-1)
-                driver.find_element(By.XPATH,"//h4[contains(text(),'"+subtactic+"')]").click()
+                subTactic= 'On Premise Targeting' # On Premise Targeting,Neighborhoods,Geotargets
+                print('Sub tactics count inside Target by Location:',len(driver.find_elements(By.XPATH,"//h4[contains(text(),'')]"))-1)
+                driver.find_element(By.XPATH,"//h4[contains(text(),'"+subTactic+"')]").click()
+                print(driver.find_element(By.XPATH,"//div[@class='sub-option-text']/p").text)
                 break
             else:
-                print('inside sub tactic!!')                
-
+                driver.find_element(By.XPATH, "//h3[contains(text(),'"+tacticOption2+"')]").click()
+                print(driver.find_element(By.XPATH, "//div[@class='goal-label']/p").text)
+                break       
 
 c=campaignSetUp()
 c.NewCampaignButton()
