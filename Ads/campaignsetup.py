@@ -257,6 +257,7 @@ class campaignSetUp():
         actions=ActionChains(driver)
         info=driver.find_element(By.XPATH, "//div[@class='targeting-goals-view ng-scope']/h2/span")
         actions.move_to_element(info).perform()
+        sleep(2)
         if info.get_attribute('uib-popover') == 'Note: you can add other types of tactics to your campaign as you continue through your set up.':
             print('Passed, tooltip under the targeting tactics is correct')
         else:
@@ -264,28 +265,43 @@ class campaignSetUp():
 
         noOftactics =  driver.find_elements(By.XPATH, "//div[@class='targeting-goals-view ng-scope']/ul/li")
         print('Count of tactics available is',len(noOftactics))
-        tactisRadioButtonHeading=driver.find_elements(By.XPATH, "//div[@class='targeting-goals-view ng-scope']/ul/li//h3") # radio button headings
-        # tactisRadioButtonHeadingp = driver.find_elements(By.XPATH, "//div[@class='targeting-goals-view ng-scope']/ul/li//p") #tactics parag
-        # onPremiseP = ""
-        # locationP='"Send ads to people in real-time based on where they are e.g. People who are inside a fast food restaurant"'
         print('%' * 50)
         tactics = driver.find_elements(By.XPATH, "//div[@class='goal-label']/h3")
         for tactic in tactics:
             tacticOption= 'Target by Audience' #Location
             tacticOption2 = 'Target by Audience' #Audience,Weather
             if tactic.text == tacticOption: #if tactic name is Location Target by Weather, Target by Audience
-                # driver.find_element(By.XPATH, "//h4[text()='On Premise Targeting']").click()
                 print('Target by Location Paragraph:',driver.find_element(By.XPATH, "//div[@class='goal-label']/p").text)
                 tactic.click()
                 subTactic= 'On Premise Targeting' # On Premise Targeting,Neighborhoods,Geotargets
                 print('Sub tactics count inside Target by Location:',len(driver.find_elements(By.XPATH,"//h4[contains(text(),'')]"))-1)
                 driver.find_element(By.XPATH,"//h4[contains(text(),'"+subTactic+"')]").click()
-                print(driver.find_element(By.XPATH,"//div[@class='sub-option-text']/p").text)
+                subtacticPara = driver.find_elements(By.XPATH,"//div[@class='sub-option-text']/p")
+                for p in subtacticPara:
+                    print(p.text)
+                driver.find_element(By.ID,"btn-adgGoals-next").click()
                 break
             else:
                 driver.find_element(By.XPATH, "//h3[contains(text(),'"+tacticOption2+"')]").click()
-                print(driver.find_element(By.XPATH, "//div[@class='goal-label']/p").text)
+                driver.find_element(By.ID,"btn-adgGoals-next").click()
                 break       
+        tacticParagraph= driver.find_elements(By.XPATH, "//div[@class='goal-label']/p")
+        for p in tacticParagraph:
+            print(p.text)
+    
+    def deviceType(self):
+        devicetypeheading = driver.find_element(By.XPATH, "//div[@class='jss337']/h4").text
+        devicetypeparagraph = driver.find_element(By.XPATH, "//div[@class='jss337']/h6").text
+        if devicetypeheading == 'Device Type':
+            print('Passed, Device type heading')
+        else:
+            print('Failed!')
+        if devicetypeparagraph == 'Select the device type you would like to advertise on to reach your desired audience':
+            print('Passed, device type paragraph')
+        else:
+            print('Failed!!')
+        driver.find_element(By.XPATH, "//button[@class='MuiButtonBase-root jss33 jss34']").click()
+        
 
 c=campaignSetUp()
 c.NewCampaignButton()
