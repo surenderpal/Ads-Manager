@@ -290,8 +290,10 @@ class campaignSetUp():
             print(p.text)
     
     def deviceType(self):
-        devicetypeheading = driver.find_element(By.XPATH, "//div[@class='jss337']/h4").text
-        devicetypeparagraph = driver.find_element(By.XPATH, "//div[@class='jss337']/h6").text
+        devicetypeheading = driver.find_element(By.XPATH, "//h4[contains(text(),'Device Type')]").text
+        devicetypeparagraph = driver.find_element(By.XPATH, "//h6[contains(text(),'Select')]").text
+        MobileButton = driver.find_element(By.XPATH, "//button[@class='MuiButtonBase-root jss33 jss34']")
+        nextButton=driver.find_element(By.ID,"btn-adgTargetSup-next")
         if devicetypeheading == 'Device Type':
             print('Passed, Device type heading')
         else:
@@ -299,13 +301,48 @@ class campaignSetUp():
         if devicetypeparagraph == 'Select the device type you would like to advertise on to reach your desired audience':
             print('Passed, device type paragraph')
         else:
-            print('Failed!!')
-        driver.find_element(By.XPATH, "//button[@class='MuiButtonBase-root jss33 jss34']").click()
+            print('Failed, device type paragraph!!')   
+             
+        if MobileButton.is_enabled() == True and nextButton.is_enabled() == True:
+            MobileIconText = driver.find_element(By.XPATH, "//div[contains(text(),'Mobile')]")
+            if MobileIconText.text == 'Mobile':
+                print('Passed, Mobile Icon text is correct')
+                MobileButton.click()
+                nextButton.click()
+            else:
+                print('Failed, Mobile Icon text is Incorrect')
+            print('Passed, clicked on Mobile and next button')
+        else:
+            print('Either Mobile button or Next button is disabled')
+    def LeftHandDetails(self):
+        buttons=driver.find_elements(By.XPATH, "//div[contains(@ng-click, 'goToStep')]")
+        list = ['audience-fields','location-filter','measurements','demographics','optimization-strategy','publisher-categories','build-audience']
+        liInButton = driver.find_elements(By.XPATH, "//li[contains(@ng-click, 'goToSection')]")
+        print('%'*50)
+        print('LeftHand details')
+        print()
+        print('count of buttons:',len(buttons))
+        print('count of li:',len(liInButton))
+        for button in buttons:
+            print(button.text)
+        driver.find_element(By.XPATH, "//div[contains(text(),'Target Audience')]").click()
+        liInButton = driver.find_elements(By.XPATH, "//li[contains(@ng-click, 'goToSection')]")
+        list = ['audience-fields','location-filter','measurements','demographics','optimization-strategy','publisher-categories','build-audience']
+        for i in range(len(list)):
+            li=driver.find_element(By.XPATH, "//li[contains(text(),'"+list[i]+"')]")
+            li.click()
+
+
+            
+        
         
 
 c=campaignSetUp()
 c.NewCampaignButton()
 c.NewCampaignModel('Regression-Automation-testing','Pet Services','campaign-budget','Save')# 'adgroup-budget','campaign-budget','×','Save'
 c.TargettingHeader()
+c.deviceType()
+c.LeftHandDetails()
 sleep(20)
 driver.close()
+
