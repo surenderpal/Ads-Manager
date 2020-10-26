@@ -316,8 +316,7 @@ class campaignSetUp():
             print('Either Mobile button or Next button is disabled')
     def LeftHandDetails(self):
         buttons=driver.find_elements(By.XPATH, "//div[contains(@ng-click, 'goToStep')]")
-        list = ['audience-fields','location-filter','measurements','demographics','optimization-strategy','publisher-categories','build-audience']
-        liInButton = driver.find_elements(By.XPATH, "//li[contains(@ng-click, 'goToSection')]")
+        liInButton = driver.find_elements(By.XPATH, "//li[contains(@ng-click,'goToSection')]")
         print('%'*50)
         print('LeftHand details')
         print()
@@ -325,17 +324,98 @@ class campaignSetUp():
         print('count of li:',len(liInButton))
         for button in buttons:
             print(button.text)
-        driver.find_element(By.XPATH, "//div[contains(text(),'Target Audience')]").click()
         liInButton = driver.find_elements(By.XPATH, "//li[contains(@ng-click, 'goToSection')]")
-        list = ['audience-fields','location-filter','measurements','demographics','optimization-strategy','publisher-categories','build-audience']
+        list = ['Behavior / Custom Audience','Location Filter','Drive-To Locations','Demographics','Optimization Strategy','Publisher Categories','Build Audience']
         for i in range(len(list)):
             li=driver.find_element(By.XPATH, "//li[contains(text(),'"+list[i]+"')]")
             li.click()
-
-
-            
+            sleep(2)
+        # ButtonList=['Targeting Goal','Device Type','Target Audience','Ad Creatives','Budget & Schedule'] 
+        if driver.find_element(By.XPATH, "//div[contains(text(),'Targeting Goal')]").text == 'Targeting Goal':
+            print('Passed, Targeting Goal, Label is correct')
+        else:
+            print('Failed, Targeting Goal, Label is incorrect')
         
-        
+        if driver.find_element(By.XPATH, "//div[contains(text(),'Device Type')]").text == 'Device Type':
+            print('Passed, Device Type, Label is correct')
+        else:
+            print('Failed, Device Type, Label is incorrect')
+        if driver.find_element(By.XPATH, "//div[contains(text(),'Target Audience')]").text == 'Target Audience':
+            print('Passed, Target Audience, Label is correct')
+        else:
+            print('Failed, Target Audience, Label is incorrect')
+        if driver.find_element(By.XPATH, "//div[contains(text(),'Ad Creatives')]").text == 'Ad Creatives':
+            print('Passed, Ad Creatives, Label is correct')
+        else:
+            print('Failed, Ad Creatives, Label is incorrect')
+        if driver.find_element(By.XPATH, "//div[contains(text(),'Budget & Schedule')]").text == 'Budget & Schedule':
+            print('Passed, Budget & Schedule, Label is correct')
+        else:
+            print('Failed, Budget & Schedule, Label is incorrect') 
+        if driver.find_element(By.XPATH, "//li[contains(text(),'Behavior / Custom Audience')]").text == 'Behavior / Custom Audience':
+            print('Passed, Behavior / Custom Audience, Label is correct')
+        else:
+            print('Failed, Behavior / Custom Audience, Label is incorrect')
+        if driver.find_element(By.XPATH, "//li[contains(text(),'Location Filter')]").text == 'Location Filter':
+            print('Passed, Location Filter, Label is correct')
+        else:
+            print('Failed, Location Filter, Label is incorrect')
+        if driver.find_element(By.XPATH, "//li[contains(text(),'Drive-To Locations')]").text == 'Drive-To Locations':
+            print('Passed, Drive-To Locations, Label is correct')
+        else:
+            print('Failed, Drive-To Locations, Label is incorrect')
+        if driver.find_element(By.XPATH, "//li[contains(text(),'Demographics')]").text == 'Demographics':
+            print('Passed, Demographics, Label is correct')
+        else:
+            print('Failed, Demographics, Label is incorrect')
+        if driver.find_element(By.XPATH, "//li[contains(text(),'Optimization Strategy')]").text == 'Optimization Strategy':
+            print('Passed, Optimization Strategy, Label is correct')
+        else:
+            print('Failed, Optimization Strategy, Label is incorrect')
+        if driver.find_element(By.XPATH, "//li[contains(text(),'Publisher Categories')]").text == 'Publisher Categories':
+            print('Passed, Publisher Categories, Label is correct')
+        else:
+            print('Failed, Publisher Categories, Label is incorrect')
+        if driver.find_element(By.XPATH, "//li[contains(text(),'Build Audience')]").text == 'Build Audience':
+            print('Passed, Build Audience, Label is correct')
+        else:
+            print('Failed, Build Audience, Label is incorrect')
+
+    def RightHandDetials(self):
+        print('%'*50)
+        print('RightHand details')
+        infoText='Estimates are based on many factors, including past campaign data, location targeting, audience targeting, bid prices, budget, and market data. These numbers are provided to give you an idea of performance for your targeting configuration, but are only estimates and do not guarantee results.'
+        estimedReslultLabel = driver.find_element(By.XPATH, "//div[contains(text(), 'Estimated Results')]").text
+        if estimedReslultLabel == 'Estimated Results':
+            print('Passed, Estimated Results Label is correct')
+        else:
+            print('Failed, Estimated Results Label is incorrect')
+        actions=ActionChains(driver)
+        infoIcon= driver.find_element(By.XPATH, "//img[@class='icon-info']")
+        actions.move_to_element(infoIcon).perform()
+        sleep(2)
+        if infoIcon.get_attribute('uib-popover') == infoText:
+            print('Passed, Text inside the info Icon is correct')
+        else:
+            print('Failed, text inside the info icon is incorrect')
+
+        availsTitle = driver.find_elements(By.XPATH, "//div[@class='avails-title']")
+        print('Count of Avails title under map:',len(availsTitle))
+        for title in availsTitle:
+            print(title.text)
+        if driver.find_element(By.XPATH, "//div[contains(text(),'Projected Daily Impressions')]").text == 'Projected Daily Impressions':
+            print('Passed,Projected Daily Impressions lable is correct')
+        else:
+            print('Failed,Projected Daily Impressions lable is incorrect')
+        if driver.find_element(By.XPATH, "//div[contains(text(),'Audience Daily Reach')]").text == 'Audience Daily Reach':
+            print('Passed,Audience Daily Reach label is correct')
+        else:
+            print('Failed,Audience Daily Reach label is incorrect')
+        if driver.find_element(By.XPATH, "//div[contains(text(),'Audience Targeting')]").text == 'Audience Targeting':
+            print('Passed,Audience Targeting label is correct')
+        else:
+            print('Failed, Audience Targeting label is failed!')
+
 
 c=campaignSetUp()
 c.NewCampaignButton()
@@ -343,6 +423,7 @@ c.NewCampaignModel('Regression-Automation-testing','Pet Services','campaign-budg
 c.TargettingHeader()
 c.deviceType()
 c.LeftHandDetails()
+c.RightHandDetials()
 sleep(20)
 driver.close()
 
