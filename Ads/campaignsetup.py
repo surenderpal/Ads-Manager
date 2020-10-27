@@ -415,7 +415,128 @@ class campaignSetUp():
             print('Passed,Audience Targeting label is correct')
         else:
             print('Failed, Audience Targeting label is failed!')
+    
+    def AdGroupHeader(self):
+        headerBudgetlabel = driver.find_element(By.XPATH, "//div[contains(text(),'Budget') and @class ='label']").text
+        headerTotalSpentlabel=driver.find_element(By.XPATH, "//div[contains(text(),'Total Spent')]").text
+        headerStatuslabel = driver.find_element(By.XPATH, "//div[contains(text(),'Status')]").text
+        budgetUsdLabel= driver.find_element(By.ID, "contextualHeader-adgroupBudgetUnit").text
+        totalSpentUsdLabel= driver.find_element(By.ID, "contextualHeader-adgroupTotalSpentUnit").text
+        headerstatusvalue = driver.find_element(By.ID, "contextualHeader-adgroupStatusValue").text
 
+        print('%'*50)
+        print('Headers details')
+        adGrouplabel = driver.find_element(By.XPATH, "//div[contains(text(),'Ad Group')]").text
+        if adGrouplabel == 'Ad Group':
+            print('Passed',adGrouplabel,'is correct')
+        else:
+            print('Failed',adGrouplabel,'is incorrect')
+        defaultAdgroupName = driver.find_element(By.XPATH, "//h2[@class='ng-binding']").text
+        if defaultAdgroupName == 'New Ad Group':
+            print('Passed, Default Ad Group name is,',defaultAdgroupName, 'and it is correct')
+        else:
+            print('Failed, Default Ad Group name is,',defaultAdgroupName, 'and it is failed')
+        allHeaderLabel=driver.find_elements(By.XPATH, "//div[@class='label']")
+        
+        print('Header label details are listed below:-')
+        print('count of label in header:',len(allHeaderLabel))
+        for label in allHeaderLabel:
+            print(label.text)
+        if headerBudgetlabel == 'Budget':
+            print('Passed,',headerBudgetlabel,'label is correct')
+        else:
+            print('Failed,',headerBudgetlabel,'label is incorrect')
+        if budgetUsdLabel == 'USD':
+           print('Passed,',budgetUsdLabel,'label is correct')
+        else:
+            print('Failed,',budgetUsdLabel,'label is incorrect') 
+        if headerTotalSpentlabel == 'Total Spent':
+            print('Passed,',headerTotalSpentlabel,'label is correct')
+        else:
+            print('Failed,',headerTotalSpentlabel,'label is incorrect') 
+        if totalSpentUsdLabel == 'USD':
+           print('Passed,',totalSpentUsdLabel,'label is correct')
+        else:
+            print('Failed,',totalSpentUsdLabel,'label is incorrect')
+        if headerStatuslabel == 'Status':
+            print('Passed,',headerStatuslabel,'label is correct')
+        else:
+            print('Failed,',headerStatuslabel,'label is incorrect')
+        if headerstatusvalue == 'Paused':
+            print('Passed,',headerstatusvalue,'label is correct')
+            print('Default status value is:',headerstatusvalue)
+        else:
+            print('Failed,',headerstatusvalue,'label is incorrect')
+
+    def AdGroupSetUp(self):
+        driver.execute_script("window.scrollTo(0, 0);")
+        audienctInfoIcon="You can now select a Location Group for Location Audience targeting. This will target users who have been to the stores within the selected Location Group. Your Location Group will be available for selection below only if you have already built Location Audience for the Location Group. If you have not built Location Audience for a Location Group yet, visit Location Manager to do so."
+        print('%'*50)
+        print('AdGroup details')
+        allH3tags= driver.find_elements(By.TAG_NAME, 'h3')
+        print('Count of H3 tags inside the Ad Group creation:',len(allH3tags)-1)
+        for h3 in allH3tags:
+            print(h3.text)
+        nameYourAdGrouptag= driver.find_element(By.XPATH, "//h3[contains(text(),'Name your Ad Group')]").text
+        selectAudiencestag = driver.find_element(By.XPATH, "//h3[contains(text(), 'Select audiences')]").text
+        ApplyadditionalLocationFilterstag= driver.find_element(By.XPATH, "//h3[contains(text(),'additional location filters')]").text
+        DriveToDestinationtag=driver.find_element(By.XPATH, "//h3[contains(text(),'Drive-To destination')]").text
+        demogrphicstag=driver.find_element(By.XPATH, "//h3[contains(text(),'Demographics')]").text
+        deviceTargetingtag=driver.find_element(By.XPATH, "//h3[contains(text(),'Device Targeting')]").text
+        OptimizationStrategytag= driver.find_element(By.XPATH,"//h3[contains(text(),'Optimization Strategy')]").text
+        publisherCategoryTag=driver.find_element(By.XPATH, "//h3[contains(text(),'Publisher Categories')]").text
+        remessagingtag=driver.find_element(By.XPATH,"//h3[contains(text(),'remessaging')]").text
+        
+        if nameYourAdGrouptag == 'Name your Ad Group':
+            print('Passed',nameYourAdGrouptag, 'is correct')
+            adgroupInput=driver.find_element(By.XPATH, "//input[@id='adgroup-name']") #get_attribute('ng-if') .get_property('ng-if')
+            adgroupInput.clear()
+            adgroupInput.send_keys('surender')
+            print('adgroup Name:',adgroupInput)
+        else:
+            print('Failed',nameYourAdGrouptag, 'is incorrect')     
+        if selectAudiencestag == 'Select audiences':
+            actions=ActionChains(driver)
+            infoIcon=driver.find_element(By.XPATH, "//body/ui-view[1]/div[1]/div[3]/div[1]/div[1]/div[1]/div[1]/div[2]/div[1]/div[1]/div[1]/div[1]/section[2]/div[1]/h3[1]/new-feature[1]/a[1]/span[1]")
+            actions.move_to_element(infoIcon).perform()
+            sleep(2)
+            if infoIcon.get_attribute('uib-popover')==audienctInfoIcon:
+                print("Passed, Audience tooltip is correct")
+            else:
+                print("Failed, Audience tooltip is incorrect")
+            print('Passed',selectAudiencestag, 'is correct')
+
+        else:
+            print('Failed',selectAudiencestag, 'is incorrect')
+        if ApplyadditionalLocationFilterstag == 'Apply additional location filters':
+            print('Passed',ApplyadditionalLocationFilterstag, 'is correct')
+        else:
+            print('Failed',ApplyadditionalLocationFilterstag, 'is incorrect')
+        if DriveToDestinationtag == 'Specify your Drive-To destination for ad group measurement':
+            print('Passed',DriveToDestinationtag, 'is correct')
+        else:
+            print('Failed',DriveToDestinationtag, 'is incorrect')
+        if demogrphicstag == 'Demographics':
+            print('Passed',demogrphicstag, 'is correct')
+        else:
+            print('Failed',demogrphicstag, 'is incorrect')
+        if deviceTargetingtag == 'Device Targeting':
+            print('Passed',deviceTargetingtag, 'is correct')
+        else:
+            print('Failed',deviceTargetingtag, 'is incorrect')
+        if OptimizationStrategytag == 'Optimization Strategy':
+            print('Passed',OptimizationStrategytag, 'is correct')
+        else:
+            print('Failed',OptimizationStrategytag, 'is incorrect')
+        if publisherCategoryTag == 'Publisher Categories':
+            print('Passed',publisherCategoryTag, 'is correct')
+        else:
+            print('Failed',publisherCategoryTag, 'is incorrect')
+        if remessagingtag == 'Build custom audience for remessaging users who see your ad':
+            print('Passed',remessagingtag, 'is correct')
+        else:
+            print('Failed',remessagingtag, 'is incorrect')
+        
 
 c=campaignSetUp()
 c.NewCampaignButton()
@@ -424,6 +545,7 @@ c.TargettingHeader()
 c.deviceType()
 c.LeftHandDetails()
 c.RightHandDetials()
+c.AdGroupHeader()
+c.AdGroupSetUp()
 sleep(20)
 driver.close()
-
