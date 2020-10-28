@@ -468,7 +468,7 @@ class campaignSetUp():
         else:
             print('Failed,',headerstatusvalue,'label is incorrect')
 
-    def AdGroupSetUp(self):
+    def AdGroupSetUp(self,Behavior,Category,LocationGroup,Brand):
         driver.execute_script("window.scrollTo(0, 0);")
         audienctInfoIcon="You can now select a Location Group for Location Audience targeting. This will target users who have been to the stores within the selected Location Group. Your Location Group will be available for selection below only if you have already built Location Audience for the Location Group. If you have not built Location Audience for a Location Group yet, visit Location Manager to do so."
         print('%'*50)
@@ -492,12 +492,12 @@ class campaignSetUp():
             adgroupInput=driver.find_element(By.XPATH, "//input[@id='adgroup-name']") #get_attribute('ng-if') .get_property('ng-if')
             adgroupInput.clear()
             adgroupInput.send_keys('surender')
-            print('adgroup Name:',adgroupInput)
+            print('adgroup Name:',adgroupInput.text)
         else:
             print('Failed',nameYourAdGrouptag, 'is incorrect')     
         if selectAudiencestag == 'Select audiences':
             actions=ActionChains(driver)
-            infoIcon=driver.find_element(By.XPATH, "//body/ui-view[1]/div[1]/div[3]/div[1]/div[1]/div[1]/div[1]/div[2]/div[1]/div[1]/div[1]/div[1]/section[2]/div[1]/h3[1]/new-feature[1]/a[1]/span[1]")
+            infoIcon=driver.find_element(By.XPATH, "//body/ui-view[1]/div[1]/div[3]/div[1]/div[1]/div[1]/div[1]/div[2]/div[1]/div[1]/div[1]/div[1]/section[2]/div[1]/h3[1]/new-feature[1]/a[1]/span[1]") #.//h3[contains(text(), 'Select audiences')]/*
             actions.move_to_element(infoIcon).perform()
             sleep(2)
             if infoIcon.get_attribute('uib-popover')==audienctInfoIcon:
@@ -505,7 +505,39 @@ class campaignSetUp():
             else:
                 print("Failed, Audience tooltip is incorrect")
             print('Passed',selectAudiencestag, 'is correct')
-
+            audienceInputBox=driver.find_element(By.XPATH, "//input[@placeholder='Select a brand, category, behavioral, custom or location group audience']")
+            # -------Behavior-------------------
+            audienceInputBox.click()
+            audienceInputBox.clear()
+            audienceInputBox.send_keys(Behavior)
+            sleep(1)
+            WebDriverWait(driver,40).until(EC.element_to_be_clickable((By.XPATH, "//a[contains(text(),'Behavior')]"))).click()
+            sleep(2)
+            WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, "//div[@class='tab-pane ng-scope active']/li[(contains(text(),'"+Behavior+"'))]"))).click()
+            # -------Category(Potato Growers)-------------------
+            audienceInputBox.click()
+            audienceInputBox.clear()
+            audienceInputBox.send_keys(Category)
+            sleep(1) 
+            WebDriverWait(driver,40).until(EC.element_to_be_clickable((By.XPATH, "//a[contains(text(),'Category')]"))).click()
+            sleep(2)
+            WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, "//div[@class='tab-pane ng-scope active']/li[(contains(text(),'"+Category+"'))]"))).click()
+            # -------Location Group(Live Nation)-------------------
+            audienceInputBox.click()
+            audienceInputBox.clear()
+            audienceInputBox.send_keys(LocationGroup) 
+            sleep(1)
+            WebDriverWait(driver,40).until(EC.element_to_be_clickable((By.XPATH, "//a[contains(text(),'Location Group')]"))).click()
+            sleep(2)
+            WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, "//div[@class='tab-pane ng-scope active']/li[(contains(text(),'"+LocationGroup+"'))]"))).click()
+            # -------Brand-------------------
+            audienceInputBox.click()
+            audienceInputBox.clear()
+            audienceInputBox.send_keys(Brand) 
+            sleep(1)
+            WebDriverWait(driver,40).until(EC.element_to_be_clickable((By.XPATH, "//a[contains(text(),'Brand')]"))).click()
+            sleep(2)
+            WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, "//div[@class='tab-pane ng-scope active']/li[(contains(text(),'"+Brand+"'))]"))).click()
         else:
             print('Failed',selectAudiencestag, 'is incorrect')
         if ApplyadditionalLocationFilterstag == 'Apply additional location filters':
@@ -543,9 +575,9 @@ c.NewCampaignButton()
 c.NewCampaignModel('Regression-Automation-testing','Pet Services','campaign-budget','Save')# 'adgroup-budget','campaign-budget','×','Save'
 c.TargettingHeader()
 c.deviceType()
-c.LeftHandDetails()
-c.RightHandDetials()
-c.AdGroupHeader()
-c.AdGroupSetUp()
+# c.LeftHandDetails()
+# c.RightHandDetials()
+# c.AdGroupHeader()
+c.AdGroupSetUp('Millennials','Potato Growers','Live Nation',"Costco") #Behavior,Category,LocationGroup,Brand #"Wendy's" "7-Eleven"
 sleep(20)
 driver.close()
