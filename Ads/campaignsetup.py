@@ -468,9 +468,10 @@ class campaignSetUp():
         else:
             print('Failed,',headerstatusvalue,'label is incorrect')
 
-    def AdGroupSetUp(self,Behavior,Category,LocationGroup,Brand):
+    def AdGroupSetUp(self,Behavior,Category,LocationGroup,Brand,ExBehavior,ExCategory,ExBrand,ExLocationGroup):
         driver.execute_script("window.scrollTo(0, 0);")
         audienctInfoIcon="You can now select a Location Group for Location Audience targeting. This will target users who have been to the stores within the selected Location Group. Your Location Group will be available for selection below only if you have already built Location Audience for the Location Group. If you have not built Location Audience for a Location Group yet, visit Location Manager to do so."
+        lookalikesLabelTooltipText='Lookalikes increase scale of your brand-based location audience by adding users similar to the original audience set. Achieve scale increase (upto 10x of the original set) without significant impact on visitation performance. Click here to learn more.'
         print('%'*50)
         print('AdGroup details')
         allH3tags= driver.find_elements(By.TAG_NAME, 'h3')
@@ -534,12 +535,84 @@ class campaignSetUp():
             audienceInputBox.click()
             audienceInputBox.clear()
             audienceInputBox.send_keys(Brand) 
-            sleep(1)
+            sleep(4)
             WebDriverWait(driver,40).until(EC.element_to_be_clickable((By.XPATH, "//a[contains(text(),'Brand')]"))).click()
             sleep(2)
             WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, "//div[@class='tab-pane ng-scope active']/li[(contains(text(),'"+Brand+"'))]"))).click()
+            # -------lookalikes
+            lookalikesInputBox=driver.find_element(By.ID,"inp-adGroupTargetingAud-lookalikeAudScale")
+            lookalikesLabel = driver.find_element(By.XPATH, "//div[@class='lookalike']//label")
+            lookalikesInfo = driver.find_element(By.XPATH, ".//div[@class='lookalike']//span")
+            if lookalikesInputBox.is_selected() == True:
+                print('By Default lookalikes Input box is checked')
+                if lookalikesLabel.text == 'Include lookalikes to increase scale':
+                    print('Passed, lookalikes label is correct')
+                    actions=ActionChains(driver)
+                    actions.move_to_element(lookalikesInfo).perform()
+                    if lookalikesInfo.get_attribute('uib-popover') == lookalikesLabelTooltipText:
+                        print('Passed,Lookalikes Info tooltip text is correct')
+                    else:
+                        print('Lookalikes Info tooltip text is incorrect')
+                else:
+                    print('Failed, lookalikes label is Incorrect')
+            else:
+                print('By Default lookalikes Input box is Unchecked')
         else:
             print('Failed',selectAudiencestag, 'is incorrect')
+        select=Select(driver.find_element(By.ID,'inp-adGroupTargetingAud-selectedLookalikeAud'))
+        select.select_by_visible_text('4x of original audience')
+        print('count of options, inside th lookalike dropdown:',len(select.options))
+        print('options are listed below:')
+        for option in select.options:
+            print(option.text)
+        # ---Exclude Audience---------
+        element=driver.find_element(By.XPATH, "//a[contains(text(),'Exclude Audiences')]")
+        driver.execute_script("arguments[0].scrollIntoView();", lookalikesLabel)
+        element.click()
+        sleep(2)
+        if driver.find_element(By.XPATH, "//h4[contains(text(),'Excluding Audience')]").text == 'Excluding Audience':
+            print('Passed, Excluding Audience, heading!!')
+            excludeInput = driver.find_element(By.XPATH, "//div[@class='exclude-fields']//input")
+            if excludeInput.get_attribute('placeholder')=='Select a brand, category, behavioral, custom or location group audience':
+                print('Passed, placeholder inside the exclude Audience input box is correct')
+            else:
+                print('Failed, placeholder inside the exclude Audience input box is incorrect')
+        else:
+            print('Failed, Excluding Audience, heading') 
+        # click on exlude element
+        excludeInputBox=driver.find_element(By.XPATH,"//section[1]/div/gt-autocomplete//input")
+        excludeInputBox.click()
+        excludeTabs=driver.find_elements(By.XPATH, "//a[@ng-click='select($event)']")
+        print('Count of tabs inside the Exclude input box:',len(excludeTabs))
+        for tab in excludeTabs:
+            print(tab.text)
+        excludeInputBox.clear()
+        #----Behaviour----------
+        excludeInputBox.send_keys(ExBehavior)
+        sleep(1)        
+        driver.find_element(By.XPATH, "//a[contains(text(),'Behavior')]").click() 
+        sleep(2)
+        driver.find_element(By.XPATH, "//li[@class='autocomplete-item ng-binding ng-scope highlighted' and contains(text(),'"+ExBehavior+"')]").click()
+        sleep(2)
+        #----Category----------
+        excludeInputBox.send_keys(ExCategory) 
+        sleep(1)        
+        driver.find_element(By.XPATH, "//a[contains(text(),'Category')]").click() 
+        sleep(2)
+        driver.find_element(By.XPATH, "//li[@class='autocomplete-item ng-binding ng-scope highlighted' and contains(text(),'"+ExCategory+"')]").click()
+        #----Brand----------
+        excludeInputBox.send_keys(ExBrand)
+        sleep(1)        
+        driver.find_element(By.XPATH, "//a[contains(text(),'Brand')]").click() 
+        sleep(2)
+        driver.find_element(By.XPATH, "//li[@class='autocomplete-item ng-binding ng-scope highlighted' and contains(text(),'"+ExBrand+"')]").click()
+        #----Location Group----------
+        excludeInputBox.send_keys(ExLocationGroup)
+        sleep(1)        
+        driver.find_element(By.XPATH, "//a[contains(text(),'Location Group')]").click() 
+        sleep(2)
+        driver.find_element(By.XPATH, "//li[@class='autocomplete-item ng-binding ng-scope highlighted' and contains(text(),'"+ExLocationGroup+"')]").click()
+#-------------Apply additional location filters---------------- 
         if ApplyadditionalLocationFilterstag == 'Apply additional location filters':
             print('Passed',ApplyadditionalLocationFilterstag, 'is correct')
         else:
@@ -578,6 +651,7 @@ c.deviceType()
 # c.LeftHandDetails()
 # c.RightHandDetials()
 # c.AdGroupHeader()
-c.AdGroupSetUp('Millennials','Potato Growers','Live Nation',"Costco") #Behavior,Category,LocationGroup,Brand #"Wendy's" "7-Eleven"
+c.AdGroupSetUp('Millennials','Potato Growers','Live Nation',"Costco",'Hispanics','Vegetable Farms','Pizza Hut','Renault') #Behavior,Category,LocationGroup,Brand #"Wendy's" "7-Eleven"
+
 sleep(20)
 driver.close()
