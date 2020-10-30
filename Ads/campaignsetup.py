@@ -479,14 +479,14 @@ class campaignSetUp():
         for h3 in allH3tags:
             print(h3.text)
         nameYourAdGrouptag= driver.find_element(By.XPATH, "//h3[contains(text(),'Name your Ad Group')]").text
-        selectAudiencestag = driver.find_element(By.XPATH, "//h3[contains(text(), 'Select audiences')]").text
-        ApplyadditionalLocationFilterstag= driver.find_element(By.XPATH, "//h3[contains(text(),'additional location filters')]").text
-        DriveToDestinationtag=driver.find_element(By.XPATH, "//h3[contains(text(),'Drive-To destination')]").text
-        demogrphicstag=driver.find_element(By.XPATH, "//h3[contains(text(),'Demographics')]").text
-        deviceTargetingtag=driver.find_element(By.XPATH, "//h3[contains(text(),'Device Targeting')]").text
-        OptimizationStrategytag= driver.find_element(By.XPATH,"//h3[contains(text(),'Optimization Strategy')]").text
-        publisherCategoryTag=driver.find_element(By.XPATH, "//h3[contains(text(),'Publisher Categories')]").text
-        remessagingtag=driver.find_element(By.XPATH,"//h3[contains(text(),'remessaging')]").text
+        selectAudiencestag = driver.find_element(By.XPATH, "//h3[contains(text(), 'Select audiences')]")
+        ApplyadditionalLocationFilterstag= driver.find_element(By.XPATH, "//h3[contains(text(),'additional location filters')]")
+        DriveToDestinationtag=driver.find_element(By.XPATH, "//h3[contains(text(),'Drive-To destination')]")
+        demogrphicstag=driver.find_element(By.XPATH, "//h3[contains(text(),'Demographics')]")
+        deviceTargetingtag=driver.find_element(By.XPATH, "//h3[contains(text(),'Device Targeting')]")
+        OptimizationStrategytag= driver.find_element(By.XPATH,"//h3[contains(text(),'Optimization Strategy')]")
+        publisherCategoryTag=driver.find_element(By.XPATH, "//h3[contains(text(),'Publisher Categories')]")
+        remessagingtag=driver.find_element(By.XPATH,"//h3[contains(text(),'remessaging')]")
         
         if nameYourAdGrouptag == 'Name your Ad Group':
             print('Passed',nameYourAdGrouptag, 'is correct')
@@ -496,7 +496,7 @@ class campaignSetUp():
             print('adgroup Name:',adgroupInput.text)
         else:
             print('Failed',nameYourAdGrouptag, 'is incorrect')     
-        if selectAudiencestag == 'Select audiences':
+        if selectAudiencestag.text == 'Select audiences':
             actions=ActionChains(driver)
             infoIcon=driver.find_element(By.XPATH, "//body/ui-view[1]/div[1]/div[3]/div[1]/div[1]/div[1]/div[1]/div[2]/div[1]/div[1]/div[1]/div[1]/section[2]/div[1]/h3[1]/new-feature[1]/a[1]/span[1]") #.//h3[contains(text(), 'Select audiences')]/*
             actions.move_to_element(infoIcon).perform()
@@ -511,25 +511,25 @@ class campaignSetUp():
             audienceInputBox.click()
             audienceInputBox.clear()
             audienceInputBox.send_keys(Behavior)
-            sleep(1)
-            WebDriverWait(driver,40).until(EC.element_to_be_clickable((By.XPATH, "//a[contains(text(),'Behavior')]"))).click()
             sleep(2)
+            WebDriverWait(driver,40).until(EC.element_to_be_clickable((By.XPATH, "//a[contains(text(),'Behavior')]"))).click()
+            sleep(1)
             WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, "//div[@class='tab-pane ng-scope active']/li[(contains(text(),'"+Behavior+"'))]"))).click()
             # -------Category(Potato Growers)-------------------
             audienceInputBox.click()
             audienceInputBox.clear()
             audienceInputBox.send_keys(Category)
-            sleep(1) 
+            sleep(2) 
             WebDriverWait(driver,40).until(EC.element_to_be_clickable((By.XPATH, "//a[contains(text(),'Category')]"))).click()
-            sleep(2)
+            sleep(1)
             WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, "//div[@class='tab-pane ng-scope active']/li[(contains(text(),'"+Category+"'))]"))).click()
             # -------Location Group(Live Nation)-------------------
             audienceInputBox.click()
             audienceInputBox.clear()
             audienceInputBox.send_keys(LocationGroup) 
-            sleep(1)
-            WebDriverWait(driver,40).until(EC.element_to_be_clickable((By.XPATH, "//a[contains(text(),'Location Group')]"))).click()
             sleep(2)
+            WebDriverWait(driver,40).until(EC.element_to_be_clickable((By.XPATH, "//a[contains(text(),'Location Group')]"))).click()
+            sleep(1)
             WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, "//div[@class='tab-pane ng-scope active']/li[(contains(text(),'"+LocationGroup+"'))]"))).click()
             # -------Brand-------------------
             audienceInputBox.click()
@@ -567,7 +567,7 @@ class campaignSetUp():
             print(option.text)
         # ---Exclude Audience---------
         element=driver.find_element(By.XPATH, "//a[contains(text(),'Exclude Audiences')]")
-        driver.execute_script("arguments[0].scrollIntoView();", lookalikesLabel)
+        driver.execute_script("arguments[0].scrollIntoView();", lookalikesLabel) 
         element.click()
         sleep(2)
         if driver.find_element(By.XPATH, "//h4[contains(text(),'Excluding Audience')]").text == 'Excluding Audience':
@@ -589,58 +589,119 @@ class campaignSetUp():
         excludeInputBox.clear()
         #----Behaviour----------
         excludeInputBox.send_keys(ExBehavior)
-        sleep(1)        
+        sleep(2)        
         driver.find_element(By.XPATH, "//a[contains(text(),'Behavior')]").click() 
-        sleep(2)
+        sleep(1)
         driver.find_element(By.XPATH, "//li[@class='autocomplete-item ng-binding ng-scope highlighted' and contains(text(),'"+ExBehavior+"')]").click()
-        sleep(2)
         #----Category----------
         excludeInputBox.send_keys(ExCategory) 
-        sleep(1)        
+        sleep(2)        
         driver.find_element(By.XPATH, "//a[contains(text(),'Category')]").click() 
-        sleep(2)
+        sleep(1)
         driver.find_element(By.XPATH, "//li[@class='autocomplete-item ng-binding ng-scope highlighted' and contains(text(),'"+ExCategory+"')]").click()
         #----Brand----------
         excludeInputBox.send_keys(ExBrand)
-        sleep(1)        
+        sleep(2)        
         driver.find_element(By.XPATH, "//a[contains(text(),'Brand')]").click() 
-        sleep(2)
+        sleep(1)
         driver.find_element(By.XPATH, "//li[@class='autocomplete-item ng-binding ng-scope highlighted' and contains(text(),'"+ExBrand+"')]").click()
         #----Location Group----------
         excludeInputBox.send_keys(ExLocationGroup)
-        sleep(1)        
+        sleep(2)       
         driver.find_element(By.XPATH, "//a[contains(text(),'Location Group')]").click() 
-        sleep(2)
+        sleep(1)
         driver.find_element(By.XPATH, "//li[@class='autocomplete-item ng-binding ng-scope highlighted' and contains(text(),'"+ExLocationGroup+"')]").click()
+        #scroll to the top of the page
+        actions=ActionChains(driver)
+        actions.move_to_element(selectAudiencestag).perform()
+        # driver.execute_script("arguments[0].scrollIntoView();", nameYourAdGrouptag) 
+        lilnksInSelectAudienceSetting=driver.find_elements(By.XPATH, "//div[@class='hyperlink-holder ng-scope']/a")
+        print('count of links near the select audience setting:',len(lilnksInSelectAudienceSetting))
+        for link in lilnksInSelectAudienceSetting:
+            print(link.text)
+            print(link.get_attribute('href'))
+        locationGroupLinkInSelectAduience= driver.find_element(By.XPATH,"//div[@class='hyperlink-holder ng-scope']/a[contains(text(),'Add')]")
+        if locationGroupLinkInSelectAduience.text == 'Add new location group':
+            print('Passed, Link text passed')
+        else:
+            print('Failed, Link text failed')
+        adsHandle=driver.current_window_handle
+        driver.find_element(By.XPATH,"//div[@class='hyperlink-holder ng-scope']/a[contains(text(),'Add')]").click()
+        handles=driver.window_handles
+        for handle in handles:
+            if handle!=adsHandle:
+                driver.switch_to.window(handle)
+                print('title of second window:',driver.title) #performed task on second window
+                sleep(3)
+                driver.close()
+            driver.switch_to.window(adsHandle)
+            print(driver.title)
+
 #-------------Apply additional location filters---------------- 
-        if ApplyadditionalLocationFilterstag == 'Apply additional location filters':
-            print('Passed',ApplyadditionalLocationFilterstag, 'is correct')
+        driver.execute_script("arguments[0].scrollIntoView();",driver.find_element(By.XPATH,"//h3[contains(text(),'Apply additional location filters')]"))
+        sleep(2)
+        addLocFilterPlaceholder='Search and select city, state, DMA, zipcode, coordinates, or address'
+        if ApplyadditionalLocationFilterstag.text == 'Apply additional location filters':
+            print('Passed',ApplyadditionalLocationFilterstag.text, 'is correct')
+            addLocFilter=driver.find_element(By.XPATH, "//section[@id='location-filter']//input")
+            addLocFilter.click()
+            addLocFilter.clear()  
+            if addLocFilter.get_attribute('placeholder') == addLocFilterPlaceholder:
+                print('Passed, placeholder inside the additional location filter is correct')
+                #tabs inside input box
+                tabs=driver.find_elements(By.XPATH, "//li/a[@ng-click='select($event)']")
+                print('count of tabs inside the additional location filter:',len(tabs))
+                for tab in tabs:
+                    print(tab.text)
+        #---------city---------- 
+                #key sending in input box
+                addLocFilter.send_keys('Parkman, ME')
+                sleep(2)
+                driver.find_element(By.XPATH,"//a[contains(text(),'City')]").click()
+                sleep(1)
+                driver.find_element(By.XPATH,"//div[@class='tab-pane ng-scope active']/li[contains(text(), 'Parkman, ME')]").click()
+        #---------state---------- 
+                #key sending in input box
+                addLocFilter.send_keys('Missouri')
+                sleep(2)
+                driver.find_element(By.XPATH,"//a[contains(text(),'State')]").click()
+                sleep(1)
+                driver.find_element(By.XPATH,"//div[@class='tab-pane ng-scope active']/li[contains(text(), 'Missouri')]").click()        
+        #---------DMA---------- 
+                #key sending in input box
+                addLocFilter.send_keys('Austin, TX')
+                sleep(2)
+                driver.find_element(By.XPATH,"//a[contains(text(),'DMA')]").click()
+                sleep(1)
+                driver.find_element(By.XPATH,"//div[@class='tab-pane ng-scope active']/li[contains(text(), 'Austin, TX')]").click() 
+            else:
+                print('Failed, placeholder inside the additional location filter is incorrect')
         else:
-            print('Failed',ApplyadditionalLocationFilterstag, 'is incorrect')
-        if DriveToDestinationtag == 'Specify your Drive-To destination for ad group measurement':
-            print('Passed',DriveToDestinationtag, 'is correct')
+            print('Failed',ApplyadditionalLocationFilterstag.text, 'is incorrect')
+        if DriveToDestinationtag.text == 'Specify your Drive-To destination for ad group measurement':
+            print('Passed',DriveToDestinationtag.text, 'is correct')
         else:
-            print('Failed',DriveToDestinationtag, 'is incorrect')
-        if demogrphicstag == 'Demographics':
-            print('Passed',demogrphicstag, 'is correct')
+            print('Failed',DriveToDestinationtag.text, 'is incorrect')
+        if demogrphicstag.text == 'Demographics':
+            print('Passed',demogrphicstag.text, 'is correct')
         else:
-            print('Failed',demogrphicstag, 'is incorrect')
-        if deviceTargetingtag == 'Device Targeting':
-            print('Passed',deviceTargetingtag, 'is correct')
+            print('Failed',demogrphicstag.text, 'is incorrect')
+        if deviceTargetingtag.text == 'Device Targeting':
+            print('Passed',deviceTargetingtag.text, 'is correct')
         else:
-            print('Failed',deviceTargetingtag, 'is incorrect')
-        if OptimizationStrategytag == 'Optimization Strategy':
-            print('Passed',OptimizationStrategytag, 'is correct')
+            print('Failed',deviceTargetingtag.text, 'is incorrect')
+        if OptimizationStrategytag.text == 'Optimization Strategy':
+            print('Passed',OptimizationStrategytag.text, 'is correct')
         else:
-            print('Failed',OptimizationStrategytag, 'is incorrect')
-        if publisherCategoryTag == 'Publisher Categories':
-            print('Passed',publisherCategoryTag, 'is correct')
+            print('Failed',OptimizationStrategytag.text, 'is incorrect')
+        if publisherCategoryTag.text == 'Publisher Categories':
+            print('Passed',publisherCategoryTag.text, 'is correct')
         else:
-            print('Failed',publisherCategoryTag, 'is incorrect')
-        if remessagingtag == 'Build custom audience for remessaging users who see your ad':
-            print('Passed',remessagingtag, 'is correct')
+            print('Failed',publisherCategoryTag.text, 'is incorrect')
+        if remessagingtag.text == 'Build custom audience for remessaging users who see your ad':
+            print('Passed',remessagingtag.text, 'is correct')
         else:
-            print('Failed',remessagingtag, 'is incorrect')
+            print('Failed',remessagingtag.text, 'is incorrect')
         
 
 c=campaignSetUp()
