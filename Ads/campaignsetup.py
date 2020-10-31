@@ -678,30 +678,93 @@ class campaignSetUp():
                 print('Failed, placeholder inside the additional location filter is incorrect')
         else:
             print('Failed',ApplyadditionalLocationFilterstag.text, 'is incorrect')
-        if DriveToDestinationtag.text == 'Specify your Drive-To destination for ad group measurement':
-            print('Passed',DriveToDestinationtag.text, 'is correct')
+        geocoder=driver.find_element(By.LINK_TEXT,"Bulk location upload")
+        if geocoder.text == 'Bulk location upload':
+            print('Passed, Geocoder link text is correct')
+            geocoder.click()
+            geocoderUploaderText=driver.find_element(By.ID,"btn-superformModal-uploadFile")
+            geocoderModelTitle=driver.find_element(By.XPATH,"//div[contains(text(),'Upload Location Filters')]")
+            geocoerOrText=driver.find_element(By.XPATH,"//span[@class='or']")
+            geocoderTemplateDownload=driver.find_element(By.LINK_TEXT,"Download template here")
+            gecoderAppendCheckBox=driver.find_element(By.ID,"inp-superformModal-appendData")
+            gecoderAppendText=driver.find_element(By.XPATH,"//label[@for='inp-superformModal-appendData']")
+            sleep(2)
+            if geocoderModelTitle.text == 'Upload Location Filters':
+                print('Passed, Geocoder title is correct')
+                if geocoderUploaderText.text=='Select from computer':
+                    print('Passed, Geocder uploader text is correct')
+                else:
+                    print('text is:',geocoderUploaderText.text)
+                    print('Failed, Geocoder uploader text is incorrect')
+                if geocoerOrText.text=='OR':
+                    print('Passed, "Or" text between the upload Location filter is correct')
+                else:
+                    print('Failed, "Or" text between the upload Location filter is incorrect')
+                if geocoderTemplateDownload.text == 'Download template here':
+                    print('Passed, template download text is correct')
+                    geocoderTemplateDownload.click()
+                else:
+                    print('Failed, template download text is incorrect')
+                if gecoderAppendText.text == 'Append to existing location filters':
+                    print('Passed, append text is correct')
+                else:
+                    print('Failed, append text is incorrect')
+                if gecoderAppendCheckBox.is_selected() == False:
+                    print('Passed, By default append checkbox is unchecked')
+                    gecoderAppendCheckBox.click()
+                    sleep(2)
+                else:
+                    print('By default append checkbox is checked')
+                driver.find_element(By.XPATH,"//div[@id='btn-superformModal-uploadFile']/input").send_keys('/Users/surenderpal/Downloads/Creatives/Geocoders file/sample_geotarget.xlsx')
+                sleep(5)
+                geocoderSuccessUploadMessage=driver.find_element(By.XPATH,"//h3[contains(text(),'All spreadsheet')]")
+                if geocoderSuccessUploadMessage.text=='All spreadsheet rows were processed successfully.':
+                    print('Passed, spreadsheet successfull message is correct')
+                else:
+                    print('Failed, spreadsheet successfull message is incorrect')
+                geocoderButtons=driver.find_elements(By.XPATH,"//div[@class='cta']/button")
+                print('Count of buttons in Geocoder model:',len(geocoderButtons))
+                for button in geocoderButtons:
+                    print(button.text)       
+                geoCoderCancelButton=driver.find_element(By.XPATH,"//button[contains(text(),'Cancel')]")                     
+                if geoCoderCancelButton.text =='Cancel':
+                    print('Passed, Cancel button text is correct')
+                else:
+                    print('Failed, Cancel button text is incorrect')
+                geoCoderSaveButton=driver.find_element(By.XPATH,"//div[@class='cta']/button/span")
+                if geoCoderSaveButton.text == 'Save':
+                    print('Passed, save button text is correct')
+                    geoCoderSaveButton.click()
+                else:
+                    print('Failed, save button text is correct')
+            else:
+                print('Failed, Geocder title is incorrect')
         else:
-            print('Failed',DriveToDestinationtag.text, 'is incorrect')
-        if demogrphicstag.text == 'Demographics':
-            print('Passed',demogrphicstag.text, 'is correct')
-        else:
-            print('Failed',demogrphicstag.text, 'is incorrect')
-        if deviceTargetingtag.text == 'Device Targeting':
-            print('Passed',deviceTargetingtag.text, 'is correct')
-        else:
-            print('Failed',deviceTargetingtag.text, 'is incorrect')
-        if OptimizationStrategytag.text == 'Optimization Strategy':
-            print('Passed',OptimizationStrategytag.text, 'is correct')
-        else:
-            print('Failed',OptimizationStrategytag.text, 'is incorrect')
-        if publisherCategoryTag.text == 'Publisher Categories':
-            print('Passed',publisherCategoryTag.text, 'is correct')
-        else:
-            print('Failed',publisherCategoryTag.text, 'is incorrect')
-        if remessagingtag.text == 'Build custom audience for remessaging users who see your ad':
-            print('Passed',remessagingtag.text, 'is correct')
-        else:
-            print('Failed',remessagingtag.text, 'is incorrect')
+            print('Failed, Geocoder link text is incorrect')
+        # if DriveToDestinationtag.text == 'Specify your Drive-To destination for ad group measurement':
+        #     print('Passed',DriveToDestinationtag.text, 'is correct')
+        # else:
+        #     print('Failed',DriveToDestinationtag.text, 'is incorrect')
+        # if demogrphicstag.text == 'Demographics':
+        #     print('Passed',demogrphicstag.text, 'is correct')
+        # else:
+        #     print('Failed',demogrphicstag.text, 'is incorrect')
+        # if deviceTargetingtag.text == 'Device Targeting':
+        #     print('Passed',deviceTargetingtag.text, 'is correct')
+        # else:
+        #     print('Failed',deviceTargetingtag.text, 'is incorrect')
+        # if OptimizationStrategytag.text == 'Optimization Strategy':
+        #     print('Passed',OptimizationStrategytag.text, 'is correct')
+        # else:
+        #     print('Failed',OptimizationStrategytag.text, 'is incorrect')
+        # if publisherCategoryTag.text == 'Publisher Categories':
+        #     print('Passed',publisherCategoryTag.text, 'is correct')
+        # else:
+        #     print('Failed',publisherCategoryTag.text, 'is incorrect')
+        # if remessagingtag.text == 'Build custom audience for remessaging users who see your ad':
+        #     print('Passed',remessagingtag.text, 'is correct')
+        # else:
+        #     print('Failed',remessagingtag.text, 'is incorrect')
         
 
 c=campaignSetUp()
