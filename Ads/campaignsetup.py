@@ -702,7 +702,7 @@ class campaignSetUp():
                     print('Failed, "Or" text between the upload Location filter is incorrect')
                 if geocoderTemplateDownload.text == 'Download template here':
                     print('Passed, template download text is correct')
-                    geocoderTemplateDownload.click()
+                    # geocoderTemplateDownload.click()
                 else:
                     print('Failed, template download text is incorrect')
                 if gecoderAppendText.text == 'Append to existing location filters':
@@ -741,28 +741,75 @@ class campaignSetUp():
                 print('Failed, Geocder title is incorrect')
         else:
             print('Failed, Geocoder link text is incorrect')
-        # if DriveToDestinationtag.text == 'Specify your Drive-To destination for ad group measurement':
-        #     print('Passed',DriveToDestinationtag.text, 'is correct')
-        # else:
-        #     print('Failed',DriveToDestinationtag.text, 'is incorrect')
+        #-----drive to destination-----------
+        element=driver.find_element(By.XPATH,"//h3[contains(text(),'Drive-To destination')]")
+        driver.execute_script("arguments[0].scrollIntoView();",element)
+        if DriveToDestinationtag.text == 'Specify your Drive-To destination for ad group measurement':
+            print('Passed',DriveToDestinationtag.text, 'is correct')
+            dTDLables=driver.find_elements(By.XPATH,"//div[@class='measurement-options']//label")
+            print('count of labels in drive to destination:',len(dTDLables))
+            for label in dTDLables:
+                print(label.text)
+            dTDRadioBtn=driver.find_elements(By.XPATH,"//div[@class='measurement-options']//input")
+            print('Count of checkbox present inside the drive to destination:',len(dTDRadioBtn))
+            if driver.find_element(By.ID,"inp-adgTargetSup-measurementNational").get_attribute('type') == 'radio':
+                print('Passed,input box present under drive to destination is Radio button')
+                if driver.find_element(By.ID,"inp-adgTargetSup-measurementNational").is_selected() == True:
+                    print('Default selected radio button is:No Drive-To location, conversion will occur online')
+                else:
+                    print('Default selected radio button is incorrect')
+                driver.find_element(By.XPATH,"//input[@id='inp-adgTargetSup-measurementList']").click()
+                sleep(2)
+                dTDsublabels=driver.find_elements(By.XPATH,"//div[@class='ng-scope']/label")
+                print('count of labels appeared after click on Drive to location radio button:',len(dTDsublabels))
+                for label in dTDsublabels:
+                    print(label.text)
+                dTDCheckBox=driver.find_elements(By.XPATH,"//div[@class='ng-scope']/input")
+                print('count of checkboxs appeared after click on Drive to location radio button:',len(dTDCheckBox))
+            else:
+                print('Failed,input box present under drive to destination is not Radio button')
+            storeVisitation=driver.find_element(By.ID,"inp-adgTargetSup-enableStoreVisitation")
+            if storeVisitation.is_displayed() == True and storeVisitation.is_enabled == False:
+                storeVisitationLabel=driver.find_element(By.XPATH,"//label[@for='inp-adgTargetSup-enableStoreVisitation']")
+                if storeVisitationLabel.text == 'Enable Store Visitation':
+                    print('Passed, Enable Store Visitation text is correct')
+                else:
+                    print('Failed, Enable Store Visitation text is incorrect')
+                visitationLiftLabel=driver.find_element(By.XPATH,"//label[@for='inp-adgTargetSup-enableStoreVisitationLift']")
+                if visitationLiftLabel.text == 'Enable Store Visitation Lift':
+                    print('Passed, Enable Store Visitation Lift text is correct') 
+                else:
+                    print('Failed, Enable Store Visitation Lift text is incorrect')
+                # in stock targetting code
+                print('Passed, By default Enable Store Visitation is disabled')
+            else:
+                print('False, By default Enable Store Visitation is not disabled')
+        else:
+            print('Failed',DriveToDestinationtag.text, 'is incorrect')
+            
         # if demogrphicstag.text == 'Demographics':
         #     print('Passed',demogrphicstag.text, 'is correct')
+            # driver.execute_script("arguments[0].scrollIntoView();",element)
         # else:
         #     print('Failed',demogrphicstag.text, 'is incorrect')
         # if deviceTargetingtag.text == 'Device Targeting':
         #     print('Passed',deviceTargetingtag.text, 'is correct')
+        #     driver.execute_script("arguments[0].scrollIntoView();",element)
         # else:
         #     print('Failed',deviceTargetingtag.text, 'is incorrect')
         # if OptimizationStrategytag.text == 'Optimization Strategy':
         #     print('Passed',OptimizationStrategytag.text, 'is correct')
+            # driver.execute_script("arguments[0].scrollIntoView();",element)
         # else:
         #     print('Failed',OptimizationStrategytag.text, 'is incorrect')
         # if publisherCategoryTag.text == 'Publisher Categories':
         #     print('Passed',publisherCategoryTag.text, 'is correct')
+        #     driver.execute_script("arguments[0].scrollIntoView();",element)
         # else:
         #     print('Failed',publisherCategoryTag.text, 'is incorrect')
         # if remessagingtag.text == 'Build custom audience for remessaging users who see your ad':
         #     print('Passed',remessagingtag.text, 'is correct')
+        #     driver.execute_script("arguments[0].scrollIntoView();",element)
         # else:
         #     print('Failed',remessagingtag.text, 'is incorrect')
         
