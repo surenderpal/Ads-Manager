@@ -717,7 +717,7 @@ class campaignSetUp():
                     print('By default append checkbox is checked')
                 driver.find_element(By.XPATH,"//div[@id='btn-superformModal-uploadFile']/input").send_keys('/Users/surenderpal/Downloads/Creatives/Geocoders file/sample_geotarget.xlsx')
                 sleep(5)
-                geocoderSuccessUploadMessage=driver.find_element(By.XPATH,"//h3[contains(text(),'All spreadsheet')]")
+                geocoderSuccessUploadMessage=driver.find_element(By.XPATH,"//h3[contains(text(),'rows were processed successfully.')]")
                 if geocoderSuccessUploadMessage.text=='All spreadsheet rows were processed successfully.':
                     print('Passed, spreadsheet successfull message is correct')
                 else:
@@ -748,6 +748,7 @@ class campaignSetUp():
             print('Passed',DriveToDestinationtag.text, 'is correct')
             dTDLables=driver.find_elements(By.XPATH,"//div[@class='measurement-options']//label")
             print('count of labels in drive to destination:',len(dTDLables))
+            print('Labels that are available under the Drive to destination are listed below:-')
             for label in dTDLables:
                 print(label.text)
             dTDRadioBtn=driver.find_elements(By.XPATH,"//div[@class='measurement-options']//input")
@@ -758,40 +759,81 @@ class campaignSetUp():
                     print('Default selected radio button is:No Drive-To location, conversion will occur online')
                 else:
                     print('Default selected radio button is incorrect')
-                driver.find_element(By.XPATH,"//input[@id='inp-adgTargetSup-measurementList']").click()
+                button=driver.find_element(By.ID,"inp-adgTargetSup-measurementList")
+                driver.execute_script("arguments[0].click();", button)
                 sleep(2)
-                dTDsublabels=driver.find_elements(By.XPATH,"//div[@class='ng-scope']/label")
-                print('count of labels appeared after click on Drive to location radio button:',len(dTDsublabels))
-                for label in dTDsublabels:
-                    print(label.text)
-                dTDCheckBox=driver.find_elements(By.XPATH,"//div[@class='ng-scope']/input")
-                print('count of checkboxs appeared after click on Drive to location radio button:',len(dTDCheckBox))
+                # dTDsublabels=driver.find_elements(By.XPATH,"//div[@class='ng-scope']/label")
+                # print('count of labels appeared after click on Drive to location radio button:',len(dTDsublabels))
+                # for label in dTDsublabels:
+                #     print(label.text)
+                # dTDCheckBox=driver.find_elements(By.XPATH,"//div[@class='ng-scope']/input")
+                # print('count of checkboxs appeared after click on Drive to location radio button:',len(dTDCheckBox))
             else:
                 print('Failed,input box present under drive to destination is not Radio button')
-            storeVisitation=driver.find_element(By.ID,"inp-adgTargetSup-enableStoreVisitation")
-            if storeVisitation.is_displayed() == True and storeVisitation.is_enabled == False:
-                storeVisitationLabel=driver.find_element(By.XPATH,"//label[@for='inp-adgTargetSup-enableStoreVisitation']")
-                if storeVisitationLabel.text == 'Enable Store Visitation':
-                    print('Passed, Enable Store Visitation text is correct')
-                else:
-                    print('Failed, Enable Store Visitation text is incorrect')
-                visitationLiftLabel=driver.find_element(By.XPATH,"//label[@for='inp-adgTargetSup-enableStoreVisitationLift']")
-                if visitationLiftLabel.text == 'Enable Store Visitation Lift':
-                    print('Passed, Enable Store Visitation Lift text is correct') 
-                else:
-                    print('Failed, Enable Store Visitation Lift text is incorrect')
-                # in stock targetting code
-                print('Passed, By default Enable Store Visitation is disabled')
-            else:
-                print('False, By default Enable Store Visitation is not disabled')
+            # storeVisitation=driver.find_element(By.ID,"inp-adgTargetSup-enableStoreVisitation")
+            # if storeVisitation.is_displayed() == True and storeVisitation.is_enabled == False:
+            #     storeVisitationLabel=driver.find_element(By.XPATH,"//label[@for='inp-adgTargetSup-enableStoreVisitation']")
+            #     if storeVisitationLabel.text == 'Enable Store Visitation':
+            #         print('Passed, Enable Store Visitation text is correct')
+            #     else:
+            #         print('Failed, Enable Store Visitation text is incorrect')
+            #     visitationLiftLabel=driver.find_element(By.XPATH,"//label[@for='inp-adgTargetSup-enableStoreVisitationLift']")
+            #     if visitationLiftLabel.text == 'Enable Store Visitation Lift':
+            #         print('Passed, Enable Store Visitation Lift text is correct') 
+            #     else:
+            #         print('Failed, Enable Store Visitation Lift text is incorrect')
+            #     # in stock targetting code
+            #     print('Passed, By default Enable Store Visitation is disabled')
+            # else:
+            #     print('False, By default Enable Store Visitation is not disabled')
         else:
             print('Failed',DriveToDestinationtag.text, 'is incorrect')
-            
-        # if demogrphicstag.text == 'Demographics':
-        #     print('Passed',demogrphicstag.text, 'is correct')
-            # driver.execute_script("arguments[0].scrollIntoView();",element)
-        # else:
-        #     print('Failed',demogrphicstag.text, 'is incorrect')
+        # working with input box (list drop-down)
+        dTDInputBox=driver.find_element(By.XPATH,"//input[contains(@placeholder, 'custom location group')]")
+        dTDInputBox.click()
+        if dTDInputBox.get_attribute('placeholder') == 'Search and select a GroundTruth brand or your custom location group':
+            print('Passed, placeholder inside the drive to destination is correct')
+            tabsCountDTD=driver.find_elements(By.XPATH,"//a[@ng-click='select($event)']")
+            print('Count of tabs inside Drive to destination input box',len(tabsCountDTD))
+            for tab in tabsCountDTD:
+                print(tab.text)
+            dTDInputBox.send_keys('KFC')
+            driver.find_element(By.XPATH,"//a[contains(text(),'Brand')]").click()
+            driver.find_element(By.XPATH,"//li[@class='autocomplete-item ng-binding ng-scope highlighted' and contains(text(), 'KFC')]").click()
+            dTDInputBox.clear()
+            dTDInputBox.send_keys('Lexus')
+            driver.find_element(By.XPATH,"//a[contains(text(),'Location Group')]").click()
+            driver.find_element(By.XPATH,"//div[@class='tab-pane ng-scope active']/li[@class='autocomplete-item ng-binding ng-scope highlighted' and contains(text(), 'Lexus')]").click()
+            dTDInputBox.clear()
+            dTDSelectedOptions=driver.find_elements(By.XPATH,"//section[@id='measurements']//ul/li")
+            print('count of selected options are:',len(dTDSelectedOptions))
+            for option in dTDSelectedOptions:
+                print('selected option is :',option.text)
+        else:
+            print('Failed, placeholder inside the drive to destination is correct')
+# ---------demographics section----------
+        if demogrphicstag.text == 'Demographics':
+            print('Passed',demogrphicstag.text, 'is correct')
+            element=driver.find_element(By.XPATH,"//li[contains(text(),'Drive-To Locations')]")
+            element.click()
+            driver.execute_script("window.scrollBy(0, -10);")
+            demoLabel=driver.find_element(By.XPATH,"//label[@for='inp-adgTargetSup-selectAllDemographics']")
+            if demoLabel.text=='Show your ads to all demographics':
+                print('Passed',demoLabel.text,'is correct')
+                
+            else:
+                print('Failed',demoLabel.text,'is incorrect')
+            demoCheckbox=driver.find_element(By.ID,"inp-adgTargetSup-selectAllDemographics") 
+            if demoCheckbox.get_attribute('type') == 'checkbox':
+                if demoCheckbox.is_selected() == True:
+                    driver.find_element(By.XPATH,"//input[@id='inp-adgTargetSup-selectAllDemographics']").click()
+                    print('Passed,By default Demographics is checked and input type is checkbox')
+                else:
+                    print('Failed,By default Demographics is unchecked and input type is no checkbox')
+            else:
+                print('Failed, input type is not checkbox')
+        else:
+            print('Failed',demogrphicstag.text, 'is incorrect')
         # if deviceTargetingtag.text == 'Device Targeting':
         #     print('Passed',deviceTargetingtag.text, 'is correct')
         #     driver.execute_script("arguments[0].scrollIntoView();",element)
