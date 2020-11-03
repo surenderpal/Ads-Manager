@@ -468,44 +468,37 @@ class campaignSetUp():
         else:
             print('Failed,',headerstatusvalue,'label is incorrect')
 
-    def AdGroupSetUp(self,Behavior,Category,LocationGroup,Brand,ExBehavior,ExCategory,ExBrand,ExLocationGroup):
+    def AdGroupSetUp(self):
         driver.execute_script("window.scrollTo(0, 0);")
-        audienctInfoIcon="You can now select a Location Group for Location Audience targeting. This will target users who have been to the stores within the selected Location Group. Your Location Group will be available for selection below only if you have already built Location Audience for the Location Group. If you have not built Location Audience for a Location Group yet, visit Location Manager to do so."
-        lookalikesLabelTooltipText='Lookalikes increase scale of your brand-based location audience by adding users similar to the original audience set. Achieve scale increase (upto 10x of the original set) without significant impact on visitation performance. Click here to learn more.'
         print('%'*50)
         print('AdGroup details')
         allH3tags= driver.find_elements(By.TAG_NAME, 'h3')
         print('Count of H3 tags inside the Ad Group creation:',len(allH3tags)-1)
         for h3 in allH3tags:
             print(h3.text)
-        nameYourAdGrouptag= driver.find_element(By.XPATH, "//h3[contains(text(),'Name your Ad Group')]").text
-        selectAudiencestag = driver.find_element(By.XPATH, "//h3[contains(text(), 'Select audiences')]")
-        ApplyadditionalLocationFilterstag= driver.find_element(By.XPATH, "//h3[contains(text(),'additional location filters')]")
-        DriveToDestinationtag=driver.find_element(By.XPATH, "//h3[contains(text(),'Drive-To destination')]")
-        demogrphicstag=driver.find_element(By.XPATH, "//h3[contains(text(),'Demographics')]")
-        deviceTargetingtag=driver.find_element(By.XPATH, "//h3[contains(text(),'Device Targeting')]")
-        OptimizationStrategytag= driver.find_element(By.XPATH,"//h3[contains(text(),'Optimization Strategy')]")
-        publisherCategoryTag=driver.find_element(By.XPATH, "//h3[contains(text(),'Publisher Categories')]")
-        remessagingtag=driver.find_element(By.XPATH,"//h3[contains(text(),'remessaging')]")
-        
-        if nameYourAdGrouptag == 'Name your Ad Group':
+        nameYourAdGrouptag= driver.find_element(By.XPATH, "//h3[contains(text(),'Name your Ad Group')]")
+        if nameYourAdGrouptag.text == 'Name your Ad Group':
             print('Passed',nameYourAdGrouptag, 'is correct')
             adgroupInput=driver.find_element(By.XPATH, "//input[@id='adgroup-name']") #get_attribute('ng-if') .get_property('ng-if')
             adgroupInput.clear()
             adgroupInput.send_keys('surender')
             print('adgroup Name:',adgroupInput.text)
         else:
-            print('Failed',nameYourAdGrouptag, 'is incorrect')     
+            print('Failed',nameYourAdGrouptag, 'is incorrect')
+    def selectAudience(self,Behavior,Category,LocationGroup,Brand,ExBehavior,ExCategory,ExBrand,ExLocationGroup):  
+        audienctInfoIcon="You can now select a Location Group for Location Audience targeting. This will target users who have been to the stores within the selected Location Group. Your Location Group will be available for selection below only if you have already built Location Audience for the Location Group. If you have not built Location Audience for a Location Group yet, visit Location Manager to do so."
+        lookalikesLabelTooltipText='Lookalikes increase scale of your brand-based location audience by adding users similar to the original audience set. Achieve scale increase (upto 10x of the original set) without significant impact on visitation performance. Click here to learn more.'
+        selectAudiencestag = driver.find_element(By.XPATH, "//h3[contains(text(), 'Select audiences')]")
         if selectAudiencestag.text == 'Select audiences':
             actions=ActionChains(driver)
-            infoIcon=driver.find_element(By.XPATH, "//body/ui-view[1]/div[1]/div[3]/div[1]/div[1]/div[1]/div[1]/div[2]/div[1]/div[1]/div[1]/div[1]/section[2]/div[1]/h3[1]/new-feature[1]/a[1]/span[1]") #.//h3[contains(text(), 'Select audiences')]/*
+            infoIcon=driver.find_element(By.XPATH, "//body/ui-view[1]/div[1]/div[3]/div[1]/div[1]/div[1]/div[1]/div[2]/div[1]/div[1]/div[1]/div[1]/section[2]/div[1]/h3[1]/new-feature[1]/a[1]/span[1]") 
             actions.move_to_element(infoIcon).perform()
             sleep(2)
             if infoIcon.get_attribute('uib-popover')==audienctInfoIcon:
                 print("Passed, Audience tooltip is correct")
             else:
                 print("Failed, Audience tooltip is incorrect")
-            print('Passed',selectAudiencestag, 'is correct')
+            print('Passed',selectAudiencestag, 'is correct')                  
             audienceInputBox=driver.find_element(By.XPATH, "//input[@placeholder='Select a brand, category, behavioral, custom or location group audience']")
             # -------Behavior-------------------
             audienceInputBox.click()
@@ -636,11 +629,13 @@ class campaignSetUp():
                 driver.close()
             driver.switch_to.window(adsHandle)
             print(driver.title)
-
 #-------------Apply additional location filters---------------- 
-        driver.execute_script("arguments[0].scrollIntoView();",driver.find_element(By.XPATH,"//h3[contains(text(),'Apply additional location filters')]"))
+    def additionalLocationFilter(self):#city,state,DMA,path
+        # driver.execute_script("arguments[0].scrollIntoView();",driver.find_element(By.XPATH,"//h3[contains(text(),'Apply additional location filters')]"))
+        driver.find_element(By.XPATH,"//li[contains(text(),'Location Filter')]").click()
         sleep(2)
         addLocFilterPlaceholder='Search and select city, state, DMA, zipcode, coordinates, or address'
+        ApplyadditionalLocationFilterstag= driver.find_element(By.XPATH, "//h3[contains(text(),'additional location filters')]")
         if ApplyadditionalLocationFilterstag.text == 'Apply additional location filters':
             print('Passed',ApplyadditionalLocationFilterstag.text, 'is correct')
             addLocFilter=driver.find_element(By.XPATH, "//section[@id='location-filter']//input")
@@ -678,6 +673,10 @@ class campaignSetUp():
                 print('Failed, placeholder inside the additional location filter is incorrect')
         else:
             print('Failed',ApplyadditionalLocationFilterstag.text, 'is incorrect')
+        # deviceTargetingtag=driver.find_element(By.XPATH, "//h3[contains(text(),'Device Targeting')]")
+        # OptimizationStrategytag= driver.find_element(By.XPATH,"//h3[contains(text(),'Optimization Strategy')]")
+        # publisherCategoryTag=driver.find_element(By.XPATH, "//h3[contains(text(),'Publisher Categories')]")
+        # remessagingtag=driver.find_element(By.XPATH,"//h3[contains(text(),'remessaging')]")
         geocoder=driver.find_element(By.LINK_TEXT,"Bulk location upload")
         if geocoder.text == 'Bulk location upload':
             print('Passed, Geocoder link text is correct')
@@ -717,7 +716,7 @@ class campaignSetUp():
                     print('By default append checkbox is checked')
                 driver.find_element(By.XPATH,"//div[@id='btn-superformModal-uploadFile']/input").send_keys('/Users/surenderpal/Downloads/Creatives/Geocoders file/sample_geotarget.xlsx')
                 sleep(5)
-                geocoderSuccessUploadMessage=driver.find_element(By.XPATH,"//h3[contains(text(),'rows were processed successfully.')]")
+                geocoderSuccessUploadMessage=driver.find_element(By.XPATH,"//h3[@class='ng-binding']") #//h3[contains(text(),'rows were processed successfully.')]
                 if geocoderSuccessUploadMessage.text=='All spreadsheet rows were processed successfully.':
                     print('Passed, spreadsheet successfull message is correct')
                 else:
@@ -742,6 +741,8 @@ class campaignSetUp():
         else:
             print('Failed, Geocoder link text is incorrect')
         #-----drive to destination-----------
+    def DriveToDestinationt(self):
+        DriveToDestinationtag=driver.find_element(By.XPATH, "//h3[contains(text(),'Drive-To destination')]")
         element=driver.find_element(By.XPATH,"//h3[contains(text(),'Drive-To destination')]")
         driver.execute_script("arguments[0].scrollIntoView();",element)
         if DriveToDestinationtag.text == 'Specify your Drive-To destination for ad group measurement':
@@ -812,21 +813,24 @@ class campaignSetUp():
         else:
             print('Failed, placeholder inside the drive to destination is correct')
 # ---------demographics section----------
+    def Demographics(self):
+        demogrphicstag=driver.find_element(By.XPATH, "//h3[contains(text(),'Demographics')]")
         if demogrphicstag.text == 'Demographics':
-            print('Passed',demogrphicstag.text, 'is correct')
+            print('Passed',demogrphicstag.text, ' headind is correct')
             element=driver.find_element(By.XPATH,"//li[contains(text(),'Drive-To Locations')]")
             element.click()
-            driver.execute_script("window.scrollBy(0, -10);")
+            demoCheckbox=driver.find_element(By.XPATH,"//input[@id='inp-adgTargetSup-selectAllDemographics' and @type='checkbox']")
+            # driver.execute_script("arguments[0].click();", demoCheckbox) 
+
             demoLabel=driver.find_element(By.XPATH,"//label[@for='inp-adgTargetSup-selectAllDemographics']")
             if demoLabel.text=='Show your ads to all demographics':
                 print('Passed',demoLabel.text,'is correct')
-                
             else:
                 print('Failed',demoLabel.text,'is incorrect')
             demoCheckbox=driver.find_element(By.ID,"inp-adgTargetSup-selectAllDemographics") 
             if demoCheckbox.get_attribute('type') == 'checkbox':
                 if demoCheckbox.is_selected() == True:
-                    driver.find_element(By.XPATH,"//input[@id='inp-adgTargetSup-selectAllDemographics']").click()
+                    driver.execute_script("arguments[0].click();", demoCheckbox) 
                     print('Passed,By default Demographics is checked and input type is checkbox')
                 else:
                     print('Failed,By default Demographics is unchecked and input type is no checkbox')
@@ -834,6 +838,53 @@ class campaignSetUp():
                 print('Failed, input type is not checkbox')
         else:
             print('Failed',demogrphicstag.text, 'is incorrect')
+        demoLabels=driver.find_elements(By.XPATH,"//section[@id='demographics']//span[@class='input-container-label']")
+        print('Count of labels available after Unchecking on the demographics checkbox',len(demoLabels))
+        for label in demoLabels:
+            print(label.text)
+        countDemoCheck=driver.find_elements(By.XPATH,"//section[@id='demographics']//input[contains(@id,'inp-adgTargetSup')]")
+        print('Count of checkboxs available under the Demograpics section:',(len(countDemoCheck)-1))
+        checkedCheckbox=driver.find_elements(By.XPATH,"//section[@id='demographics']//input[@class='ng-pristine ng-untouched ng-valid ng-not-empty']")
+        print('Count of checkbox, that are checked by default:',len(checkedCheckbox))
+
+        for checked in checkedCheckbox:
+            print('Input type is:',checked.get_attribute('type'))
+            print('By Default checkbox is checked on label:',driver.find_element(By.XPATH,"//section[@id='demographics']//input[@class='ng-pristine ng-untouched ng-valid ng-not-empty']/../label").text)
+            checked.click()
+            sleep(2)
+            checked.click()
+
+        genderLabel=driver.find_element(By.XPATH,"//span[contains(text(),'Gender')]")
+        houseHoldLabel=driver.find_element(By.XPATH,"//span[contains(text(),'Household')]")
+        ethnicityLabel=driver.find_element(By.XPATH,"//span[contains(text(),'Ethnicity')]")
+        AgeLabel=driver.find_element(By.XPATH,"//span[contains(text(),'AGE')]")
+        drinkingLabel=driver.find_element(By.XPATH,"//span[contains(text(),'Drinking')]")
+
+        if genderLabel.text == 'GENDER':
+            print('Passed,',genderLabel.text,'label is correct')
+        else:
+            print('Failed,',genderLabel.text,'label is incorrect')
+        if houseHoldLabel.text == 'HOUSEHOLD INCOME ($)':
+            print('Passed,',houseHoldLabel.text,'label is correct')
+        else:
+            print('Failed,',houseHoldLabel.text,'label is incorrect')
+        if ethnicityLabel.text == 'ETHNICITY':
+            print('Passed,',ethnicityLabel.text,'label is correct')
+        else:
+            print('Failed,',ethnicityLabel.text,'label is incorrect')
+        if AgeLabel.text == 'AGE GROUPS':
+            print('Passed,',AgeLabel.text,'label is correct')
+        else:
+            print('Failed,',AgeLabel.text,'label is incorrect')
+        if drinkingLabel.text == 'TARGET USERS OVER LEGAL DRINKING AGE':
+            print('Passed,',drinkingLabel.text,'label is correct')
+        else:
+            print('Failed,',drinkingLabel.text,'label is incorrect')
+        
+        # UncheckedCheckbox=driver.find_elements(By.)
+
+#---device targetting function start here-----
+
         # if deviceTargetingtag.text == 'Device Targeting':
         #     print('Passed',deviceTargetingtag.text, 'is correct')
         #     driver.execute_script("arguments[0].scrollIntoView();",element)
@@ -864,7 +915,10 @@ c.deviceType()
 # c.LeftHandDetails()
 # c.RightHandDetials()
 # c.AdGroupHeader()
-c.AdGroupSetUp('Millennials','Potato Growers','Live Nation',"Costco",'Hispanics','Vegetable Farms','Pizza Hut','Renault') #Behavior,Category,LocationGroup,Brand #"Wendy's" "7-Eleven"
-
+c.AdGroupSetUp() 
+c.selectAudience('Millennials','Potato Growers','Live Nation',"Costco",'Hispanics','Vegetable Farms','Pizza Hut','Renault')#Behavior,Category,LocationGroup,Brand #"Wendy's" "7-Eleven"
+c.additionalLocationFilter()
+c.DriveToDestinationt()
+c.Demographics()
 sleep(20)
 driver.close()
