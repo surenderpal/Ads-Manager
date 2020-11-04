@@ -11,6 +11,7 @@ from webdriver_manager.microsoft import IEDriverManager
 from webdriver_manager.microsoft import EdgeChromiumDriverManager
 from time import sleep
 import re
+import collections
 
 b_name ='chrome'
 if b_name == 'chrome':
@@ -673,10 +674,6 @@ class campaignSetUp():
                 print('Failed, placeholder inside the additional location filter is incorrect')
         else:
             print('Failed',ApplyadditionalLocationFilterstag.text, 'is incorrect')
-        # deviceTargetingtag=driver.find_element(By.XPATH, "//h3[contains(text(),'Device Targeting')]")
-        # OptimizationStrategytag= driver.find_element(By.XPATH,"//h3[contains(text(),'Optimization Strategy')]")
-        # publisherCategoryTag=driver.find_element(By.XPATH, "//h3[contains(text(),'Publisher Categories')]")
-        # remessagingtag=driver.find_element(By.XPATH,"//h3[contains(text(),'remessaging')]")
         geocoder=driver.find_element(By.LINK_TEXT,"Bulk location upload")
         if geocoder.text == 'Bulk location upload':
             print('Passed, Geocoder link text is correct')
@@ -820,8 +817,6 @@ class campaignSetUp():
             element=driver.find_element(By.XPATH,"//li[contains(text(),'Drive-To Locations')]")
             element.click()
             demoCheckbox=driver.find_element(By.XPATH,"//input[@id='inp-adgTargetSup-selectAllDemographics' and @type='checkbox']")
-            # driver.execute_script("arguments[0].click();", demoCheckbox) 
-
             demoLabel=driver.find_element(By.XPATH,"//label[@for='inp-adgTargetSup-selectAllDemographics']")
             if demoLabel.text=='Show your ads to all demographics':
                 print('Passed',demoLabel.text,'is correct')
@@ -846,18 +841,21 @@ class campaignSetUp():
         print('Count of checkboxs available under the Demograpics section:',(len(countDemoCheck)-1))
         checkedCheckbox=driver.find_elements(By.XPATH,"//section[@id='demographics']//input[@class='ng-pristine ng-untouched ng-valid ng-not-empty']")
         print('Count of checkbox, that are checked by default:',len(checkedCheckbox))
-
+        UncheckedCheckboxLabel=driver.find_elements(By.XPATH,"//section[@id='demographics']//input[@class='ng-pristine ng-untouched ng-valid ng-empty']/../label")
+        print('count of Unchecked checkbox available are:',len(UncheckedCheckboxLabel))
+        demoActualListChecked=['All', 'All', 'All', 'All']
+        demoExpectedListChecked=[]
         for checked in checkedCheckbox:
             print('Input type is:',checked.get_attribute('type'))
-            print('By Default checkbox is checked on label:',driver.find_element(By.XPATH,"//section[@id='demographics']//input[@class='ng-pristine ng-untouched ng-valid ng-not-empty']/../label").text)
-            checked.click()
-            sleep(2)
-            checked.click()
-
+            demoExpectedListChecked.append(driver.find_element(By.XPATH,"//section[@id='demographics']//input[@class='ng-pristine ng-untouched ng-valid ng-not-empty']/../label").text)
+        if collections.Counter(demoExpectedListChecked) == collections.Counter(demoActualListChecked):
+            print('Passed, By default Checked checkbox are correct')
+        else:
+            print('Failed, By default Checked checkbox is incorrect') 
         genderLabel=driver.find_element(By.XPATH,"//span[contains(text(),'Gender')]")
         houseHoldLabel=driver.find_element(By.XPATH,"//span[contains(text(),'Household')]")
         ethnicityLabel=driver.find_element(By.XPATH,"//span[contains(text(),'Ethnicity')]")
-        AgeLabel=driver.find_element(By.XPATH,"//span[contains(text(),'AGE')]")
+        AgeLabel=driver.find_element(By.XPATH,"//span[contains(text(),'AGE GROUPS')]")
         drinkingLabel=driver.find_element(By.XPATH,"//span[contains(text(),'Drinking')]")
 
         if genderLabel.text == 'GENDER':
@@ -870,36 +868,120 @@ class campaignSetUp():
             print('Failed,',houseHoldLabel.text,'label is incorrect')
         if ethnicityLabel.text == 'ETHNICITY':
             print('Passed,',ethnicityLabel.text,'label is correct')
+            ageInfo=driver.find_element(By.XPATH,"//span[contains(text(),'AGE')]/span")
+            actions=ActionChains(driver)
+            actions.move_to_element(ageInfo).perform()
+            sleep(2)
+            if ageInfo.get_attribute('uib-popover')=='Age range 13-17 is no longer available for targeting.':
+                print('Passed, tooltip text inside the Age Group is correct')
+            else:
+                print('Failed, tooltip text inside the Age Group is incorrect')
         else:
             print('Failed,',ethnicityLabel.text,'label is incorrect')
-        if AgeLabel.text == 'AGE GROUPS':
-            print('Passed,',AgeLabel.text,'label is correct')
+        if driver.find_element(By.XPATH,"//span[@id='age-groups']").text == 'AGE GROUPS':
+            print(driver.find_element(By.XPATH,"//span[@id='age-groups']").text)
         else:
             print('Failed,',AgeLabel.text,'label is incorrect')
+            print(driver.find_element(By.XPATH,"//span[@id='age-groups']").text)
         if drinkingLabel.text == 'TARGET USERS OVER LEGAL DRINKING AGE':
             print('Passed,',drinkingLabel.text,'label is correct')
         else:
             print('Failed,',drinkingLabel.text,'label is incorrect')
-        
-        # UncheckedCheckbox=driver.find_elements(By.)
+        demoActualListUnchecked=['Male', 'Female', '0-50K', '50-100K', '100-150K', '150-200K', '200K+', 'Asian', 'African American', 'Hispanic or Latino', '18-24', '25-34', '35-44', '45-54', '55-64', '65+', 'Alcohol Age']
+        l=[]
+        for label in UncheckedCheckboxLabel:
+            l.append(label.text)
+        # comparing actual vs expected list to verify the content of list
+        if collections.Counter(demoActualListUnchecked) == collections.Counter(l):
+            print('Passed, By default unchecked checkbox are correct')
+        else:
+            print('Failed, By defaylt unchecked checkbox is incorrect') 
 
 #---device targetting function start here-----
+    def deviceTargeting(self):
+        driver.find_element(By.XPATH,"//li[contains(text(),'Demographics')]").click()
+        sleep(2)
+        deviceTargetingtag=driver.find_element(By.XPATH, "//h3[contains(text(),'Device Targeting')]")
+        deviceSubLabel=driver.find_element(By.XPATH,"//label[contains(text(),'default device types')]")
+        if deviceTargetingtag.text == 'Device Targeting':
+            print('Passed',deviceTargetingtag.text, 'is correct')
+            #check sub label "Show your ads to default device types"
+            if deviceSubLabel.text=='Show your ads to default device types':
+                print('Passed,',deviceSubLabel.text,' label is correct')
+            else:
+                print('Failed,',deviceSubLabel.text,' label is incorrect')
+        else:
+            print('Failed',deviceTargetingtag.text, 'is incorrect')
+        
+        # click on Device Targetting checkbox
+        Checkbox=driver.find_element(By.ID,'inp-adgTargetSup-toggleAllTechnographics')
+        driver.execute_script("arguments[0].click();",Checkbox) 
+        # all rows labels
+        targetingFieldLabel=driver.find_elements(By.XPATH,"//section[@id='technographics']//span['input-container-label']")
+        ActualTargetingFieldLabelList=['ENVIRONMENT','MOBILE OPERATING SYSTEM','MOBILE CARRIER']
+        ExpectedTargetingFieldLabelList=[]
+        print('Count of labels are:',len(targetingFieldLabel))
+        for label in targetingFieldLabel:
+            ExpectedTargetingFieldLabelList.append(label.text)
+        if collections.Counter(ActualTargetingFieldLabelList) == collections.Counter(ExpectedTargetingFieldLabelList):
+            print('Passed, By default Targeting Field Labels are correct')
+        else:
+            print('Failed, By defaylt Targeting Field Labels are incorrect')
+        # clicking on the Mobile carrier checkbox
+        driver.find_element(By.ID,"inp-adgTargetSup-toggleAllCarriers").click()
+        sleep(2)
+        # testing all checkbox Device Targetting
+        DeviceTargettingCheckboxLabel=driver.find_elements(By.XPATH,"//section[@id='technographics']//input/../label")
+        print('Count of labels present inside the Device Targetting:',len(DeviceTargettingCheckboxLabel))
+        ActualDeviceTargettingCheckboxLabelList=['Show your ads to default device types', 'ALL', 'MOBILE APP', 'MOBILE WEB', 'ALL', 'iOS', 'ANDROID', 'OTHERS', 'ALL', 'Alltel', 'Appalachian Wireless', 'AT&T', 'Bluegrass Cellular', 'Cincinnati Bell', 'Corr Wireless', 'Cricket', 'Metro PCS', 'Plateau Wireless', 'SIMMETRY', 'Sprint', 'T-Mobile', 'US Cellular', 'Verizon Wireless', 'WiFi']
+        ExpectedDeviceTargettingCheckboxLabelList=[]
+        for label in DeviceTargettingCheckboxLabel:
+            ExpectedDeviceTargettingCheckboxLabelList.append(label.text)
+        if collections.Counter(ActualDeviceTargettingCheckboxLabelList) == collections.Counter(ExpectedDeviceTargettingCheckboxLabelList):
+            print('Passed, all Device Targetting Labels are correct')
+        else:
+            print('Failed, all Device Targetting Labels are incorrect')
+        print('All checkboxs under the Device Targetting:',ExpectedDeviceTargettingCheckboxLabelList)
+        # testing default unchecked checkbox Device Targetting
+        defaultUncheckedCheckbox=driver.find_elements(By.XPATH,"//section[@id='technographics']//input[@class='ng-pristine ng-untouched ng-valid ng-empty' or @id='inp-adgTargetSup-osiOS' or @class='ng-pristine ng-valid ng-empty ng-touched']/../label")
+        ActualUncheckedCheckboxList=['ALL','MOBILE WEB','iOS','ANDROID','OTHERS']
+        ExpectedUncheckedCheckboxList=[]
+        print('Count of unchecked labels are:',len(defaultUncheckedCheckbox))
+        for label in defaultUncheckedCheckbox:
+            ExpectedUncheckedCheckboxList.append(label.text)
+        if collections.Counter(ActualUncheckedCheckboxList) == collections.Counter(ExpectedUncheckedCheckboxList):
+            print('Passed, all Device Targetting Labels are correct')
+        else:
+            print('Failed, all Device Targetting Labels are incorrect')
+        print('Labels are Unchecked by default are:',ExpectedUncheckedCheckboxList)
+        # testing checked checkbox Device Targetting
+        ActualCheckedCheckboxList=['MOBILE APP', 'ALL', 'Alltel', 'Appalachian Wireless', 'AT&T', 'Bluegrass Cellular', 'Cincinnati Bell', 'Corr Wireless', 'Cricket', 'Metro PCS', 'Plateau Wireless', 'SIMMETRY', 'Sprint', 'T-Mobile', 'US Cellular', 'Verizon Wireless', 'WiFi']
+        ExpectedCheckedCheckboxList=[]
+        defaultCheckedCheckboxLabels=driver.find_elements(By.XPATH,"//section[@id='technographics']//input[@class='ng-pristine ng-untouched ng-valid ng-not-empty']/../label")
+        for label in defaultCheckedCheckboxLabels:
+            ExpectedCheckedCheckboxList.append(label.text)
+        if collections.Counter(ActualCheckedCheckboxList) == collections.Counter(ExpectedCheckedCheckboxList):
+            print('Passed, all Device Targetting Checked Labels are correct')
+        else:
+            print('Failed, all Device Targetting Checked Labels are incorrect')
+        print('Labels are Checked by default are:',ExpectedCheckedCheckboxList)
 
-        # if deviceTargetingtag.text == 'Device Targeting':
-        #     print('Passed',deviceTargetingtag.text, 'is correct')
-        #     driver.execute_script("arguments[0].scrollIntoView();",element)
-        # else:
-        #     print('Failed',deviceTargetingtag.text, 'is incorrect')
+
+
+#---Optimization Strategy function starts here-----       
+        # OptimizationStrategytag= driver.find_element(By.XPATH,"//h3[contains(text(),'Optimization Strategy')]")
         # if OptimizationStrategytag.text == 'Optimization Strategy':
         #     print('Passed',OptimizationStrategytag.text, 'is correct')
             # driver.execute_script("arguments[0].scrollIntoView();",element)
         # else:
         #     print('Failed',OptimizationStrategytag.text, 'is incorrect')
+        # publisherCategoryTag=driver.find_element(By.XPATH, "//h3[contains(text(),'Publisher Categories')]")
         # if publisherCategoryTag.text == 'Publisher Categories':
         #     print('Passed',publisherCategoryTag.text, 'is correct')
         #     driver.execute_script("arguments[0].scrollIntoView();",element)
         # else:
         #     print('Failed',publisherCategoryTag.text, 'is incorrect')
+        # remessagingtag=driver.find_element(By.XPATH,"//h3[contains(text(),'remessaging')]")
         # if remessagingtag.text == 'Build custom audience for remessaging users who see your ad':
         #     print('Passed',remessagingtag.text, 'is correct')
         #     driver.execute_script("arguments[0].scrollIntoView();",element)
@@ -920,5 +1002,6 @@ c.selectAudience('Millennials','Potato Growers','Live Nation',"Costco",'Hispanic
 c.additionalLocationFilter()
 c.DriveToDestinationt()
 c.Demographics()
+c.deviceTargeting()
 sleep(20)
 driver.close()
