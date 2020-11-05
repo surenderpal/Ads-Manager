@@ -968,27 +968,110 @@ class campaignSetUp():
 
 
 
-#---Optimization Strategy function starts here-----       
-        # OptimizationStrategytag= driver.find_element(By.XPATH,"//h3[contains(text(),'Optimization Strategy')]")
-        # if OptimizationStrategytag.text == 'Optimization Strategy':
-        #     print('Passed',OptimizationStrategytag.text, 'is correct')
-            # driver.execute_script("arguments[0].scrollIntoView();",element)
-        # else:
-        #     print('Failed',OptimizationStrategytag.text, 'is incorrect')
-        # publisherCategoryTag=driver.find_element(By.XPATH, "//h3[contains(text(),'Publisher Categories')]")
-        # if publisherCategoryTag.text == 'Publisher Categories':
-        #     print('Passed',publisherCategoryTag.text, 'is correct')
-        #     driver.execute_script("arguments[0].scrollIntoView();",element)
-        # else:
-        #     print('Failed',publisherCategoryTag.text, 'is incorrect')
-        # remessagingtag=driver.find_element(By.XPATH,"//h3[contains(text(),'remessaging')]")
-        # if remessagingtag.text == 'Build custom audience for remessaging users who see your ad':
-        #     print('Passed',remessagingtag.text, 'is correct')
-        #     driver.execute_script("arguments[0].scrollIntoView();",element)
-        # else:
-        #     print('Failed',remessagingtag.text, 'is incorrect')
-        
+#---Optimization Strategy function starts here-----  
+    def OptimizationStrategy(self):   
+        driver.find_element(By.XPATH,"//li[contains(text(),'Optimization Strategy')]").click()  
+        OptimizationStrategytag= driver.find_element(By.XPATH,"//h3[contains(text(),'Optimization Strategy')]")
+        if OptimizationStrategytag.text == 'Optimization Strategy':
+            print('Passed',OptimizationStrategytag.text, 'Heading is correct')
+        else:
+            print('Failed',OptimizationStrategytag.text, 'Heading is incorrect')
+        # testing the radio button and respective labels
+        OptiRadiobtn=driver.find_elements(By.XPATH,"//section[@id='optimization-strategy']//input[@type='radio']")
+        print('Count of radio Buttons available under Optimization Strategy:',len(OptiRadiobtn))
+        OptiRadioLbl=driver.find_elements(By.XPATH,"//section[@id='optimization-strategy']//input[@type='radio']/../label")
+        ExpectedOptiRadioLbl=['Delivery', 'Click', 'SAR', 'Conversion']
+        ActualOptiRadioLbl=[]
+        for lbl in OptiRadioLbl:
+            ActualOptiRadioLbl.append(lbl.text)
+        if collections.Counter(ActualOptiRadioLbl) == collections.Counter(ExpectedOptiRadioLbl):
+            print('Passed, all Device Targetting Checked Labels are correct')
+        else:
+            print('Failed, all Device Targetting Checked Labels are incorrect')
+        print('Radio Button Labels under the Optimization strategy are:',ActualOptiRadioLbl)
+        # testing default selected radio button
+        if driver.find_element(By.ID,'inp-adgTargetSup-optimizationGoal0').is_selected():
+            print('Default selected radio button is:',driver.find_element(By.XPATH,"//label[contains(text(),'Click')]").text)
+        # testing the checkbox and respective labels
+        OptiChkBox=driver.find_elements(By.XPATH,"//section[@id='optimization-strategy']//input[@type='checkbox']")
+        print('Count of Check box available under Optimization Strategy:',len(OptiChkBox))
+        OptiChkBoxLbl=driver.find_elements(By.XPATH,"//section[@id='optimization-strategy']//input[@type='checkbox']/../label")
+        ExpectedOptiChkLbl=['AUTO', '', '', '']
+        ActualOptiChkLbl=[]
+        for lbl in OptiChkBoxLbl:
+            ActualOptiChkLbl.append(lbl.text)
+        if collections.Counter(ActualOptiChkLbl) == collections.Counter(ExpectedOptiChkLbl):
+            print('Passed, all Device Targetting Checked Labels are correct')
+        else:
+            print('Failed, all Device Targetting Checked Labels are incorrect')
+        #CTR threshold
+        defalultCTRThresholdLabel=driver.find_element(By.XPATH,"//label[@for='inp-adgTargetSup-optimizationCtrThreshold']")
+        if defalultCTRThresholdLabel.text == 'Default CTR Threshold':
+            print('Passed,',defalultCTRThresholdLabel.text,'label is correct')
+        else:
+            print('Passed,',defalultCTRThresholdLabel.text,'label is correct')
+        # click on Auto checkbox
+        AutoCheckbox=driver.find_element(By.ID,"inp-adgTargetSup-optimizationAuto0")
+        driver.execute_script("arguments[0].click();", AutoCheckbox)
+        labelAfterClick=driver.find_element(By.XPATH,"//label[@for='inp-adgTargetSup-optimizationCtrThreshold']")
+        if labelAfterClick.text == 'CTR THRESHOLD':
+            print('Passed,After click On Auto Checkbox',labelAfterClick.text,'is correct')
+        else:
+            print('Failed,After click On Auto Checkbox',labelAfterClick.text,'is incorrect')
+        inputBox=driver.find_element(By.ID,"inp-adgTargetSup-optimizationCtrThreshold")
+        # testing  value inside the input box
+        if inputBox.get_attribute('value')=='0.3':
+            print('Passed, default value inside the input box is correct and value is:',inputBox.get_attribute('value'))
+        else:
+            print('Failed, default value inside the input box is incorrect and value is:',inputBox.get_attribute('value'))
 
+
+#---Publisher Category function starts here-----
+    def publisherCategory(self):
+        driver.find_element(By.XPATH,"//li[contains(text(),'Publisher Categories')]").click()
+        publisherCategoryTag=driver.find_element(By.XPATH, "//h3[contains(text(),'Publisher Categories')]")
+        if publisherCategoryTag.text == 'Publisher Categories':
+            print('Passed',publisherCategoryTag.text, 'is correct')
+        else:
+            print('Failed',publisherCategoryTag.text, 'is incorrect')
+        # testing category label
+        allCategories=driver.find_element(By.XPATH,"//label[contains(text(),'All Categories')]")
+        if allCategories.text == 'All Categories':
+            print('Passed,',allCategories.text,'label is correct')
+        else:
+            print('Failed,',allCategories.text,'label is incorrect') 
+        catLabel=driver.find_element(By.ID,'inp-adgTargetSup-selectAllPublisherCats')
+        driver.execute_script("arguments[0].click();",catLabel)  
+        # testing all checkbox inside the publisher category
+        chkBoxes=driver.find_elements(By.XPATH,"//section[@id='publisher-categories']//input")
+        # code to check all input boxes are selected
+        for chkBox in chkBoxes:
+            if chkBox.is_selected()==True:
+                print('selected')
+            else:
+                print('deselected')
+        print('Count of checkboxes under Publisher Categories are:',len(chkBoxes))
+        chkBoxesLbl=driver.find_elements(By.XPATH,"//section[@id='publisher-categories']//input/../label")
+        AcutalchkBoxLbl=['Arts & Entertainment', 'Automotive', 'Books & Literature', 'Business', 'Careers', 'Comic Books', 'Education', 'Family & Parenting', 'Finance', 'Food & Drink', 'Hobbies & Interests', 'Home & Garden', "Law, Gov't & Politics", 'Lifestyle', 'Medical, Health & Fitness', 'Movies & Video', 'Music', 'Navigation', 'News', 'Non-Standard Content', 'Personalization', 'Pets', 'Photography', 'Productivity', 'Real Estate', 'Religion & Spirituality', 'Science', 'Shopping', 'Social', 'Society', 'Sports', 'Style & Fashion', 'Technology & Computing', 'Tools', 'Travel', 'Uncategorized', 'Video & Computer Games', 'Weather']
+        ExpectedChkBoxLbl=[]
+        for lbl in chkBoxesLbl:
+            ExpectedChkBoxLbl.append(lbl.text)
+        if collections.Counter(AcutalchkBoxLbl) == collections.Counter(ExpectedChkBoxLbl):
+            print('Passed, all Device Targetting Checked Labels are correct')
+        else:
+            print('Failed, all Device Targetting Checked Labels are incorrect')
+            print(ExpectedChkBoxLbl)
+
+# ---custom audience function starts here-----
+    def BuildCustomAudience(self):
+        driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+        remessagingtag=driver.find_element(By.XPATH,"//h3[contains(text(),'remessaging')]")
+        if remessagingtag.text == 'Build custom audience for remessaging users who see your ad':
+            print('Passed',remessagingtag.text, 'is correct')
+            # driver.execute_script("arguments[0].scrollIntoView();",element)
+        else:
+            print('Failed',remessagingtag.text, 'is incorrect')
+        
 c=campaignSetUp()
 c.NewCampaignButton()
 c.NewCampaignModel('Regression-Automation-testing','Pet Services','campaign-budget','Save')# 'adgroup-budget','campaign-budget','×','Save'
@@ -1003,5 +1086,8 @@ c.additionalLocationFilter()
 c.DriveToDestinationt()
 c.Demographics()
 c.deviceTargeting()
+c.OptimizationStrategy()
+c.publisherCategory()
+c.BuildCustomAudience()
 sleep(20)
 driver.close()
