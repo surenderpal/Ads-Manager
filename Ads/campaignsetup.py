@@ -632,8 +632,8 @@ class campaignSetUp():
             print(driver.title)
 #-------------Apply additional location filters---------------- 
     def additionalLocationFilter(self):#city,state,DMA,path
-        # driver.execute_script("arguments[0].scrollIntoView();",driver.find_element(By.XPATH,"//h3[contains(text(),'Apply additional location filters')]"))
         driver.find_element(By.XPATH,"//li[contains(text(),'Location Filter')]").click()
+        # driver.find_element(By.XPATH,"//li[contains(text(),'Location Filter')]").click()
         sleep(2)
         addLocFilterPlaceholder='Search and select city, state, DMA, zipcode, coordinates, or address'
         ApplyadditionalLocationFilterstag= driver.find_element(By.XPATH, "//h3[contains(text(),'additional location filters')]")
@@ -960,6 +960,7 @@ class campaignSetUp():
         defaultCheckedCheckboxLabels=driver.find_elements(By.XPATH,"//section[@id='technographics']//input[@class='ng-pristine ng-untouched ng-valid ng-not-empty']/../label")
         for label in defaultCheckedCheckboxLabels:
             ExpectedCheckedCheckboxList.append(label.text)
+        print(ExpectedCheckedCheckboxList)
         if collections.Counter(ActualCheckedCheckboxList) == collections.Counter(ExpectedCheckedCheckboxList):
             print('Passed, all Device Targetting Checked Labels are correct')
         else:
@@ -977,8 +978,9 @@ class campaignSetUp():
         else:
             print('Failed',OptimizationStrategytag.text, 'Heading is incorrect')
         # testing the radio button and respective labels
-        OptiRadiobtn=driver.find_elements(By.XPATH,"//section[@id='optimization-strategy']//input[@type='radio']")
+        OptiRadiobtn=driver.find_elements(By.XPATH,"//section[@id='optimization-strategy']//input[@name='optimization-goal']")
         print('Count of radio Buttons available under Optimization Strategy:',len(OptiRadiobtn))
+
         OptiRadioLbl=driver.find_elements(By.XPATH,"//section[@id='optimization-strategy']//input[@type='radio']/../label")
         ExpectedOptiRadioLbl=['Delivery', 'Click', 'SAR', 'Conversion']
         ActualOptiRadioLbl=[]
@@ -990,13 +992,41 @@ class campaignSetUp():
             print('Failed, all Device Targetting Checked Labels are incorrect')
         print('Radio Button Labels under the Optimization strategy are:',ActualOptiRadioLbl)
         # testing default selected radio button
+        # ExpectedRadioLbl=['AUTO', '', '', '']
+        ExpectedRadioLbl=[] 
+        ActualRadioLbl=['Maximize delivery to get the most impressions.', 'We’ll deliver your ads to people that are expected to provide more click through to your landing page.', 'We’ll deliver your ads to people that are expected to provide more secondary action clicks on your landing page. This optimization requires you to use GroundTruth landing pages. The threshold is the number of secondary actions expected per 10,000 impressions.', 'We’ll deliver your ads to people that are expected to provide better conversions on your site. GroundTruth Tracking Pixels must be generated and used for this optimization to work (Tracking Pixels can be added on the Budget & Schedule section).']
+        p=driver.find_element(By.XPATH,"//div[@class='optimization-info ng-binding']")
         if driver.find_element(By.ID,'inp-adgTargetSup-optimizationGoal0').is_selected():
-            print('Default selected radio button is:',driver.find_element(By.XPATH,"//label[contains(text(),'Click')]").text)
+            radioLbl=driver.find_element(By.XPATH,"//label[contains(text(),'Click')]")
+            print('Default selected radio button is:',radioLbl.text)
+        # clicking on Delivery so that we can click on radio using loop
+        driver.find_element(By.XPATH,"//input[@id='inp-adgTargetSup-adgOptimizationGoal1']").click()
+        sleep(2)
+        for btn in OptiRadiobtn:
+            btn.click()
+            ExpectedRadioLbl.append(p.text)
+            sleep(2)
+        # test sub task of Conversion
+        conversionCheckBox=driver.find_elements(By.XPATH,"//div[@class='optimization-input-div']/input")
+        conversionCheckBoxLbl=driver.find_elements(By.XPATH,"//div[@class='optimization-input-div']/input/../label")
+        # ActualConversionCheckBoxLbl=[]
+        ExpectedConversionCheckBoxLbl=[]
+        print('Count of checkbox under the Optimization Strategy >> Conversion are:',len(conversionCheckBox))
+        for lbl in conversionCheckBoxLbl:
+            ExpectedConversionCheckBoxLbl.append(lbl.text)
+        print(ExpectedConversionCheckBoxLbl)
+
+        if collections.Counter(ActualRadioLbl) == collections.Counter(ExpectedRadioLbl):
+            print('Passed, all Device Targetting Paragraph Labels are correct')
+        else:
+            print('Failed, all Device Targetting Paragraph Labels are incorrect')
+        print('Radio Button Paragrpags under the Optimization strategy are:',ExpectedRadioLbl)
+        print()
         # testing the checkbox and respective labels
         OptiChkBox=driver.find_elements(By.XPATH,"//section[@id='optimization-strategy']//input[@type='checkbox']")
         print('Count of Check box available under Optimization Strategy:',len(OptiChkBox))
         OptiChkBoxLbl=driver.find_elements(By.XPATH,"//section[@id='optimization-strategy']//input[@type='checkbox']/../label")
-        ExpectedOptiChkLbl=['AUTO', '', '', '']
+        ExpectedOptiChkLbl=['AUTO', '', 'AUTO', '']
         ActualOptiChkLbl=[]
         for lbl in OptiChkBoxLbl:
             ActualOptiChkLbl.append(lbl.text)
@@ -1004,6 +1034,8 @@ class campaignSetUp():
             print('Passed, all Device Targetting Checked Labels are correct')
         else:
             print('Failed, all Device Targetting Checked Labels are incorrect')
+        print('actual:',ActualOptiChkLbl)
+        print('expected:',ExpectedOptiChkLbl)
         #CTR threshold
         defalultCTRThresholdLabel=driver.find_element(By.XPATH,"//label[@for='inp-adgTargetSup-optimizationCtrThreshold']")
         if defalultCTRThresholdLabel.text == 'Default CTR Threshold':
@@ -1014,7 +1046,7 @@ class campaignSetUp():
         AutoCheckbox=driver.find_element(By.ID,"inp-adgTargetSup-optimizationAuto0")
         driver.execute_script("arguments[0].click();", AutoCheckbox)
         labelAfterClick=driver.find_element(By.XPATH,"//label[@for='inp-adgTargetSup-optimizationCtrThreshold']")
-        if labelAfterClick.text == 'CTR THRESHOLD':
+        if labelAfterClick.text == 'CTR THRESHOLD': #CTR THRESHOLD
             print('Passed,After click On Auto Checkbox',labelAfterClick.text,'is correct')
         else:
             print('Failed,After click On Auto Checkbox',labelAfterClick.text,'is incorrect')
@@ -1045,11 +1077,18 @@ class campaignSetUp():
         # testing all checkbox inside the publisher category
         chkBoxes=driver.find_elements(By.XPATH,"//section[@id='publisher-categories']//input")
         # code to check all input boxes are selected
+        actualPubCatChkLbl=['deselected', 'selected', 'selected', 'selected', 'selected', 'selected', 'selected', 'selected', 'selected', 'selected', 'selected', 'selected', 'selected', 'selected', 'selected', 'selected', 'selected', 'selected', 'selected', 'selected', 'selected', 'selected', 'selected', 'selected', 'selected', 'selected', 'selected', 'selected', 'selected', 'selected', 'selected', 'selected', 'selected', 'selected', 'selected', 'selected', 'selected', 'selected', 'selected']
+        expectedPubCatChkLbl=[]
         for chkBox in chkBoxes:
             if chkBox.is_selected()==True:
-                print('selected')
+                expectedPubCatChkLbl.append('selected')
             else:
-                print('deselected')
+                expectedPubCatChkLbl.append('deselected')
+        if collections.Counter(actualPubCatChkLbl) == collections.Counter(expectedPubCatChkLbl):
+            print('Passed, all labels are selected')
+        else:
+            print('Failed, all labels are unselected')
+        print(expectedPubCatChkLbl)
         print('Count of checkboxes under Publisher Categories are:',len(chkBoxes))
         chkBoxesLbl=driver.find_elements(By.XPATH,"//section[@id='publisher-categories']//input/../label")
         AcutalchkBoxLbl=['Arts & Entertainment', 'Automotive', 'Books & Literature', 'Business', 'Careers', 'Comic Books', 'Education', 'Family & Parenting', 'Finance', 'Food & Drink', 'Hobbies & Interests', 'Home & Garden', "Law, Gov't & Politics", 'Lifestyle', 'Medical, Health & Fitness', 'Movies & Video', 'Music', 'Navigation', 'News', 'Non-Standard Content', 'Personalization', 'Pets', 'Photography', 'Productivity', 'Real Estate', 'Religion & Spirituality', 'Science', 'Shopping', 'Social', 'Society', 'Sports', 'Style & Fashion', 'Technology & Computing', 'Tools', 'Travel', 'Uncategorized', 'Video & Computer Games', 'Weather']
@@ -1061,6 +1100,7 @@ class campaignSetUp():
         else:
             print('Failed, all Device Targetting Checked Labels are incorrect')
             print(ExpectedChkBoxLbl)
+        
 
 # ---custom audience function starts here-----
     def BuildCustomAudience(self):
@@ -1071,7 +1111,24 @@ class campaignSetUp():
             # driver.execute_script("arguments[0].scrollIntoView();",element)
         else:
             print('Failed',remessagingtag.text, 'is incorrect')
-        
+        # testing build audience label 
+        buildAudienceLbl=driver.find_element(By.XPATH,"//section[@id='build-audience']//input/../label")
+        if buildAudienceLbl.text == 'Build Audience':
+            print('Passed,',buildAudienceLbl.text,' label is correct')
+        else:
+            print('Failed,',buildAudienceLbl.text,' label is incorrect')
+
+        buildAudienceInput=driver.find_element(By.ID,'inp-adgTargetSup-buildAudience')
+        buildAudienceInput.click()
+        audName=driver.find_element(By.XPATH,"//span[contains(text(),'Audience Name')]")
+        if audName.text == 'AUDIENCE NAME':
+            print('Passed,',audName.text,'lable is incorrect')
+        else:
+            print('Failed,',audName.text,'lable is incorrect')
+        input=driver.find_element(By.ID,"inp-adgTargetSup-audienceName")#.send_keys('testing-3.16')
+        if input.tag_name == 'input':
+            input.send_keys('testing-3.16')
+
 c=campaignSetUp()
 c.NewCampaignButton()
 c.NewCampaignModel('Regression-Automation-testing','Pet Services','campaign-budget','Save')# 'adgroup-budget','campaign-budget','×','Save'
@@ -1091,3 +1148,6 @@ c.publisherCategory()
 c.BuildCustomAudience()
 sleep(20)
 driver.close()
+
+# Failed,After click On Auto Checkbox CTR THRESHOLD 0% is incorrect
+# Failed, default value inside the input box is incorrect and value is: 0
