@@ -12,6 +12,7 @@ from webdriver_manager.microsoft import EdgeChromiumDriverManager
 from time import sleep
 import re
 import collections
+import random
 
 b_name ='chrome'
 if b_name == 'chrome':
@@ -1213,12 +1214,91 @@ class campaignSetUp():
             print('Failed,',audName.text,'lable is incorrect')
         input=driver.find_element(By.ID,"inp-adgTargetSup-audienceName")#.send_keys('testing-3.16')
         if input.tag_name == 'input':
-            input.send_keys('testing-3.16') #add random no for uniqueness
+            input.send_keys('testing-3.17-',random.randint(1,100000)) #add random no for uniqueness
         driver.find_element(By.ID,"btn-adgTargetSup-next").click() #next button clicked
+        sleep(10)
+class Createives():
+
+    '''here we will set up creatives, copy, delete, edit, active, pause and other operations peform '''
+    def CreativeDetailsVerify(self):
+        print('+'*50)
+        newCreativeBtn=driver.find_element(By.ID,'btn-adgCreatives-newCreative')
+        # testing button type and label and extracting label name
+        if newCreativeBtn.tag_name == 'button' and newCreativeBtn.text == 'New Creative':
+            print('Elemtent is of Button type and label text is:',newCreativeBtn.text) 
+        else:
+            print('Element is not of button type, it is of type:',newCreativeBtn.tag_name)
+        addCreativeImage=WebDriverWait(driver,40).until(EC.visibility_of_element_located((By.XPATH,"//div[@class='create-new-item-guide creative ng-scope']/img")))
+        # Validating creative src
+        if addCreativeImage.get_attribute("src") == 'https://cf.groundtruth.com/content/myfootprints/v1/img/assist_creative.png' and addCreativeImage.get_attribute('alt') == 'Create a new creative':
+            print('Passed, Creative src is correct and it is:',addCreativeImage.get_attribute("src"))
+            print('Passed, Creative alt text is correct and it is:',addCreativeImage.get_attribute('alt'))
+            if addCreativeImage.is_displayed() == True:
+                print('Passed, Creative image is displayed')
+            else:
+                print('Failed, Creative image is displayed')
+        else:
+            print('Failed, Creative src is incorrect',addCreativeImage.get_attribute("src"))
+            print(addCreativeImage.get_attribute('alt'))
+            print('image displayed:',addCreativeImage.is_displayed())
+
+    def newCreativeDetails(self): #verify all form details
+        creativeBtn=driver.find_element(By.XPATH,"//button[@id='btn-adgCreatives-newCreative']") #creative button
+        creativeBtn.click() #clicking on the new creative button
+        sleep(5)
+        print('clicked on new creative')
+        driver.execute_script("arguments[0].click();",creativeBtn)
+        expectedTabs=[]
+        actualTabs=['', '', '', '', 'IMAGE', 'SCRIPT', 'VIDEO', 'HTML5']
+        tabs=driver.find_elements(By.XPATH,"//div[@class='gt-tabs ng-isolate-scope']/ul/li/a")
+        sleep(2)
+        for tab in tabs:
+            expectedTabs.append(tab.text)
+            tab.click()
+            print('clicked on tab:',tab.text)
+        if collections.Counter(actualTabs) == collections.Counter(expectedTabs):
+            print('Passed, all tabs links are correct')
+        else:
+            print('Failed, all tabs links are incorrect:',expectedTabs)
+        # All labels under IMAGE
+        ImageTabBtn=driver.find_element(By.XPATH,"//a[contains(text(),'Image')]") #click on Image tab
+        driver.execute_script("arguments[0].click();", ImageTabBtn)
+        ImageTabLbls=driver.find_elements(By.XPATH,"//div[@id='modal--adgroup-new-creative']//label")
+        acutalImageTabLbls=['Name', 'API Type', 'External Trackers (Pixels)', 'External Trackers (Scripts) or MRAID.js', 'Click-through URL']
+        expectedImageTabLbls=[]
+        for lbl in ImageTabLbls:
+            expectedImageTabLbls.append(lbl.text)
+
+        if collections.Counter(acutalImageTabLbls) == collections.Counter(expectedImageTabLbls):
+            print('Passed, all labels under the Image tab are correct')
+        else:
+            print('Failed, all labels under the Image tab are incorrect',expectedTabs)
+        # upload creative Image container text
+        uplCreHeading=driver.find_element(By.XPATH,"//h3[contains(text(),'Upload')]")
+        # Upload Creative Image test
+        if uplCreHeading.tag_name == 'h3' and uplCreHeading.text == 'Upload Creative Image':
+            print('Passed,',uplCreHeading.text,'is of ',uplCreHeading.tag_name,'tag')
+        else:
+            print('Failed,',uplCreHeading.text,'is of ',uplCreHeading.tag_name,'tag')   
+        #  //div[contains(text(),'Drag and drop creative here')]
+        dragNdropText=driver.find_element(By.XPATH,"//div[contains(text(),'Drag and drop creative here')]")
+        if dragNdropText.text == 'Drag and drop creative here':
+            print('Passed,',dragNdropText.text,'is correct')
+        else:
+            print('Failed,',dragNdropText.text,'is incorrect')
+        orText=driver.find_element(By.XPATH,"//div[@class='or']")
+        if orText.text=='OR':
+            print('Passed,',orText.text,'is correct')
+        else:
+            print('Failed,',orText.text,'is incorrect')
+        # content=driver.find_element(By.XPATH,"//div[@class='drop-box-msg']")
+        # print(content.text)
+
+
 
 c=campaignSetUp()
 c.NewCampaignButton()
-c.NewCampaignModel('Regression-Automation-testing','Pet Services','campaign-budget','Save')# 'adgroup-budget','campaign-budget','×','Save'
+c.NewCampaignModel('Regression-Automation-testing-'+str(random.randint(1,100)),'Pet Services','campaign-budget','Save')# 'adgroup-budget','campaign-budget','×','Save'
 c.TargettingHeader()
 c.deviceType()
 # c.LeftHandDetails()
@@ -1226,13 +1306,17 @@ c.deviceType()
 # c.AdGroupHeader()
 c.AdGroupSetUp() 
 c.selectAudience('Millennials','Potato Growers','Live Nation',"Costco",'Hispanics','Vegetable Farms','Pizza Hut','Renault')#Behavior,Category,LocationGroup,Brand #"Wendy's" "7-Eleven"
-c.additionalLocationFilter()
+# c.additionalLocationFilter()
 c.DriveToDestinationt()
-c.Demographics()
-c.deviceTargeting()
-c.OptimizationStrategy()
-c.publisherCategory()
+# c.Demographics()
+# c.deviceTargeting()
+# c.OptimizationStrategy()
+# c.publisherCategory()
 c.BuildCustomAudience()
+cr=Createives()
+cr.CreativeDetailsVerify()
+cr.newCreativeDetails()
+
 sleep(20)
 driver.close()
 
