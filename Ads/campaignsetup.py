@@ -1249,25 +1249,26 @@ class Createives():
         creativeBtn.click() #clicking on the new creative button
         sleep(5)
         print('clicked on new creative')
-        driver.execute_script("arguments[0].click();",creativeBtn)
         expectedTabs=[]
         actualTabs=['IMAGE', 'SCRIPT', 'VIDEO', 'HTML5']
         tabs=driver.find_elements(By.XPATH,"//div[@class='gt-tabs ng-isolate-scope']/ul/li/a")
         sleep(2)
-        # for tab in tabs:
-        #     expectedTabs.append(tab.text)
-        #     tab.click()
-        #     print('clicked on tab:',tab.text)
-        #     sleep(2)
-        # if collections.Counter(actualTabs) == collections.Counter(expectedTabs):
-        #     print('Passed, all tabs links are correct')
-        # else:
-        #     print('Failed, all tabs links are incorrect:',expectedTabs)
-        #     sleep(2)
+        for tab in tabs:
+            expectedTabs.append(tab.text)
+            tab.click()
+            print('clicked on tab:',tab.text)
+            sleep(2)
+        if collections.Counter(actualTabs) == collections.Counter(expectedTabs):
+            print('Passed, all tabs links are correct')
+        else:
+            print('Failed, all tabs links are incorrect:',expectedTabs)
+            sleep(2)
+
         # All labels under IMAGE
+        ImageTabBtn=WebDriverWait(driver,40).until(EC.element_to_be_clickable((By.XPATH,"//a[contains(text(),'Image')]"))) 
         
-        ImageTabBtn=WebDriverWait(driver,40).until(EC.element_to_be_clickable((By.XPATH,"//a[contains(text(),'Image')]"))) #click on Image tab
-        driver.execute_script("arguments[0].click();", ImageTabBtn)
+        #click on Image tab
+        driver.execute_script("arguments[0].click();",ImageTabBtn)
         ImageTabLbls=driver.find_elements(By.XPATH,"//div[@id='modal--adgroup-new-creative']//label")
         acutalImageTabLbls=['Name', 'API Type', 'External Trackers (Pixels)', 'External Trackers (Scripts) or MRAID.js', 'Click-through URL']
         expectedImageTabLbls=[]
@@ -1328,8 +1329,8 @@ class Createives():
             print('Passed, options count under the Api dropdown is correct')
         else:
             print('Failed, options count under the Api dropdown is incorrect')
-        # testing default value of api type
 
+        # testing default value of api type
         if select.first_selected_option.text == 'MRAID2':
             print('Passed, default options under the Api dropdown is correct')
         else:
@@ -1338,27 +1339,61 @@ class Createives():
         select.select_by_value('MRAID1')
 
         # # testing External Trackers (Pixels)
-        # externelTracker=driver.find_element(By.XPATH,"//xad-list-input[@label='External Trackers (Pixels)']//input")
-        # externelTracker.send_keys('https://ads-release-3-17-np.groundtruth.com/',Keys.RETURN)
-        # externelTracker.send_keys('https://ads-release-3-17-np.groundtruth.com/',Keys.RETURN)
-        # sleep(2)
-        # # testing removing of last tracker
-        # WebDriverWait(driver,40).until(EC.element_to_be_clickable((By.XPATH,"//xad-list-input[@label='External Trackers (Scripts) or MRAID.js']//input"))).click()
+        externelTracker=driver.find_element(By.XPATH,"//xad-list-input[@label='External Trackers (Pixels)']//input")
+        externelTracker.send_keys('https://ads-release-3-17-np.groundtruth.com/',Keys.RETURN)
+        externelTracker.send_keys('https://ads-release-3-17-np.groundtruth.com/',Keys.RETURN)
+        sleep(2)
+        # testing removing of last tracker
+        WebDriverWait(driver,40).until(EC.element_to_be_clickable((By.XPATH,"//xad-list-input[@label='External Trackers (Pixels)']/ul[@class='submitted-items']/li[last()]/button"))).click()
+        print('removed the last tracker from External Trackers (Pixels)')
 
         # testing External Trackers (Scripts) or MRAID.js
-        externelTracker=driver.find_element(By.ID,'impressions-urls')
+        externelTracker=driver.find_element(By.XPATH,"//xad-list-input[@label='External Trackers (Scripts) or MRAID.js']//input")
         externelTracker.send_keys('https://ads-release-3-16-np.groundtruth.com/',Keys.RETURN)
         externelTracker.send_keys('https://ads-release-3-16-np.groundtruth.com/',Keys.RETURN)
-
+        sleep(2)
         # testing removing of last tracker
         WebDriverWait(driver,40).until(EC.element_to_be_clickable((By.XPATH,"//xad-list-input[@label='External Trackers (Scripts) or MRAID.js']/ul[@class='submitted-items']/li[last()]/button"))).click()
+        print('removed the last tracker from External Trackers (Scripts) or MRAID.js')
 
         # testing Click-through URL*
         WebDriverWait(driver,40).until(EC.element_to_be_clickable((By.ID,'inp-creativeModalImage-clickThroughURL'))).send_keys('https://www.groundtruth.com/')
 
-        # testing creative footer-subtext
+        # testing creative footer-subtext and link address 
         creativeFooter=driver.find_element(By.XPATH,"//p[@class='footer-subtext']")
-        print(creativeFooter.get_attribute('innerHTML'))
+        terms="By clicking Save, I agree to comply in all respects with the MMA Mobile Advertising Guidelines and GroundTruth's Content Guidelines."
+        if creativeFooter.text == terms:
+            print('Passed, creative terms are correct')
+        else:
+            print('Failed, creative terms are incorrect')
+        creativeFooterLink=driver.find_element(By.LINK_TEXT,"GroundTruth's Content Guidelines")
+        if creativeFooterLink.get_attribute('href') == "https://www.groundtruth.com/guidelines/":
+            print('Passed, creative footer link is correct') 
+        else:
+            print('Failed, creative footer link is incorrect')
+       
+        # moving to the bottom of the page
+        actions.move_to_element(elementPosition).perform()
+
+        # testing count of buttons
+        creativeFooterButtons=driver.find_elements(By.XPATH,"//div[@class='footer-buttons']/button")
+        # testing creative footer btn count
+        if len(creativeFooterButtons) == 2:
+            print('Passed, button count are correct')
+        else:
+            print('Failed, button count are incorrect',len(creativeFooterButtons))
+        actualCreativeFooterButtons=['Cancel', 'Save']
+        expectedCreativeFooterButtons=[]
+        for btn in creativeFooterButtons:
+            expectedCreativeFooterButtons.append(btn.text)
+        if collections.Counter(actualCreativeFooterButtons) == collections.Counter(expectedCreativeFooterButtons):
+            print('Passed, buttons names under creative footer are correct')
+        else:
+            print('Failed, buttons names under creative footer are incorrect',expectedCreativeFooterButtons)
+
+
+
+
 
 
 c=campaignSetUp()
