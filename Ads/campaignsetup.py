@@ -109,24 +109,24 @@ class campaignSetUp():
             if CampaignLabelName == 'Campaign Name':
                 print('Passed, Campaign Name Label is correct!!')
                 driver.find_element(By.ID, "inp-createCampModal-campName").send_keys(CampaignName) #campaign name 
-                if CategoryLabelName == 'Category':
-                    print('Passed, Category Name Label is correct!!')
-                    if category.get_attribute('placeholder') == 'Search and select a category':
-                        print('Passed!!,Placeholder inside Category')
-                        category.click()
-                        sleep(2)
-                        category_li = driver.find_elements(By.XPATH, "//div[@class='gt-autocomplete-dropdown ng-scope']/ul/li")
-                        print('#' * 30)
-                        print('Count of category:',len(category_li))                        
-                        print('categories are listed below:-')
-                        for li in category_li:
-                            print(li.text)
-                        print('#' * 30)
-                        driver.find_element(By.XPATH,"//li[contains(text(),'"+categoryName+"')]").send_keys(categoryName)# category name:- Potato Growers
-                    else:
-                        print('Failed!!,Placeholder inside Category')
-                else:
-                    print('Failed, Category Name lable is Incorrect') 
+                # if CategoryLabelName == 'Category':
+                #     print('Passed, Category Name Label is correct!!')
+                #     if category.get_attribute('placeholder') == 'Search and select a category':
+                #         print('Passed!!,Placeholder inside Category')
+                #         category.click()
+                #         sleep(2)
+                #         category_li = driver.find_elements(By.XPATH, "//div[@class='gt-autocomplete-dropdown ng-scope']/ul/li")
+                #         print('#' * 30)
+                #         print('Count of category:',len(category_li))                        
+                #         print('categories are listed below:-')
+                #         for li in category_li:
+                #             print(li.text)
+                #         print('#' * 30)
+                #         driver.find_element(By.XPATH,"//li[contains(text(),'"+categoryName+"')]").send_keys(categoryName)# category name:- Potato Growers
+                #     else:
+                #         print('Failed!!,Placeholder inside Category')
+                # else:
+                #     print('Failed, Category Name lable is Incorrect') 
             else:
                 print('Failed, Campaign Name lable is Incorrect')
 
@@ -1218,8 +1218,10 @@ class campaignSetUp():
         driver.find_element(By.ID,"btn-adgTargetSup-next").click() #next button clicked
         sleep(10)
 class Createives():
-
     '''here we will set up creatives, copy, delete, edit, active, pause and other operations peform '''
+    # # clicking on creative directly
+    # driver.find_element(By.XPATH,"//div[contains(text(),'Ad Creatives')]").click()
+
     def CreativeDetailsVerify(self):
         print('+'*50)
         newCreativeBtn=driver.find_element(By.ID,'btn-adgCreatives-newCreative')
@@ -1249,19 +1251,22 @@ class Createives():
         print('clicked on new creative')
         driver.execute_script("arguments[0].click();",creativeBtn)
         expectedTabs=[]
-        actualTabs=['', '', '', '', 'IMAGE', 'SCRIPT', 'VIDEO', 'HTML5']
+        actualTabs=['IMAGE', 'SCRIPT', 'VIDEO', 'HTML5']
         tabs=driver.find_elements(By.XPATH,"//div[@class='gt-tabs ng-isolate-scope']/ul/li/a")
         sleep(2)
-        for tab in tabs:
-            expectedTabs.append(tab.text)
-            tab.click()
-            print('clicked on tab:',tab.text)
-        if collections.Counter(actualTabs) == collections.Counter(expectedTabs):
-            print('Passed, all tabs links are correct')
-        else:
-            print('Failed, all tabs links are incorrect:',expectedTabs)
+        # for tab in tabs:
+        #     expectedTabs.append(tab.text)
+        #     tab.click()
+        #     print('clicked on tab:',tab.text)
+        #     sleep(2)
+        # if collections.Counter(actualTabs) == collections.Counter(expectedTabs):
+        #     print('Passed, all tabs links are correct')
+        # else:
+        #     print('Failed, all tabs links are incorrect:',expectedTabs)
+        #     sleep(2)
         # All labels under IMAGE
-        ImageTabBtn=driver.find_element(By.XPATH,"//a[contains(text(),'Image')]") #click on Image tab
+        
+        ImageTabBtn=WebDriverWait(driver,40).until(EC.element_to_be_clickable((By.XPATH,"//a[contains(text(),'Image')]"))) #click on Image tab
         driver.execute_script("arguments[0].click();", ImageTabBtn)
         ImageTabLbls=driver.find_elements(By.XPATH,"//div[@id='modal--adgroup-new-creative']//label")
         acutalImageTabLbls=['Name', 'API Type', 'External Trackers (Pixels)', 'External Trackers (Scripts) or MRAID.js', 'Click-through URL']
@@ -1272,7 +1277,7 @@ class Createives():
         if collections.Counter(acutalImageTabLbls) == collections.Counter(expectedImageTabLbls):
             print('Passed, all labels under the Image tab are correct')
         else:
-            print('Failed, all labels under the Image tab are incorrect',expectedTabs)
+            print('Failed, all labels under the Image tab are incorrect',expectedImageTabLbls)
         # upload creative Image container text
         uplCreHeading=driver.find_element(By.XPATH,"//h3[contains(text(),'Upload')]")
         # Upload Creative Image test
@@ -1280,7 +1285,6 @@ class Createives():
             print('Passed,',uplCreHeading.text,'is of ',uplCreHeading.tag_name,'tag')
         else:
             print('Failed,',uplCreHeading.text,'is of ',uplCreHeading.tag_name,'tag')   
-        #  //div[contains(text(),'Drag and drop creative here')]
         dragNdropText=driver.find_element(By.XPATH,"//div[contains(text(),'Drag and drop creative here')]")
         if dragNdropText.text == 'Drag and drop creative here':
             print('Passed,',dragNdropText.text,'is correct')
@@ -1291,9 +1295,70 @@ class Createives():
             print('Passed,',orText.text,'is correct')
         else:
             print('Failed,',orText.text,'is incorrect')
-        # content=driver.find_element(By.XPATH,"//div[@class='drop-box-msg']")
-        # print(content.text)
+        UploadCreativeBoldContent=driver.find_elements(By.XPATH,"//div[@class='drop-box-msg']/b")
+        actualCreativeBoldContent=['Please upload one of these sizes (in pixels). Double dimensions for retina mobile screens.','Other supported sizes include:']
+        ExpectedCreativeBoldContent=[]
+        for bold in UploadCreativeBoldContent:
+            # print(bold.get_attribute('innerHTML'))
+            ExpectedCreativeBoldContent.append(bold.get_attribute('innerHTML'))
+        if collections.Counter(actualCreativeBoldContent) == collections.Counter(ExpectedCreativeBoldContent):
+            print('Passed, Bold content under the creative upload is correct')
+        else:
+            print('Failed, Bold content under the creative upload is incorrect',ExpectedCreativeBoldContent)
 
+        UploadCreativePContent=driver.find_elements(By.XPATH,"//div[@class='drop-box-msg']/p")
+        actualCreativePContent=['320x50, 300x250, 320x480, 728x90 sizes reach more than 95% of mobile inventory.','600x300, 720x240, 640x213, 640x160, 640x320, 300x50, 480x320, 768x1024, 1024x768, 640x960, 640x360 and 160x600.']
+        ExpectedCreativePContent=[]
+        for p in UploadCreativePContent:
+            # print(bold.get_attribute('innerHTML'))
+            ExpectedCreativePContent.append(p.get_attribute('innerHTML'))
+        if collections.Counter(actualCreativePContent) == collections.Counter(ExpectedCreativePContent):
+            print('Passed, P content under the creative upload is correct')
+        else:
+            print('Failed, P content under the creative upload is incorrect',ExpectedCreativePContent)
+        # scrolling to the bottom of the page
+        elementPosition=driver.find_element(By.ID,'btn-creativesModal-newCreativeSave')
+        actions=ActionChains(driver)
+        actions.move_to_element(elementPosition).perform()
+
+        # testing the Api type selection box
+        apiType=driver.find_element(By.ID,'inp-creativeModalImage-apiTypeSelect')
+        select=Select(apiType)
+        if len(select.options) == 6:
+            print('Passed, options count under the Api dropdown is correct')
+        else:
+            print('Failed, options count under the Api dropdown is incorrect')
+        # testing default value of api type
+
+        if select.first_selected_option.text == 'MRAID2':
+            print('Passed, default options under the Api dropdown is correct')
+        else:
+            print('Failed, default options under the Api dropdown is incorrect:',select.first_selected_option.text)
+        # selecting explicity value in api dropdown
+        select.select_by_value('MRAID1')
+
+        # # testing External Trackers (Pixels)
+        # externelTracker=driver.find_element(By.XPATH,"//xad-list-input[@label='External Trackers (Pixels)']//input")
+        # externelTracker.send_keys('https://ads-release-3-17-np.groundtruth.com/',Keys.RETURN)
+        # externelTracker.send_keys('https://ads-release-3-17-np.groundtruth.com/',Keys.RETURN)
+        # sleep(2)
+        # # testing removing of last tracker
+        # WebDriverWait(driver,40).until(EC.element_to_be_clickable((By.XPATH,"//xad-list-input[@label='External Trackers (Scripts) or MRAID.js']//input"))).click()
+
+        # testing External Trackers (Scripts) or MRAID.js
+        externelTracker=driver.find_element(By.ID,'impressions-urls')
+        externelTracker.send_keys('https://ads-release-3-16-np.groundtruth.com/',Keys.RETURN)
+        externelTracker.send_keys('https://ads-release-3-16-np.groundtruth.com/',Keys.RETURN)
+
+        # testing removing of last tracker
+        WebDriverWait(driver,40).until(EC.element_to_be_clickable((By.XPATH,"//xad-list-input[@label='External Trackers (Scripts) or MRAID.js']/ul[@class='submitted-items']/li[last()]/button"))).click()
+
+        # testing Click-through URL*
+        WebDriverWait(driver,40).until(EC.element_to_be_clickable((By.ID,'inp-creativeModalImage-clickThroughURL'))).send_keys('https://www.groundtruth.com/')
+
+        # testing creative footer-subtext
+        creativeFooter=driver.find_element(By.XPATH,"//p[@class='footer-subtext']")
+        print(creativeFooter.get_attribute('innerHTML'))
 
 
 c=campaignSetUp()
@@ -1307,7 +1372,7 @@ c.deviceType()
 c.AdGroupSetUp() 
 c.selectAudience('Millennials','Potato Growers','Live Nation',"Costco",'Hispanics','Vegetable Farms','Pizza Hut','Renault')#Behavior,Category,LocationGroup,Brand #"Wendy's" "7-Eleven"
 # c.additionalLocationFilter()
-c.DriveToDestinationt()
+# c.DriveToDestinationt()
 # c.Demographics()
 # c.deviceTargeting()
 # c.OptimizationStrategy()
