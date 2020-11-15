@@ -1247,7 +1247,7 @@ class Createives():
     def newCreativeDetails(self): #verify all form details
         creativeBtn=driver.find_element(By.XPATH,"//button[@id='btn-adgCreatives-newCreative']") #creative button
         creativeBtn.click() #clicking on the new creative button
-        sleep(5)
+        sleep(2)
         print('clicked on new creative')
         expectedTabs=[]
         actualTabs=['IMAGE', 'SCRIPT', 'VIDEO', 'HTML5']
@@ -1391,11 +1391,57 @@ class Createives():
         else:
             print('Failed, buttons names under creative footer are incorrect',expectedCreativeFooterButtons)
 
+        # clicking on Cancel or Save button
+        # driver.find_element(By.XPATH,"//div[@class='footer-buttons']//button[contains(text(),'Cancel')]").click()
+        # uncomment for save button
+        # driver.find_element(By.XPATH,"//span[contains(text(),'Save')]").click()
+
+        # All labels under SCRIPT
+        # scroll Up to click on script
+        sleep(2)
+        scriptPosition=driver.find_element(By.XPATH,"//a[contains(text(),'Script')]")
+        actions.move_to_element(scriptPosition).perform()
+        scriptTabBtn=WebDriverWait(driver,40).until(EC.element_to_be_clickable((By.XPATH,"//a[contains(text(),'Script')]"))) 
+        # #click on Image tab
+        driver.execute_script("arguments[0].click();",scriptTabBtn)
+        # all labels under the script tag
+        ImageTabLbls=driver.find_elements(By.XPATH,"//div[@id='modal--adgroup-new-creative']//label") 
+        acutalScriptTabLbls=['Name', 'Script tag*', 'Size*', 'Script API Type', 'External Trackers (Pixels)', 'External Trackers (Scripts) or MRAID.js', 'Click-through URL']
+        expectedScriptTabLbls=[]
+        for lbl in ImageTabLbls:
+            expectedScriptTabLbls.append(lbl.text)
+        if collections.Counter(acutalScriptTabLbls) == collections.Counter(expectedScriptTabLbls):
+            print('Passed, all labels under the Script tab are correct')
+        else:
+            print('Failed, all labels under the Script tab are incorrect',expectedScriptTabLbls)
+        # testing  script creative name filed
+        CreativeName=driver.find_element(By.NAME,"creativeNameField")
+        if CreativeName.get_attribute('innerHTML') == 'Ads Manager - SCRIPT':
+            print('Passed, default placeholder inside the script tag is correct')
+            CreativeName.clear()
+            sleep(2)
+            CreativeName.send_keys('SCRIPT')
+        else:
+            print('Failed, default placeholder inside the script tag is incorrect',CreativeName.get_attribute('innerHTML'))
+        # testing script tag
+        scriptTag= driver.find_element(By.ID,'inp-creativeModalScript-scriptTag')
+        if scriptTag.get_attribute('value')=='':
+            scriptTag.send_keys('script tag test')
+            print('passed, script tag is empty')
+        else:
+            print('Failed script tag is non-empty')
+            
 
 
 
 
 
+
+
+
+
+
+        
 c=campaignSetUp()
 c.NewCampaignButton()
 c.NewCampaignModel('Regression-Automation-testing-'+str(random.randint(1,100)),'Pet Services','campaign-budget','Save')# 'adgroup-budget','campaign-budget','×','Save'
