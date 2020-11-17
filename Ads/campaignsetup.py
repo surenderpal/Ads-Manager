@@ -67,7 +67,8 @@ class campaignSetUp():
         this function will setup new campaign
         '''
         sleep(5)
-        newCampaignButton=driver.find_element(By.XPATH, "//button[@id='btn-campDash-newCampaign']")
+        newCampaignButton=WebDriverWait(driver,40).until(EC.element_to_be_clickable((By.XPATH,"//button[@id='btn-campDash-newCampaign']")))
+        # newCampaignButton=driver.find_element(By.XPATH, "//button[@id='btn-campDash-newCampaign']")
         if newCampaignButton.tag_name == 'button':
             driver.find_element(By.XPATH, "//span[contains(text(),'New Campaign')]").click()
             print('clicked on new campaign button')
@@ -1224,7 +1225,8 @@ class Createives():
 
     def CreativeDetailsVerify(self):
         print('+'*50)
-        newCreativeBtn=driver.find_element(By.ID,'btn-adgCreatives-newCreative')
+        newCreativeBtn=WebDriverWait(driver,40).until((EC.element_to_be_clickable((By.ID,"btn-adgCreatives-newCreative"))))
+        # newCreativeBtn=driver.find_element(By.ID,'btn-adgCreatives-newCreative')
         # testing button type and label and extracting label name
         if newCreativeBtn.tag_name == 'button' and newCreativeBtn.text == 'New Creative':
             print('Elemtent is of Button type and label text is:',newCreativeBtn.text) 
@@ -1281,6 +1283,7 @@ class Createives():
             print('Failed, all labels under the Image tab are incorrect',expectedImageTabLbls)
         # upload creative Image container text
         uplCreHeading=driver.find_element(By.XPATH,"//h3[contains(text(),'Upload')]")
+
         # Upload Creative Image test
         if uplCreHeading.tag_name == 'h3' and uplCreHeading.text == 'Upload Creative Image':
             print('Passed,',uplCreHeading.text,'is of ',uplCreHeading.tag_name,'tag')
@@ -1316,11 +1319,7 @@ class Createives():
         if collections.Counter(actualCreativePContent) == collections.Counter(ExpectedCreativePContent):
             print('Passed, P content under the creative upload is correct')
         else:
-            print('Failed, P content under the creative upload is incorrect',ExpectedCreativePContent)
-        # scrolling to the bottom of the page
-        elementPosition=driver.find_element(By.ID,'btn-creativesModal-newCreativeSave')
-        actions=ActionChains(driver)
-        actions.move_to_element(elementPosition).perform()
+            print('Failed, P content under the creative upload is incorrect',ExpectedCreativePContent)        
 
         # testing the Api type selection box
         apiType=driver.find_element(By.ID,'inp-creativeModalImage-apiTypeSelect')
@@ -1343,6 +1342,7 @@ class Createives():
         externelTracker.send_keys('https://ads-release-3-17-np.groundtruth.com/',Keys.RETURN)
         externelTracker.send_keys('https://ads-release-3-17-np.groundtruth.com/',Keys.RETURN)
         sleep(2)
+
         # testing removing of last tracker
         WebDriverWait(driver,40).until(EC.element_to_be_clickable((By.XPATH,"//xad-list-input[@label='External Trackers (Pixels)']/ul[@class='submitted-items']/li[last()]/button"))).click()
         print('removed the last tracker from External Trackers (Pixels)')
@@ -1355,7 +1355,14 @@ class Createives():
         # testing removing of last tracker
         WebDriverWait(driver,40).until(EC.element_to_be_clickable((By.XPATH,"//xad-list-input[@label='External Trackers (Scripts) or MRAID.js']/ul[@class='submitted-items']/li[last()]/button"))).click()
         print('removed the last tracker from External Trackers (Scripts) or MRAID.js')
-
+        
+        #scrolling the page down
+        actions=ActionChains(driver)
+        # actions.move_to_element().perform()
+        elementPosition=driver.find_element(By.ID,'btn-creativesModal-newCreativeSave')
+        actions=ActionChains(driver)
+        actions.move_to_element(elementPosition).perform()
+ 
         # testing Click-through URL*
         WebDriverWait(driver,40).until(EC.element_to_be_clickable((By.ID,'inp-creativeModalImage-clickThroughURL'))).send_keys('https://www.groundtruth.com/')
 
@@ -1415,11 +1422,15 @@ class Createives():
         else:
             print('Failed, all labels under the Script tab are incorrect',expectedScriptTabLbls)
         # testing  script creative name filed
-        CreativeName=driver.find_element(By.NAME,"creativeNameField")
+        CreativeName=driver.find_element(By.CSS_SELECTOR,"#inp-creativesModal-creativeName")
         if CreativeName.get_attribute('innerHTML') == 'Ads Manager - SCRIPT':
             print('Passed, default placeholder inside the script tag is correct')
-            CreativeName.clear()
+            CreativeName.click()
             sleep(2)
+            # testing using action chains
+            actions.key_down(Keys.CONTROL).send_keys('c').key_up(Keys.CONTROL).perform()
+            sleep(2)
+            # CreativeName.clear()
             CreativeName.send_keys('SCRIPT')
         else:
             print('Failed, default placeholder inside the script tag is incorrect',CreativeName.get_attribute('innerHTML'))
@@ -1431,15 +1442,123 @@ class Createives():
         else:
             print('Failed script tag is non-empty')
             
+        # testing the size* selection box
+        size=driver.find_element(By.ID,'inp-creativeModalScript-size')
+        select=Select(size)
+        # testing options under size drop-down
+        actualScriptSizeList=['300x600', '160x600', '600x300', '720x240', '640x213', '640x160', '728x90', '300x50', '300x250', '320x50', '300x250 (Interstitial size)', '320x480 (Interstitial size)', '480x320 (Interstitial size)', '768x1024 (Interstitial size)', '1024x768 (Interstitial size)', '640x960 (Interstitial size)']
+        expectedScriptSizeList=[]
+        # for sizelist in scriptSizeList:
+        for option in select.options:
+            expectedScriptSizeList.append(option.text)
+        if collections.Counter(actualScriptSizeList) == collections.Counter(expectedScriptSizeList):
+            print('Passed, Options under Script tab is correct')
+        else:
+            print('Failed, Options under Script tab is incorrect',expectedScriptSizeList)
+        # print('size dropdown list',expectedScriptSizeList)
+        # testing length of size drop-down
+        if len(select.options) == 16:
+            print('Passed, options count under the Size dropdown is correct')
+        else:
+            print('Failed, options count under the Size dropdown is incorrect',len(select.options))
+        
+        # testing default value of api type
+        if select.first_selected_option.text == '300x600':
+            print('Passed, default options under the Api dropdown is correct')
+        else:
+            print('Failed, default options under the Api dropdown is incorrect:',select.first_selected_option.text)
+        # selecting explicity value in api dropdown
+        select.select_by_value('string:300x50_0')
+
+        # select script API Type
+        apiType=driver.find_element(By.ID,'inp-creativeModalScript-apiTypeSelect')
+        select=Select(apiType)
+        # testing the options text inside the API
+        actualScriptApiList=['None', 'VPAID1', 'VPAID2', 'MRAID1', 'MRAID2', 'ORMMA']
+        expectedScriptApiList=[]
+        for option in select.options:
+            expectedScriptApiList.append(option.text)
+        if collections.Counter(actualScriptApiList) == collections.Counter(expectedScriptApiList):
+            print('Passed, under Script tab, Script API Type options are correct')
+        else:
+            print('Failed, under Script tab, Script API Type options are incorrect',expectedScriptApiList)
+        # print('Script API options,',expectedScriptApiList)
+        # testing the count of options
+        if len(select.options) == 6:
+            print('Passed, options count under the Api dropdown is correct')
+        else:
+            print('Failed, options count under the Api dropdown is incorrect',len(select.options))
+        # testing default value of api type
+        if select.first_selected_option.text == 'MRAID2':
+            print('Passed, default options under the Api dropdown is correct')
+        else:
+            print('Failed, default options under the Api dropdown is incorrect:',select.first_selected_option.text)
+        # selecting explicity value in api dropdown
+        select.select_by_value('MRAID1')
+
+        # # testing External Trackers (Pixels)
+        externelTracker=driver.find_element(By.XPATH,"//xad-list-input[@label='External Trackers (Pixels)']//input")
+        externelTracker.send_keys('https://ads-release-3-17-np.groundtruth.com/',Keys.RETURN)
+        externelTracker.send_keys('https://ads-release-3-17-np.groundtruth.com/',Keys.RETURN)
+        sleep(2)
+        # testing removing of last tracker
+        WebDriverWait(driver,40).until(EC.element_to_be_clickable((By.XPATH,"//xad-list-input[@label='External Trackers (Pixels)']/ul[@class='submitted-items']/li[last()]/button"))).click()
+        print('removed the last tracker from External Trackers (Pixels)')
+
+        # testing External Trackers (Scripts) or MRAID.js
+        externelTracker=driver.find_element(By.XPATH,"//xad-list-input[@label='External Trackers (Scripts) or MRAID.js']//input")
+        externelTracker.send_keys('https://ads-release-3-16-np.groundtruth.com/',Keys.RETURN)
+        externelTracker.send_keys('https://ads-release-3-16-np.groundtruth.com/',Keys.RETURN)
+        sleep(2)
+        # testing removing of last tracker
+        WebDriverWait(driver,40).until(EC.element_to_be_clickable((By.XPATH,"//xad-list-input[@label='External Trackers (Scripts) or MRAID.js']/ul[@class='submitted-items']/li[last()]/button"))).click()
+        print('removed the last tracker from External Trackers (Scripts) or MRAID.js')
+       
+        # moving to the bottom of the page
+        driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+        # testing Click-through URL*
+        WebDriverWait(driver,40).until(EC.element_to_be_clickable((By.ID,'inp-creativeModalImage-clickThroughURL'))).send_keys('https://www.groundtruth.com/')
+
+        # testing creative footer-subtext and link address 
+        creativeFooter=driver.find_element(By.XPATH,"//p[@class='footer-subtext']")
+        terms="By clicking Save, I agree to comply in all respects with the MMA Mobile Advertising Guidelines and GroundTruth's Content Guidelines."
+        if creativeFooter.text == terms:
+            print('Passed, creative terms are correct')
+        else:
+            print('Failed, creative terms are incorrect')
+        creativeFooterLink=driver.find_element(By.LINK_TEXT,"GroundTruth's Content Guidelines")
+        if creativeFooterLink.get_attribute('href') == "https://www.groundtruth.com/guidelines/":
+            print('Passed, creative footer link is correct') 
+        else:
+            print('Failed, creative footer link is incorrect')
+
+        # # moving to the bottom of the page
+        # elementPos=driver.find_element(By.ID,'btn-creativesModal-newCreativeCancel')
+        # actions.move_to_element(elementPos).perform()
+
+        # testing count of buttons
+        creativeFooterButtons=driver.find_elements(By.XPATH,"//div[@class='footer-buttons']/button")
+        # testing creative footer btn count
+        if len(creativeFooterButtons) == 2:
+            print('Passed, button count are correct')
+        else:
+            print('Failed, button count are incorrect',len(creativeFooterButtons))
+        actualCreativeFooterButtons=['Cancel', 'Save']
+        expectedCreativeFooterButtons=[]
+        for btn in creativeFooterButtons:
+            expectedCreativeFooterButtons.append(btn.text)
+        if collections.Counter(actualCreativeFooterButtons) == collections.Counter(expectedCreativeFooterButtons):
+            print('Passed, buttons names under creative footer are correct')
+        else:
+            print('Failed, buttons names under creative footer are incorrect',expectedCreativeFooterButtons)
+
+        # clicking on Cancel or Save button
+        # driver.find_element(By.XPATH,"//div[@class='footer-buttons']//button[contains(text(),'Cancel')]").click()
+        # uncomment for save button
+        # driver.find_element(By.XPATH,"//span[contains(text(),'Save')]").click()
 
 
-
-
-
-
-
-
-
+        # test all options under both the list box inside the script tab.
 
         
 c=campaignSetUp()
@@ -1481,6 +1600,3 @@ driver.close()
 #          driver.get(link)
 #     else:
 #           print(str(link) + " isn't available.")
-
-
-
