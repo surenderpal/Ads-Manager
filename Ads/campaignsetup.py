@@ -1328,6 +1328,20 @@ class Createives():
             print('Passed, options count under the Api dropdown is correct')
         else:
             print('Failed, options count under the Api dropdown is incorrect')
+        
+        # select script API Type
+        apiType=driver.find_element(By.ID,'inp-creativeModalImage-apiTypeSelect')
+        select=Select(apiType)
+        # testing the options text inside the API
+        actualImageApiList=['None', 'VPAID1', 'VPAID2', 'MRAID1', 'MRAID2', 'ORMMA']
+        expectedImageApiList=[]
+        for option in select.options:
+            expectedImageApiList.append(option.text)
+        if collections.Counter(actualImageApiList) == collections.Counter(expectedImageApiList):
+            print('Passed, under Image tab, API Type options are correct')
+        else:
+            print('Failed, under Image tab, API Type options are incorrect',expectedImageApiList)
+        print('Image API options,',expectedImageApiList)
 
         # testing default value of api type
         if select.first_selected_option.text == 'MRAID2':
@@ -1364,7 +1378,7 @@ class Createives():
         actions.move_to_element(elementPosition).perform()
  
         # testing Click-through URL*
-        WebDriverWait(driver,40).until(EC.element_to_be_clickable((By.ID,'inp-creativeModalImage-clickThroughURL'))).send_keys('https://www.groundtruth.com/')
+        # WebDriverWait(driver,40).until(EC.element_to_be_clickable((By.XPATH,"//form[@name='uploadTabCreativeForm']//input[@id='inp-creativeModalImage-clickThroughURL']"))).send_keys('https://www.groundtruth.com/')
 
         # testing creative footer-subtext and link address 
         creativeFooter=driver.find_element(By.XPATH,"//p[@class='footer-subtext']")
@@ -1402,8 +1416,7 @@ class Createives():
         # driver.find_element(By.XPATH,"//div[@class='footer-buttons']//button[contains(text(),'Cancel')]").click()
         # uncomment for save button
         # driver.find_element(By.XPATH,"//span[contains(text(),'Save')]").click()
-
-        # All labels under SCRIPT
+#-------- All labels under SCRIPT----------------
         # scroll Up to click on script
         sleep(2)
         scriptPosition=driver.find_element(By.XPATH,"//a[contains(text(),'Script')]")
@@ -1515,9 +1528,10 @@ class Createives():
         print('removed the last tracker from External Trackers (Scripts) or MRAID.js')
        
         # moving to the bottom of the page
-        driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+        actions.move_to_element(driver.find_element(By.ID,"btn-creativesModal-newCreativeCancel")).perform()
+        sleep(2)
         # testing Click-through URL*
-        WebDriverWait(driver,40).until(EC.element_to_be_clickable((By.ID,'inp-creativeModalImage-clickThroughURL'))).send_keys('https://www.groundtruth.com/')
+        driver.find_element(By.XPATH,"//form[@name='uploadTabCreativeForm']//input[@id='clickThroughURLField']").send_keys('www.groundtruth.com')
 
         # testing creative footer-subtext and link address 
         creativeFooter=driver.find_element(By.XPATH,"//p[@class='footer-subtext']")
@@ -1556,9 +1570,68 @@ class Createives():
         # driver.find_element(By.XPATH,"//div[@class='footer-buttons']//button[contains(text(),'Cancel')]").click()
         # uncomment for save button
         # driver.find_element(By.XPATH,"//span[contains(text(),'Save')]").click()
+# -----------------Video tab------------------
+# scroll Up to click on Video
+        sleep(2)
+        videoPosition=driver.find_element(By.XPATH,"//a[contains(text(),'Video')]")
+        actions.move_to_element(videoPosition).perform()
+        videoTabBtn=WebDriverWait(driver,40).until(EC.element_to_be_clickable((By.XPATH,"//a[contains(text(),'Video')]"))) 
+        # #click on video tab
+        driver.execute_script("arguments[0].click();",videoTabBtn)
+        # all labels under the video tab
+        videoTabLbls=driver.find_elements(By.XPATH,"//div[@id='modal--adgroup-new-creative']//label") 
+        acutalVideoTabLbls=['Name', 'VAST Tag URL*', 'API Type', 'External Impression Trackers (Pixels)', 'Click-through URL']
+        expectedVideoTabLbls=[]
+        for lbl in videoTabLbls:
+            expectedVideoTabLbls.append(lbl.text)
+        if collections.Counter(acutalVideoTabLbls) == collections.Counter(expectedVideoTabLbls):
+            print('Passed, all labels under the Video tab are correct')
+        else:
+            print('Failed, all labels under the Video tab are incorrect',expectedVideoTabLbls)
+        
+        # testing Load video button before entering the vast tag url
+        beforeXML=driver.find_element(By.ID,"btn-creativeModalVideo-Videopload")
+        if beforeXML.is_enabled()==False and beforeXML.text=='Load Video':
+            print('Passed, Load Video button text is correct and it is disabled before entering vast tag url by default')
+        else:
+            print('Failed, Load Video button text is incorrect and it is enabled before entering vast tag url by default',beforeXML.text)
+        
+        # testing  Video creative name filed
+        CreativeName=driver.find_element(By.CSS_SELECTOR,"#inp-creativesModal-creativeName")
+        if CreativeName.get_attribute('innerHTML') == 'Ads Manager - VIDEO':
+            print('Passed, default placeholder inside the script tag is correct')
+            CreativeName.click()
+            sleep(2)
+            # testing using action chains
+            actions.key_down(Keys.CONTROL).send_keys('c').key_up(Keys.CONTROL).perform()
+            sleep(2)
+            # CreativeName.clear()
+            CreativeName.send_keys('Video')
+        else:
+            print('Failed, default placeholder inside the script tag is incorrect',CreativeName.get_attribute('innerHTML'))
 
+        # testing VAST tag URL
+        vastTag= driver.find_element(By.ID,'inp-creativeModalVideo-vastField')
+        if vastTag.get_attribute('value')=='':
+            print('passed, Vast tag is empty')
+            vastTag.send_keys('https://cf.groundtruth.com/swift/2019/11/21/c2a40c8d-989b-4ff4-922e-535c07f35c05.xml')
+            # testing Load video button after entering the vast tag url
+            driver.find_element(By.XPATH,"//button[@id='btn-creativeModalVideo-Videopload']").click()
+            print('clicked on load button')
+        else:
+            print('Failed Vast tag is non-empty')        
+        sleep(5)
 
-        # test all options under both the list box inside the script tab.
+        # testing interstitial
+        interstitial=driver.find_element(By.XPATH,"//input[@ng-model='creativeInterstitial']/../div[@class='title']")
+        if interstitial.text=='Interstitial':
+            print('Passed, interstitial text is correct')
+            driver.execute_script("arguments[0].click();",driver.find_element(By.XPATH,"//input[@type='checkbox' and @ng-model='creativeInterstitial']"))
+            # interstitial.click()
+            print('clicked on interstitial button')
+            sleep(5)
+        else:
+            print('Failed, interstitial text is incorrect or unable to click on button')
 
         
 c=campaignSetUp()
