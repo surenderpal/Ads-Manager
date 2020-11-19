@@ -98,11 +98,11 @@ class campaignSetUp():
         if ModelTitle.get_attribute('innerHTML') ==  'Create new campaign':
             print('Passed, Model title!!')
             budgetSetting = 'Budget Setting'
-            category = driver.find_element(By.XPATH, "//input[@placeholder='Search and select a category']")
+            # category = driver.find_element(By.XPATH, "//input[@placeholder='Search and select a category']")
             AdGroupBudgetLabel = driver.find_element(By.XPATH, "//div[@class='radio-wrapper']/label[@for='inp-createCampModal-budgetAdgLevel']").text
             CampaignBudgetLabel = driver.find_element(By.XPATH, "//div[@class='radio-wrapper']/label[@for='inp-createCampModal-budgetCampLevel']").text
             CampaignLabelName = driver.find_element(By.XPATH, "//div[@class='name-field']/label[@for='inp-createCampModal-campName']").get_attribute('innerHTML')
-            CategoryLabelName = driver.find_element(By.XPATH, "//label[contains(text(),'Category')]").get_attribute('innerHTML')
+            # CategoryLabelName = driver.find_element(By.XPATH, "//label[contains(text(),'Category')]").get_attribute('innerHTML')
             infoInnerText=driver.find_element(By.XPATH, "//label[@class= 'budget-title']/span").get_attribute('uib-popover') #tool tip text
             info=driver.find_element(By.XPATH, "//label[@class='budget-title']/span")# info tool tip
             note = driver.find_element(By.XPATH, '//p').text #Note warning inside campaign budget
@@ -1265,22 +1265,41 @@ class Createives():
         else:
             print('Failed, all tabs links are incorrect:',expectedTabs)
             sleep(2)
+        # testing cancel button
+        elementPos=driver.find_element(By.XPATH,"//div[@id='modalId']//ul//li/a[contains(text(),'Image')]")
+        actions=ActionChains(driver)
+        actions.move_to_element(elementPos).perform()
+        cancel=WebDriverWait(driver,40).until(EC.element_to_be_clickable((By.XPATH,"//span[@ng-click='cancel()']")))
+        cancel.click()
 
-        # All labels under IMAGE
-        ImageTabBtn=WebDriverWait(driver,40).until(EC.element_to_be_clickable((By.XPATH,"//a[contains(text(),'Image')]"))) 
-        
+    def ImageCreative(self,name,CreativeFilePath,ApiType,extlTrackerPX1,extlTrackerPX2,extlTrackerScrpt1,extlTrackerScrpt2,clkThrURL): #name,Path,apiType,extlTrackerPX1,extlTrackerPX2,extlTrackerScrpt1,extlTrackerScrpt2,clkThrURL
+        creativeBtn = WebDriverWait(driver,40).until(EC.element_to_be_clickable((By.XPATH,"//button[@id='btn-adgCreatives-newCreative']"))) #creative button
+        creativeBtn.click() #clicking on the new creative button
+        sleep(2)
+        ImageTabBtn=WebDriverWait(driver,120).until(EC.element_to_be_clickable((By.XPATH,"//a[contains(text(),'Image')]"))) 
         #click on Image tab
         driver.execute_script("arguments[0].click();",ImageTabBtn)
+
+        # testing name under Image tab
+        Creativename=driver.find_element(By.ID,"inp-creativesModal-creativeName")
+        if Creativename.get_attribute('type')=='text':
+            Creativename.click()
+            Creativename.clear()
+            Creativename.send_keys(name) # name 
+        else:
+            print('Failed, creative name is not of type text',Creativename.get_attribute('type'))
+
+        # testing all labels name under the Image tab
         ImageTabLbls=driver.find_elements(By.XPATH,"//div[@id='modal--adgroup-new-creative']//label")
         acutalImageTabLbls=['Name', 'API Type', 'External Trackers (Pixels)', 'External Trackers (Scripts) or MRAID.js', 'Click-through URL']
         expectedImageTabLbls=[]
         for lbl in ImageTabLbls:
             expectedImageTabLbls.append(lbl.text)
-
         if collections.Counter(acutalImageTabLbls) == collections.Counter(expectedImageTabLbls):
             print('Passed, all labels under the Image tab are correct')
         else:
             print('Failed, all labels under the Image tab are incorrect',expectedImageTabLbls)
+        
         # upload creative Image container text
         uplCreHeading=driver.find_element(By.XPATH,"//h3[contains(text(),'Upload')]")
 
@@ -1303,7 +1322,6 @@ class Createives():
         actualCreativeBoldContent=['Please upload one of these sizes (in pixels). Double dimensions for retina mobile screens.','Other supported sizes include:']
         ExpectedCreativeBoldContent=[]
         for bold in UploadCreativeBoldContent:
-            # print(bold.get_attribute('innerHTML'))
             ExpectedCreativeBoldContent.append(bold.get_attribute('innerHTML'))
         if collections.Counter(actualCreativeBoldContent) == collections.Counter(ExpectedCreativeBoldContent):
             print('Passed, Bold content under the creative upload is correct')
@@ -1314,13 +1332,16 @@ class Createives():
         actualCreativePContent=['320x50, 300x250, 320x480, 728x90 sizes reach more than 95% of mobile inventory.','600x300, 720x240, 640x213, 640x160, 640x320, 300x50, 480x320, 768x1024, 1024x768, 640x960, 640x360 and 160x600.']
         ExpectedCreativePContent=[]
         for p in UploadCreativePContent:
-            # print(bold.get_attribute('innerHTML'))
             ExpectedCreativePContent.append(p.get_attribute('innerHTML'))
         if collections.Counter(actualCreativePContent) == collections.Counter(ExpectedCreativePContent):
             print('Passed, P content under the creative upload is correct')
         else:
-            print('Failed, P content under the creative upload is incorrect',ExpectedCreativePContent)        
+            print('Failed, P content under the creative upload is incorrect',ExpectedCreativePContent)     
 
+        # upload file path
+        filePath=driver.find_element(By.XPATH,"//ng-form[@name='uploadImageCreativeForm']//input[@type='file']")
+        filePath.send_keys(CreativeFilePath) 
+        sleep(5)
         # testing the Api type selection box
         apiType=driver.find_element(By.ID,'inp-creativeModalImage-apiTypeSelect')
         select=Select(apiType)
@@ -1331,8 +1352,8 @@ class Createives():
         
         # select script API Type
         apiType=driver.find_element(By.ID,'inp-creativeModalImage-apiTypeSelect')
-        select=Select(apiType)
-        # testing the options text inside the API
+        select=Select(apiType) 
+        # testing all options text inside the API
         actualImageApiList=['None', 'VPAID1', 'VPAID2', 'MRAID1', 'MRAID2', 'ORMMA']
         expectedImageApiList=[]
         for option in select.options:
@@ -1349,12 +1370,12 @@ class Createives():
         else:
             print('Failed, default options under the Api dropdown is incorrect:',select.first_selected_option.text)
         # selecting explicity value in api dropdown
-        select.select_by_value('MRAID1')
+        select.select_by_value(ApiType) # dynamic API value 
 
         # # testing External Trackers (Pixels)
         externelTracker=driver.find_element(By.XPATH,"//xad-list-input[@label='External Trackers (Pixels)']//input")
-        externelTracker.send_keys('https://ads-release-3-17-np.groundtruth.com/',Keys.RETURN)
-        externelTracker.send_keys('https://ads-release-3-17-np.groundtruth.com/',Keys.RETURN)
+        externelTracker.send_keys(extlTrackerPX1 , Keys.RETURN) 
+        externelTracker.send_keys(extlTrackerPX2 , Keys.RETURN)
         sleep(2)
 
         # testing removing of last tracker
@@ -1363,8 +1384,8 @@ class Createives():
 
         # testing External Trackers (Scripts) or MRAID.js
         externelTracker=driver.find_element(By.XPATH,"//xad-list-input[@label='External Trackers (Scripts) or MRAID.js']//input")
-        externelTracker.send_keys('https://ads-release-3-16-np.groundtruth.com/',Keys.RETURN)
-        externelTracker.send_keys('https://ads-release-3-16-np.groundtruth.com/',Keys.RETURN)
+        externelTracker.send_keys(extlTrackerScrpt1 , Keys.RETURN)
+        externelTracker.send_keys(extlTrackerScrpt2 , Keys.RETURN)
         sleep(2)
         # testing removing of last tracker
         WebDriverWait(driver,40).until(EC.element_to_be_clickable((By.XPATH,"//xad-list-input[@label='External Trackers (Scripts) or MRAID.js']/ul[@class='submitted-items']/li[last()]/button"))).click()
@@ -1378,7 +1399,7 @@ class Createives():
         actions.move_to_element(elementPosition).perform()
  
         # testing Click-through URL*
-        # WebDriverWait(driver,40).until(EC.element_to_be_clickable((By.XPATH,"//form[@name='uploadTabCreativeForm']//input[@id='inp-creativeModalImage-clickThroughURL']"))).send_keys('https://www.groundtruth.com/')
+        WebDriverWait(driver,40).until(EC.element_to_be_clickable((By.XPATH,"//form[@name='uploadTabCreativeForm']//input[@id='inp-creativeModalImage-clickThroughURL']"))).send_keys(clkThrURL) 
 
         # testing creative footer-subtext and link address 
         creativeFooter=driver.find_element(By.XPATH,"//p[@class='footer-subtext']")
@@ -1415,43 +1436,54 @@ class Createives():
         # clicking on Cancel or Save button
         # driver.find_element(By.XPATH,"//div[@class='footer-buttons']//button[contains(text(),'Cancel')]").click()
         # uncomment for save button
-        # driver.find_element(By.XPATH,"//span[contains(text(),'Save')]").click()
-#-------- All labels under SCRIPT----------------
-        # scroll Up to click on script
+        driver.find_element(By.XPATH,"//span[contains(text(),'Save')]").click()
+
+    def ScriptCreative(self,name,scriptTagCreative,Size,ApiType,extlTrackerPX1,extlTrackerPX2,extlTrackerScrpt1,extlTrackerScrpt2,clkThrURL):
+        sleep(5)
+        creativeBtn = WebDriverWait(driver,120).until(EC.element_to_be_clickable((By.XPATH,"//button[@id='btn-adgCreatives-newCreative']"))) #creative button
+        creativeBtn.click() #clicking on the new creative button
         sleep(2)
-        scriptPosition=driver.find_element(By.XPATH,"//a[contains(text(),'Script')]")
-        actions.move_to_element(scriptPosition).perform()
+        # scriptPosition=driver.find_element(By.XPATH,"//a[contains(text(),'Script')]")
+        actions=ActionChains(driver)
+        # actions.move_to_element(scriptPosition).perform()
         scriptTabBtn=WebDriverWait(driver,40).until(EC.element_to_be_clickable((By.XPATH,"//a[contains(text(),'Script')]"))) 
-        # #click on Image tab
+        # click on SCRIPT tab
         driver.execute_script("arguments[0].click();",scriptTabBtn)
-        # all labels under the script tag
-        ImageTabLbls=driver.find_elements(By.XPATH,"//div[@id='modal--adgroup-new-creative']//label") 
+       
+        # all labels under the script tab
+        scriptTabLbls=driver.find_elements(By.XPATH,"//div[@id='modal--adgroup-new-creative']//label") 
         acutalScriptTabLbls=['Name', 'Script tag*', 'Size*', 'Script API Type', 'External Trackers (Pixels)', 'External Trackers (Scripts) or MRAID.js', 'Click-through URL']
         expectedScriptTabLbls=[]
-        for lbl in ImageTabLbls:
+        for lbl in scriptTabLbls:
             expectedScriptTabLbls.append(lbl.text)
         if collections.Counter(acutalScriptTabLbls) == collections.Counter(expectedScriptTabLbls):
             print('Passed, all labels under the Script tab are correct')
         else:
             print('Failed, all labels under the Script tab are incorrect',expectedScriptTabLbls)
+        
         # testing  script creative name filed
-        CreativeName=driver.find_element(By.CSS_SELECTOR,"#inp-creativesModal-creativeName")
-        if CreativeName.get_attribute('innerHTML') == 'Ads Manager - SCRIPT':
-            print('Passed, default placeholder inside the script tag is correct')
+        CreativeName=driver.find_element(By.ID,"inp-creativesModal-creativeName")
+        if CreativeName.get_attribute('type') == 'text':
             CreativeName.click()
+            CreativeName.clear()
+            CreativeName.send_keys(name) #name of scritp
             sleep(2)
-            # testing using action chains
-            actions.key_down(Keys.CONTROL).send_keys('c').key_up(Keys.CONTROL).perform()
-            sleep(2)
-            # CreativeName.clear()
-            CreativeName.send_keys('SCRIPT')
         else:
-            print('Failed, default placeholder inside the script tag is incorrect',CreativeName.get_attribute('innerHTML'))
+            print('Failed, Creative name field is not of text type',CreativeName.get_attribute('type'))
+        
         # testing script tag
         scriptTag= driver.find_element(By.ID,'inp-creativeModalScript-scriptTag')
         if scriptTag.get_attribute('value')=='':
-            scriptTag.send_keys('script tag test')
+            scriptTag.send_keys(scriptTagCreative)
             print('passed, script tag is empty')
+            sleep(2)
+            uploadScript=driver.find_element(By.ID,"btn-creativeModalScript-scriptUpload")
+            if uploadScript.text=='Load Creative':
+                uploadScript.click()
+                print('Load creative text is correct')
+                print('clicked on upload')
+            else:
+                print('Load creative text is incorrect',uploadScript.text)
         else:
             print('Failed script tag is non-empty')
             
@@ -1469,19 +1501,20 @@ class Createives():
         else:
             print('Failed, Options under Script tab is incorrect',expectedScriptSizeList)
         # print('size dropdown list',expectedScriptSizeList)
+
         # testing length of size drop-down
         if len(select.options) == 16:
             print('Passed, options count under the Size dropdown is correct')
         else:
             print('Failed, options count under the Size dropdown is incorrect',len(select.options))
-        
+         
         # testing default value of api type
         if select.first_selected_option.text == '300x600':
             print('Passed, default options under the Api dropdown is correct')
         else:
             print('Failed, default options under the Api dropdown is incorrect:',select.first_selected_option.text)
         # selecting explicity value in api dropdown
-        select.select_by_value('string:300x50_0')
+        select.select_by_value(Size)
 
         # select script API Type
         apiType=driver.find_element(By.ID,'inp-creativeModalScript-apiTypeSelect')
@@ -1495,24 +1528,26 @@ class Createives():
             print('Passed, under Script tab, Script API Type options are correct')
         else:
             print('Failed, under Script tab, Script API Type options are incorrect',expectedScriptApiList)
-        # print('Script API options,',expectedScriptApiList)
+
         # testing the count of options
         if len(select.options) == 6:
             print('Passed, options count under the Api dropdown is correct')
         else:
             print('Failed, options count under the Api dropdown is incorrect',len(select.options))
+
         # testing default value of api type
         if select.first_selected_option.text == 'MRAID2':
             print('Passed, default options under the Api dropdown is correct')
         else:
             print('Failed, default options under the Api dropdown is incorrect:',select.first_selected_option.text)
-        # selecting explicity value in api dropdown
-        select.select_by_value('MRAID1')
 
-        # # testing External Trackers (Pixels)
+        # selecting explicity value in api dropdown
+        select.select_by_value(ApiType)
+
+        #  testing External Trackers (Pixels)
         externelTracker=driver.find_element(By.XPATH,"//xad-list-input[@label='External Trackers (Pixels)']//input")
-        externelTracker.send_keys('https://ads-release-3-17-np.groundtruth.com/',Keys.RETURN)
-        externelTracker.send_keys('https://ads-release-3-17-np.groundtruth.com/',Keys.RETURN)
+        externelTracker.send_keys(extlTrackerPX1 , Keys.RETURN)
+        externelTracker.send_keys(extlTrackerPX2 , Keys.RETURN)
         sleep(2)
         # testing removing of last tracker
         WebDriverWait(driver,40).until(EC.element_to_be_clickable((By.XPATH,"//xad-list-input[@label='External Trackers (Pixels)']/ul[@class='submitted-items']/li[last()]/button"))).click()
@@ -1520,8 +1555,8 @@ class Createives():
 
         # testing External Trackers (Scripts) or MRAID.js
         externelTracker=driver.find_element(By.XPATH,"//xad-list-input[@label='External Trackers (Scripts) or MRAID.js']//input")
-        externelTracker.send_keys('https://ads-release-3-16-np.groundtruth.com/',Keys.RETURN)
-        externelTracker.send_keys('https://ads-release-3-16-np.groundtruth.com/',Keys.RETURN)
+        externelTracker.send_keys(extlTrackerScrpt1 , Keys.RETURN)
+        externelTracker.send_keys(extlTrackerScrpt1 , Keys.RETURN)
         sleep(2)
         # testing removing of last tracker
         WebDriverWait(driver,40).until(EC.element_to_be_clickable((By.XPATH,"//xad-list-input[@label='External Trackers (Scripts) or MRAID.js']/ul[@class='submitted-items']/li[last()]/button"))).click()
@@ -1530,8 +1565,9 @@ class Createives():
         # moving to the bottom of the page
         actions.move_to_element(driver.find_element(By.ID,"btn-creativesModal-newCreativeCancel")).perform()
         sleep(2)
+
         # testing Click-through URL*
-        driver.find_element(By.XPATH,"//form[@name='uploadTabCreativeForm']//input[@id='clickThroughURLField']").send_keys('www.groundtruth.com')
+        driver.find_element(By.XPATH,"//form[@name='uploadTabCreativeForm']//input[@id='clickThroughURLField']").send_keys(clkThrURL)
 
         # testing creative footer-subtext and link address 
         creativeFooter=driver.find_element(By.XPATH,"//p[@class='footer-subtext']")
@@ -1545,10 +1581,6 @@ class Createives():
             print('Passed, creative footer link is correct') 
         else:
             print('Failed, creative footer link is incorrect')
-
-        # # moving to the bottom of the page
-        # elementPos=driver.find_element(By.ID,'btn-creativesModal-newCreativeCancel')
-        # actions.move_to_element(elementPos).perform()
 
         # testing count of buttons
         creativeFooterButtons=driver.find_elements(By.XPATH,"//div[@class='footer-buttons']/button")
@@ -1569,71 +1601,147 @@ class Createives():
         # clicking on Cancel or Save button
         # driver.find_element(By.XPATH,"//div[@class='footer-buttons']//button[contains(text(),'Cancel')]").click()
         # uncomment for save button
-        # driver.find_element(By.XPATH,"//span[contains(text(),'Save')]").click()
-# -----------------Video tab------------------
-# scroll Up to click on Video
-        sleep(2)
-        videoPosition=driver.find_element(By.XPATH,"//a[contains(text(),'Video')]")
-        actions.move_to_element(videoPosition).perform()
-        videoTabBtn=WebDriverWait(driver,40).until(EC.element_to_be_clickable((By.XPATH,"//a[contains(text(),'Video')]"))) 
-        # #click on video tab
-        driver.execute_script("arguments[0].click();",videoTabBtn)
-        # all labels under the video tab
-        videoTabLbls=driver.find_elements(By.XPATH,"//div[@id='modal--adgroup-new-creative']//label") 
-        acutalVideoTabLbls=['Name', 'VAST Tag URL*', 'API Type', 'External Impression Trackers (Pixels)', 'Click-through URL']
-        expectedVideoTabLbls=[]
-        for lbl in videoTabLbls:
-            expectedVideoTabLbls.append(lbl.text)
-        if collections.Counter(acutalVideoTabLbls) == collections.Counter(expectedVideoTabLbls):
-            print('Passed, all labels under the Video tab are correct')
-        else:
-            print('Failed, all labels under the Video tab are incorrect',expectedVideoTabLbls)
-        
-        # testing Load video button before entering the vast tag url
-        beforeXML=driver.find_element(By.ID,"btn-creativeModalVideo-Videopload")
-        if beforeXML.is_enabled()==False and beforeXML.text=='Load Video':
-            print('Passed, Load Video button text is correct and it is disabled before entering vast tag url by default')
-        else:
-            print('Failed, Load Video button text is incorrect and it is enabled before entering vast tag url by default',beforeXML.text)
-        
-        # testing  Video creative name filed
-        CreativeName=driver.find_element(By.CSS_SELECTOR,"#inp-creativesModal-creativeName")
-        if CreativeName.get_attribute('innerHTML') == 'Ads Manager - VIDEO':
-            print('Passed, default placeholder inside the script tag is correct')
-            CreativeName.click()
-            sleep(2)
-            # testing using action chains
-            actions.key_down(Keys.CONTROL).send_keys('c').key_up(Keys.CONTROL).perform()
-            sleep(2)
-            # CreativeName.clear()
-            CreativeName.send_keys('Video')
-        else:
-            print('Failed, default placeholder inside the script tag is incorrect',CreativeName.get_attribute('innerHTML'))
+        driver.find_element(By.XPATH,"//span[contains(text(),'Save')]").click()
 
-        # testing VAST tag URL
-        vastTag= driver.find_element(By.ID,'inp-creativeModalVideo-vastField')
-        if vastTag.get_attribute('value')=='':
-            print('passed, Vast tag is empty')
-            vastTag.send_keys('https://cf.groundtruth.com/swift/2019/11/21/c2a40c8d-989b-4ff4-922e-535c07f35c05.xml')
-            # testing Load video button after entering the vast tag url
-            driver.find_element(By.XPATH,"//button[@id='btn-creativeModalVideo-Videopload']").click()
-            print('clicked on load button')
-        else:
-            print('Failed Vast tag is non-empty')        
+    def VideoCreative(self,name,VastTag,ApiType,extlTrackerPX1,extlTrackerPX2,clkThrURL):#name,VastTag,ApiType,extlTrackerPX1,extlTrackerPX2,clkThrURL
         sleep(5)
-
-        # testing interstitial
-        interstitial=driver.find_element(By.XPATH,"//input[@ng-model='creativeInterstitial']/../div[@class='title']")
-        if interstitial.text=='Interstitial':
-            print('Passed, interstitial text is correct')
-            driver.execute_script("arguments[0].click();",driver.find_element(By.XPATH,"//input[@type='checkbox' and @ng-model='creativeInterstitial']"))
-            # interstitial.click()
-            print('clicked on interstitial button')
-            sleep(5)
-        else:
-            print('Failed, interstitial text is incorrect or unable to click on button')
-
+        creativeBtn=WebDriverWait(driver,120).until(EC.element_to_be_clickable((By.XPATH,"//button[@id='btn-adgCreatives-newCreative']"))) #creative button
+        creativeBtn.click() #clicking on the new creative button
+        sleep(2)
+        VideoTab = WebDriverWait(driver,40).until(EC.element_to_be_clickable((By.XPATH,"//a[contains(text(),'Video')]")))
+        VideoTab.click()
+        print('clicked on video tab')
+        print(VideoTab.text)
+        if VideoTab.text=='VIDEO':
+            # wait=WebDriverWait(driver,40)
+            VideoName=driver.find_element(By.ID,"inp-creativesModal-creativeName")
+            VideoName.clear()
+            VideoName.send_keys(name) # 
         
+            # testing all labels under the video tab
+            videoTabLbls=driver.find_elements(By.XPATH,"//div[@id='modal--adgroup-new-creative']//label") 
+            acutalVideoTabLbls=['Name', 'VAST Tag URL*', 'API Type', 'External Impression Trackers (Pixels)', 'Click-through URL']
+            expectedVideoTabLbls=[]
+            for lbl in videoTabLbls:
+                expectedVideoTabLbls.append(lbl.text)
+            if collections.Counter(acutalVideoTabLbls) == collections.Counter(expectedVideoTabLbls):
+                print('Passed, all labels under the Video tab are correct')
+            else:
+                print('Failed, all labels under the Video tab are incorrect',expectedVideoTabLbls)
+
+            # testing Load video button before entering the vast tag url
+            beforeXML=driver.find_element(By.ID,"btn-creativeModalVideo-Videopload")
+            if beforeXML.is_enabled()==False and beforeXML.text=='Load Video':
+                print('Passed, Load Video button text is correct and it is disabled before entering vast tag url by default')
+            else:
+                print('Failed, Load Video button text is incorrect and it is enabled before entering vast tag url by default',beforeXML.text)
+
+            # testing VAST tag URL
+            vastTag= driver.find_element(By.ID,'inp-creativeModalVideo-vastField')
+            if vastTag.get_attribute('value')=='':
+                print('passed, Vast tag is empty')
+                vastTag.send_keys(VastTag) 
+                # testing Load video button after entering the vast tag url
+                # driver.find_element(By.XPATH,"//button[@id='btn-creativeModalVideo-Videopload']").click()
+                WebDriverWait(driver,40).until(EC.element_to_be_clickable((By.ID,"btn-creativeModalVideo-Videopload"))).click()
+                sleep(2)
+                print('clicked on load button')
+            else:
+                print('Failed Vast tag is non-empty')        
+            sleep(5)
+
+            # testing interstitial
+            interstitial=driver.find_element(By.XPATH,"//input[@ng-model='creativeInterstitial']/../div[@class='title']")
+            if interstitial.text=='Interstitial':
+                print('Passed, interstitial text is correct')
+                driver.execute_script("arguments[0].click();",driver.find_element(By.XPATH,"//input[@type='checkbox' and @ng-model='creativeInterstitial']")) #interstitial.click()
+                print('clicked on interstitial button')
+                sleep(5)
+            else:
+                print('Failed, interstitial text is incorrect or unable to click on button')
+        else:
+            print('video tab is not found@!')
+
+        # select script API Type
+        apiType=driver.find_element(By.ID,'inp-creativeModalVideo-apiTypeSelect')
+        select=Select(apiType)
+        # testing the options text inside the API
+        actualScriptApiList=['None', 'VPAID1', 'VPAID2', 'MRAID1', 'MRAID2', 'ORMMA']
+        expectedScriptApiList=[]
+        for option in select.options:
+            expectedScriptApiList.append(option.text)
+        if collections.Counter(actualScriptApiList) == collections.Counter(expectedScriptApiList):
+            print('Passed, under Script tab, Script API Type options are correct')
+        else:
+            print('Failed, under Script tab, Script API Type options are incorrect',expectedScriptApiList)
+
+        # testing the count of options
+        if len(select.options) == 6:
+            print('Passed, options count under the Api dropdown is correct')
+        else:
+            print('Failed, options count under the Api dropdown is incorrect',len(select.options))
+
+        # testing default value of api type
+        if select.first_selected_option.text == 'MRAID2':
+            print('Passed, default options under the Api dropdown is correct')
+        else:
+            print('Failed, default options under the Api dropdown is incorrect:',select.first_selected_option.text)
+        # selecting explicity value in api dropdown
+        select.select_by_value(ApiType) 
+        
+        #  testing External Trackers (Pixels)
+        externelTracker=driver.find_element(By.ID,"impressions-urls")
+        externelTracker.send_keys(extlTrackerPX1 , Keys.RETURN)
+        externelTracker.send_keys(extlTrackerPX2 , Keys.RETURN)
+        sleep(2)
+        # testing removing of last tracker
+        WebDriverWait(driver,40).until(EC.element_to_be_clickable((By.XPATH,"//ul[@class='submitted-items']/li[last()]/button"))).click()
+        print('removed the last tracker from External Trackers (Pixels)')
+
+        # moving to the bottom of the page
+        actions=ActionChains(driver)
+        actions.move_to_element(driver.find_element(By.ID,"btn-creativesModal-newCreativeCancel")).perform()
+        sleep(2)
+
+        # testing Click-through URL*
+        driver.find_element(By.XPATH,"//form[@name='uploadTabCreativeForm']//input[@id='inp-creativeModalVideo-clickThroughURLField']").send_keys(clkThrURL)
+        
+        # testing creative footer-subtext and link address 
+        creativeFooter=driver.find_element(By.XPATH,"//p[@class='footer-subtext']")
+        terms="By clicking Save, I agree to comply in all respects with the MMA Mobile Advertising Guidelines and GroundTruth's Content Guidelines."
+        if creativeFooter.text == terms:
+            print('Passed, creative terms are correct')
+        else:
+            print('Failed, creative terms are incorrect')
+        creativeFooterLink=driver.find_element(By.LINK_TEXT,"GroundTruth's Content Guidelines")
+        if creativeFooterLink.get_attribute('href') == "https://www.groundtruth.com/guidelines/":
+            print('Passed, creative footer link is correct') 
+        else:
+            print('Failed, creative footer link is incorrect')
+
+        # testing count of buttons
+        creativeFooterButtons=driver.find_elements(By.XPATH,"//div[@class='footer-buttons']/button")
+        # testing creative footer btn count
+        if len(creativeFooterButtons) == 2:
+            print('Passed, button count are correct')
+        else:
+            print('Failed, button count are incorrect',len(creativeFooterButtons))
+        actualCreativeFooterButtons=['Cancel', 'Save']
+        expectedCreativeFooterButtons=[]
+        for btn in creativeFooterButtons:
+            expectedCreativeFooterButtons.append(btn.text)
+        if collections.Counter(actualCreativeFooterButtons) == collections.Counter(expectedCreativeFooterButtons):
+            print('Passed, buttons names under creative footer are correct')
+        else:
+            print('Failed, buttons names under creative footer are incorrect',expectedCreativeFooterButtons)
+
+        # clicking on Cancel or Save button
+        # driver.find_element(By.XPATH,"//div[@class='footer-buttons']//button[contains(text(),'Cancel')]").click()
+        # uncomment for save button
+        driver.find_element(By.XPATH,"//span[contains(text(),'Save')]").click() 
+
+
+
 c=campaignSetUp()
 c.NewCampaignButton()
 c.NewCampaignModel('Regression-Automation-testing-'+str(random.randint(1,100)),'Pet Services','campaign-budget','Save')# 'adgroup-budget','campaign-budget','×','Save'
@@ -1654,7 +1762,9 @@ c.BuildCustomAudience()
 cr=Createives()
 cr.CreativeDetailsVerify()
 cr.newCreativeDetails()
-
+cr.ImageCreative('Default Image','/Users/surenderpal/Downloads/Creatives/4.jpg','ORMMA','https://ads-release-3-17-np.groundtruth.com/','https://ads-release-3-17-np.groundtruth.com/','https://ads-release-3-16-np.groundtruth.com/','https://ads-release-3-16-np.groundtruth.com/','https://www.groundtruth.com/') #name,Path,apiType,extlTrackerPX1,extlTrackerPX2,extlTrackerScrpt1,extlTrackerScrpt2,clkThrURL
+cr.ScriptCreative('Script',"<ins class='dcmads' style='display:inline-block;width:320px;height:50px' data-dcm-placement='N4789.3009684GROUNDTRUTH.COM/B23990316.271139896' data-dcm-rendering-mode='script' data-dcm-https-only data-dcm-resettable-device-id='%%USER_UID_OPTOUT%%' data-dcm-click-tracker='%%ENCODED_CLICKURL%%' data-dcm-landing-page-escapes=0> <script src='https://www.googletagservices.com/dcm/dcmads.js'></script> </ins>",'string:300x50_0','MRAID1','https://ads-release-3-17-np.groundtruth.com/','https://ads-release-3-17-np.groundtruth.com/','https://ads-release-3-16-np.groundtruth.com/','https://ads-release-3-16-np.groundtruth.com/','www.groundtruth.com') #name,scriptTagCreative,Size,ApiType,extlTrackerPX1,extlTrackerPX2,extlTrackerScrpt1,extlTrackerScrpt2,clkThrURL
+cr.VideoCreative('Video','https://cf.groundtruth.com/swift/2019/11/21/c2a40c8d-989b-4ff4-922e-535c07f35c05.xml','VPAID2','https://ads-release-3-16-np.groundtruth.com/','https://ads-release-3-16-np.groundtruth.com/','https://www.groundtruth.com/') #name,VastTag,ApiType,extlTrackerPX1,extlTrackerPX2,clkThrURL
 sleep(20)
 driver.close()
 
@@ -1669,7 +1779,3 @@ driver.close()
 # import requests
 # for link in links:
 #     r = requests.head(link)
-#     if r.status_code!=404:
-#          driver.get(link)
-#     else:
-#           print(str(link) + " isn't available.")
