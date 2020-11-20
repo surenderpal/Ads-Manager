@@ -1741,6 +1741,77 @@ class Createives():
         driver.find_element(By.XPATH,"//span[contains(text(),'Save')]").click() 
 
 
+    def HTMLCreative(self,name,BusName,Caption,clkThrURL):#name,BusName,Caption,clkThrURL
+        sleep(5)
+        creativeBtn=WebDriverWait(driver,120).until(EC.element_to_be_clickable((By.XPATH,"//button[@id='btn-adgCreatives-newCreative']"))) #creative button
+        creativeBtn.click() #clicking on the new creative button
+        sleep(2)
+        HTMLTab = WebDriverWait(driver,40).until(EC.element_to_be_clickable((By.XPATH,"//a[contains(text(),'HTML5')]")))
+        HTMLTab.click()
+        print('clicked on HTML5 tab')
+        print(HTMLTab.text)
+
+        if HTMLTab.text=='HTML5':
+            # wait=WebDriverWait(driver,40)
+            VideoName=driver.find_element(By.ID,"inp-creativesModal-creativeName")
+            VideoName.clear()
+            VideoName.send_keys(name) #name 
+            
+            # testing all labels under the video tab
+            HtmlTabLbls=driver.find_elements(By.XPATH,"//div[@id='modal--adgroup-new-creative']//label") 
+            acutalHtmlTabLbls=['Name', 'Business Name', 'Caption', 'Click-through URL']
+            expectedHtmlTabLbls=[]
+            for lbl in HtmlTabLbls:
+                expectedHtmlTabLbls.append(lbl.text)
+            if collections.Counter(acutalHtmlTabLbls) == collections.Counter(expectedHtmlTabLbls):
+                print('Passed, all labels under the Video tab are correct')
+            else:
+                print('Failed, all labels under the Video tab are incorrect',expectedHtmlTabLbls)
+                
+            
+            htmlBusName=driver.find_element(By.ID,'inp-creativeModalHTML-businessName')
+            htmlBusName.send_keys(BusName) #test if is empty or not
+            htmlcaption=driver.find_element(By.ID,"inp-creativeModalHTML-caption")
+            htmlcaption.send_keys(Caption)
+            htmlclkThrURL=driver.find_element(By.ID,"inp-creativeModalHTML-clickThroughURLField")
+            htmlclkThrURL.send_keys(clkThrURL)
+        else:
+            print('HTML5 tab is not available')
+
+        # testing creative footer-subtext and link address 
+        creativeFooter=driver.find_element(By.XPATH,"//p[@class='footer-subtext']")
+        terms="By clicking Save, I agree to comply in all respects with the MMA Mobile Advertising Guidelines and GroundTruth's Content Guidelines."
+        if creativeFooter.text == terms:
+            print('Passed, creative terms are correct')
+        else:
+            print('Failed, creative terms are incorrect')
+        creativeFooterLink=driver.find_element(By.LINK_TEXT,"GroundTruth's Content Guidelines")
+        if creativeFooterLink.get_attribute('href') == "https://www.groundtruth.com/guidelines/":
+            print('Passed, creative footer link is correct') 
+        else:
+            print('Failed, creative footer link is incorrect')
+
+        # testing count of buttons
+        creativeFooterButtons=driver.find_elements(By.XPATH,"//div[@class='footer-buttons']/button")
+        # testing creative footer btn count
+        if len(creativeFooterButtons) == 2:
+            print('Passed, button count are correct')
+        else:
+            print('Failed, button count are incorrect',len(creativeFooterButtons))
+        actualCreativeFooterButtons=['Cancel', 'Save']
+        expectedCreativeFooterButtons=[]
+        for btn in creativeFooterButtons:
+            expectedCreativeFooterButtons.append(btn.text)
+        if collections.Counter(actualCreativeFooterButtons) == collections.Counter(expectedCreativeFooterButtons):
+            print('Passed, buttons names under creative footer are correct')
+        else:
+            print('Failed, buttons names under creative footer are incorrect',expectedCreativeFooterButtons)
+
+        # clicking on Cancel or Save button
+        # driver.find_element(By.XPATH,"//div[@class='footer-buttons']//button[contains(text(),'Cancel')]").click()
+        # uncomment for save button
+        driver.find_element(By.XPATH,"//span[contains(text(),'Save')]").click() 
+
 
 c=campaignSetUp()
 c.NewCampaignButton()
@@ -1765,8 +1836,9 @@ cr.newCreativeDetails()
 cr.ImageCreative('Default Image','/Users/surenderpal/Downloads/Creatives/4.jpg','ORMMA','https://ads-release-3-17-np.groundtruth.com/','https://ads-release-3-17-np.groundtruth.com/','https://ads-release-3-16-np.groundtruth.com/','https://ads-release-3-16-np.groundtruth.com/','https://www.groundtruth.com/') #name,Path,apiType,extlTrackerPX1,extlTrackerPX2,extlTrackerScrpt1,extlTrackerScrpt2,clkThrURL
 cr.ScriptCreative('Script',"<ins class='dcmads' style='display:inline-block;width:320px;height:50px' data-dcm-placement='N4789.3009684GROUNDTRUTH.COM/B23990316.271139896' data-dcm-rendering-mode='script' data-dcm-https-only data-dcm-resettable-device-id='%%USER_UID_OPTOUT%%' data-dcm-click-tracker='%%ENCODED_CLICKURL%%' data-dcm-landing-page-escapes=0> <script src='https://www.googletagservices.com/dcm/dcmads.js'></script> </ins>",'string:300x50_0','MRAID1','https://ads-release-3-17-np.groundtruth.com/','https://ads-release-3-17-np.groundtruth.com/','https://ads-release-3-16-np.groundtruth.com/','https://ads-release-3-16-np.groundtruth.com/','www.groundtruth.com') #name,scriptTagCreative,Size,ApiType,extlTrackerPX1,extlTrackerPX2,extlTrackerScrpt1,extlTrackerScrpt2,clkThrURL
 cr.VideoCreative('Video','https://cf.groundtruth.com/swift/2019/11/21/c2a40c8d-989b-4ff4-922e-535c07f35c05.xml','VPAID2','https://ads-release-3-16-np.groundtruth.com/','https://ads-release-3-16-np.groundtruth.com/','https://www.groundtruth.com/') #name,VastTag,ApiType,extlTrackerPX1,extlTrackerPX2,clkThrURL
+cr.HTMLCreative('HTML','Groundtruth','Adtech Domain','www.groundtruth.com') #name,BusName,Caption,clkThrURL
 sleep(20)
-driver.close()
+driver.close() 
 
 # Failed,After click On Auto Checkbox CTR THRESHOLD 0% is incorrect
 # Failed, default value inside the input box is incorrect and value is: 0
@@ -1779,3 +1851,7 @@ driver.close()
 # import requests
 # for link in links:
 #     r = requests.head(link)
+#     if r.status_code!=404:
+#          driver.get(link)
+#     else:
+#           print(str(link) + " isn't available.")
