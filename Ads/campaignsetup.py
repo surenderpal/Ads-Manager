@@ -1840,7 +1840,7 @@ cr.HTMLCreative('HTML','Groundtruth','Adtech Domain','www.groundtruth.com') #nam
 sleep(20)
 driver.close() 
 
-# Failed,After click On Auto Checkbox CTR THRESHOLD 0% is incorrect
+Failed,After click On Auto Checkbox CTR THRESHOLD 0% is incorrect
 # Failed, default value inside the input box is incorrect and value is: 0
 # . Is there a way to type in a textbox without using sendKeys()?
 # driver.execute_script("document.getElementById('q').value='value here'")
