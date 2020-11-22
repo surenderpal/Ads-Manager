@@ -1768,13 +1768,24 @@ class Createives():
             else:
                 print('Failed, all labels under the Video tab are incorrect',expectedHtmlTabLbls)
                 
-            
+            # testing Business name
             htmlBusName=driver.find_element(By.ID,'inp-creativeModalHTML-businessName')
-            htmlBusName.send_keys(BusName) #test if is empty or not
+            if htmlBusName.text == '':
+                htmlBusName.send_keys(BusName) #test if is empty or not
+            else:
+                print('Failed, Html Business name is not empty:',htmlBusName.text)
+            # testing caption
             htmlcaption=driver.find_element(By.ID,"inp-creativeModalHTML-caption")
-            htmlcaption.send_keys(Caption)
+            if htmlcaption.text == '':
+                htmlcaption.send_keys(Caption)
+            else:
+                print('Failed, Html Caption name is not empty:',htmlcaption.text)
+            # testing click through url
             htmlclkThrURL=driver.find_element(By.ID,"inp-creativeModalHTML-clickThroughURLField")
-            htmlclkThrURL.send_keys(clkThrURL)
+            if htmlclkThrURL.text == '':
+                htmlclkThrURL.send_keys(clkThrURL)
+            else:
+                print('Failed, Click-through URL is not empty:',htmlclkThrURL.text)
         else:
             print('HTML5 tab is not available')
 
@@ -1813,6 +1824,291 @@ class Createives():
         driver.find_element(By.XPATH,"//span[contains(text(),'Save')]").click() 
 
 
+    def StandardLandingCreative(self,name,CreativeFilePath,ApiType,extlTrackerPX1,extlTrackerPX2,extlTrackerScrpt1,extlTrackerScrpt2,clkThrURL): #name,Path,apiType,extlTrackerPX1,extlTrackerPX2,extlTrackerScrpt1,extlTrackerScrpt2,clkThrURL
+        creativeBtn = WebDriverWait(driver,40).until(EC.element_to_be_clickable((By.XPATH,"//button[@id='btn-adgCreatives-newCreative']"))) #creative button
+        creativeBtn.click() #clicking on the new creative button
+        sleep(2)
+        ImageTabBtn=WebDriverWait(driver,120).until(EC.element_to_be_clickable((By.XPATH,"//a[contains(text(),'Image')]"))) 
+        #click on Image tab
+        driver.execute_script("arguments[0].click();",ImageTabBtn)
+
+        # testing name under Image tab
+        Creativename=driver.find_element(By.ID,"inp-creativesModal-creativeName")
+        if Creativename.get_attribute('type')=='text':
+            Creativename.click()
+            Creativename.clear()
+            Creativename.send_keys(name) # name 
+        else:
+            print('Failed, creative name is not of type text',Creativename.get_attribute('type'))
+
+        # testing all labels name under the Image tab
+        ImageTabLbls=driver.find_elements(By.XPATH,"//div[@id='modal--adgroup-new-creative']//label")
+        acutalImageTabLbls=['Name', 'API Type', 'External Trackers (Pixels)', 'External Trackers (Scripts) or MRAID.js', 'Click-through URL']
+        expectedImageTabLbls=[]
+        for lbl in ImageTabLbls:
+            expectedImageTabLbls.append(lbl.text)
+        if collections.Counter(acutalImageTabLbls) == collections.Counter(expectedImageTabLbls):
+            print('Passed, all labels under the Image tab are correct')
+        else:
+            print('Failed, all labels under the Image tab are incorrect',expectedImageTabLbls)
+        
+        # upload creative Image container text
+        uplCreHeading=driver.find_element(By.XPATH,"//h3[contains(text(),'Upload')]")
+
+        # Upload Creative Image test
+        if uplCreHeading.tag_name == 'h3' and uplCreHeading.text == 'Upload Creative Image':
+            print('Passed,',uplCreHeading.text,'is of ',uplCreHeading.tag_name,'tag')
+        else:
+            print('Failed,',uplCreHeading.text,'is of ',uplCreHeading.tag_name,'tag')   
+        dragNdropText=driver.find_element(By.XPATH,"//div[contains(text(),'Drag and drop creative here')]")
+        if dragNdropText.text == 'Drag and drop creative here':
+            print('Passed,',dragNdropText.text,'is correct')
+        else:
+            print('Failed,',dragNdropText.text,'is incorrect')
+        orText=driver.find_element(By.XPATH,"//div[@class='or']")
+        if orText.text=='OR':
+            print('Passed,',orText.text,'is correct')
+        else:
+            print('Failed,',orText.text,'is incorrect')
+        UploadCreativeBoldContent=driver.find_elements(By.XPATH,"//div[@class='drop-box-msg']/b")
+        actualCreativeBoldContent=['Please upload one of these sizes (in pixels). Double dimensions for retina mobile screens.','Other supported sizes include:']
+        ExpectedCreativeBoldContent=[]
+        for bold in UploadCreativeBoldContent:
+            ExpectedCreativeBoldContent.append(bold.get_attribute('innerHTML'))
+        if collections.Counter(actualCreativeBoldContent) == collections.Counter(ExpectedCreativeBoldContent):
+            print('Passed, Bold content under the creative upload is correct')
+        else:
+            print('Failed, Bold content under the creative upload is incorrect',ExpectedCreativeBoldContent)
+
+        UploadCreativePContent=driver.find_elements(By.XPATH,"//div[@class='drop-box-msg']/p")
+        actualCreativePContent=['320x50, 300x250, 320x480, 728x90 sizes reach more than 95% of mobile inventory.','600x300, 720x240, 640x213, 640x160, 640x320, 300x50, 480x320, 768x1024, 1024x768, 640x960, 640x360 and 160x600.']
+        ExpectedCreativePContent=[]
+        for p in UploadCreativePContent:
+            ExpectedCreativePContent.append(p.get_attribute('innerHTML'))
+        if collections.Counter(actualCreativePContent) == collections.Counter(ExpectedCreativePContent):
+            print('Passed, P content under the creative upload is correct')
+        else:
+            print('Failed, P content under the creative upload is incorrect',ExpectedCreativePContent)     
+
+        # upload file path
+        filePath=driver.find_element(By.XPATH,"//ng-form[@name='uploadImageCreativeForm']//input[@type='file']")
+        filePath.send_keys(CreativeFilePath) 
+        sleep(5)
+        # testing the Api type selection box
+        apiType=driver.find_element(By.ID,'inp-creativeModalImage-apiTypeSelect')
+        select=Select(apiType)
+        if len(select.options) == 6:
+            print('Passed, options count under the Api dropdown is correct')
+        else:
+            print('Failed, options count under the Api dropdown is incorrect')
+        
+        # select script API Type
+        apiType=driver.find_element(By.ID,'inp-creativeModalImage-apiTypeSelect')
+        select=Select(apiType) 
+        # testing all options text inside the API
+        actualImageApiList=['None', 'VPAID1', 'VPAID2', 'MRAID1', 'MRAID2', 'ORMMA']
+        expectedImageApiList=[]
+        for option in select.options:
+            expectedImageApiList.append(option.text)
+        if collections.Counter(actualImageApiList) == collections.Counter(expectedImageApiList):
+            print('Passed, under Image tab, API Type options are correct')
+        else:
+            print('Failed, under Image tab, API Type options are incorrect',expectedImageApiList)
+
+        # testing default value of api type
+        if select.first_selected_option.text == 'MRAID2':
+            print('Passed, default options under the Api dropdown is correct')
+        else:
+            print('Failed, default options under the Api dropdown is incorrect:',select.first_selected_option.text)
+        # selecting explicity value in api dropdown
+        select.select_by_value(ApiType) # dynamic API value 
+
+        # # testing External Trackers (Pixels)
+        externelTracker=driver.find_element(By.XPATH,"//xad-list-input[@label='External Trackers (Pixels)']//input")
+        externelTracker.send_keys(extlTrackerPX1 , Keys.RETURN) 
+        externelTracker.send_keys(extlTrackerPX2 , Keys.RETURN)
+        sleep(2)
+
+        # testing removing of last tracker
+        WebDriverWait(driver,40).until(EC.element_to_be_clickable((By.XPATH,"//xad-list-input[@label='External Trackers (Pixels)']/ul[@class='submitted-items']/li[last()]/button"))).click()
+        print('removed the last tracker from External Trackers (Pixels)')
+
+        # testing External Trackers (Scripts) or MRAID.js
+        externelTracker=driver.find_element(By.XPATH,"//xad-list-input[@label='External Trackers (Scripts) or MRAID.js']//input")
+        externelTracker.send_keys(extlTrackerScrpt1 , Keys.RETURN)
+        externelTracker.send_keys(extlTrackerScrpt2 , Keys.RETURN)
+        sleep(2)
+        # testing removing of last tracker
+        WebDriverWait(driver,40).until(EC.element_to_be_clickable((By.XPATH,"//xad-list-input[@label='External Trackers (Scripts) or MRAID.js']/ul[@class='submitted-items']/li[last()]/button"))).click()
+        print('removed the last tracker from External Trackers (Scripts) or MRAID.js')
+        
+        #scrolling the page down
+        actions=ActionChains(driver)
+        # actions.move_to_element().perform()
+        elementPosition=driver.find_element(By.ID,'btn-creativesModal-newCreativeSave')
+        actions=ActionChains(driver)
+        actions.move_to_element(elementPosition).perform()
+ 
+        # testing Click-through URL*
+        WebDriverWait(driver,40).until(EC.element_to_be_clickable((By.XPATH,"//form[@name='uploadTabCreativeForm']//input[@id='inp-creativeModalImage-clickThroughURL']"))).send_keys(clkThrURL) 
+        
+        #testing create landing page
+        # createLandingPage=driver.find_element(By.XPATH,"//div[contains(text(),'Create landing page')]")
+        createLandingPage=WebDriverWait(driver,40).until(EC.element_to_be_clickable((By.XPATH,"//div[contains(text(),'Create landing page')]")))
+        if createLandingPage.text ==  'Create landing page':
+            print('Create landing page text is correct')
+            # driver.execute_script("arguments[0].click();",WebDriverWait(driver,20).until(EC.element_to_be_clickable((By.XPATH,"//div[contains(text(),'Create landing page')]"))))
+            driver.execute_script("arguments[0].click();",driver.find_element(By.XPATH,"//input[@type='checkbox' and @ng-model='creative.useLandingPageSwitchSet']")) #interstitial.click()
+            # createLandingPage.click()
+        else:
+            print('Failed, Create landing page text is incorrect')
+
+        # testing landing page
+        landingPage=driver.find_element(By.ID,"inp-creativeModalImage-lpType")
+        actualLandingPage=['Standard Landing Page','Super Landing Page','Image Landing Page']
+        expectedLandingPage=[]
+        select=Select(landingPage)
+        print(len(select.options))
+        
+        # testing count of page options
+        if len(select.options) == 3:
+            print('Landing page count is correct')
+        else:
+            print('Landing page count is incorrect')
+
+        # testing landing page options text
+        for option in select.options:
+            expectedLandingPage.append(option.text)
+        if collections.Counter(actualLandingPage) == collections.Counter(expectedLandingPage):
+            print('Passed, Optins under landing page are correct')
+        else:
+            print('Failed, Optins under landing page are incorrect',expectedLandingPage)
+        
+        # testing 3rd pary URL  
+        thirdPartyClkThrURL=driver.find_element(By.ID,"inp-creativeModalImage-thirdPartyPlacementId")
+        if thirdPartyClkThrURL.text == '':
+            thirdPartyClkThrURL.send_keys('third party click through URL')
+        else:
+            print('third party url is not empry:',thirdPartyClkThrURL.text)
+
+        # testing headings in landing page
+        LandingPageHeading=driver.find_elements(By.XPATH,"//legend")
+        actualLandingPageHeading=['Header', 'Directions & Call', 'Coupon & Video', 'Footer', 'DRAG AND DROP IMAGE', 'DRAG AND DROP IMAGE']
+        expectedLandingPageHeading=[]
+        if len(LandingPageHeading) == 6:
+            print('Headings counts are correct')
+        else:
+            print('Headings counts are incorrect',len(LandingPageHeading))
+
+        # testing heading texts
+        for heading in LandingPageHeading:
+            expectedLandingPageHeading.append(heading.text)
+        print('expected:',expectedLandingPageHeading)
+        if collections.Counter(actualLandingPageHeading) == collections.Counter(expectedLandingPageHeading):
+            print('Passed, Heading texts are correct under landing page')
+        else:
+            print('Failed, Heading texts are incorrect under landing page',expectedLandingPageHeading) 
+
+        # testing header Image
+        headerImageUploadFile=driver.find_element(By.XPATH,"//button[@id='btn-standSupLp-uploadHeaderImage']//input[@type='file']")
+        uploadImagebuttonLandingPage=driver.find_elements(By.XPATH,"//button//span[contains(text(), 'Upload Image')]") 
+        OrLabelLandingPage=driver.find_elements(By.XPATH,"//button/../span[contains(text(), 'OR')]")
+        
+        # testing upload image text
+        if uploadImagebuttonLandingPage[0]=='Upload Image': # and len(uploadImagebuttonLandingPage)==2
+            print('Passed, Upload image text is correct')
+        else:
+            print('Failed, Upload image text is incorrect',uploadImagebuttonLandingPage)
+        
+        # testing OR text
+        if OrLabelLandingPage[0]=='OR': # and len(OrLabelLandingPage)==2
+            print('Passed, Upload Or text is correct')
+        else:
+            print('Failed, Upload Or text is incorrect',OrLabelLandingPage)
+
+        # testing default Header Image Url text
+        defaultHeaderImageURL=driver.find_element(By.ID,"inp-standSupLp-headerImageUrl")
+        if defaultHeaderImageURL.get_attribute('value')=='https://cf.groundtruth.com/cms/samples/640x400.png':
+            print('Passed, Default Header Image is correct')
+            # pritn()
+        else:
+            print('Failed, Default Header Image is incorrect:',defaultHeaderImageURL.get_attribute('value'))
+
+        # uploading header image file
+        sleep(2)
+        headerImageUploadFile.send_keys("/Users/surenderpal/Downloads/Creatives/640X400.jpg")
+        sleep(2)
+
+        # testing header click through URL
+        hdrClkThrURL=driver.find_element(By.ID,'inp-standSupLp-lpPreviewUrl')
+        if hdrClkThrURL.text=='':
+            hdrClkThrURL.send_keys('Header Click-through Url')
+        else:
+            print('Header Click-through Url is not empty')
+        # testing button color
+        btnColor=driver.find_element(By.ID,"inp-standSupLp-buttonColor")
+        if btnColor.text=='669900':
+            print('Passed, button color by default is correct')
+            btnColor.send_keys('691a1a')
+        else:
+            print('Failed, button color by default is incorrect:',btnColor.text)
+
+        # testing directions
+        direction=driver.find_element(By.ID,"inp-standSupLp-directionsBtnLabel")
+        if direction.text =='Directions':
+            print('Passed, By default Directions text is correct')
+            direction.send_keys('test Direction')
+        else:
+            print('Failed, By default Directions text is incorrect:',direction.text)
+    
+        # testing call button label
+        callLabel=driver.find_element(By.ID,'inp-standSupLp-callButtonLabel')
+        if callLabel.text=='Call':
+            print('passed, By default call text is correct')
+        else:
+            print('Failed, By default call text is incorrect:',callLabel.text)
+
+        phoneNumber=driver.find_element(By.ID,"inp-standSupLp-vanityPhone")
+        if phoneNumber.text=='':
+            phoneNumber.send_keys('8802406457')
+            print('Passed, By default phone number is empty')
+        else:
+            print('Failed, By default phone number is non-empty:',phoneNumber.text)
+
+        # testing additional button click through URL
+        addClkThrURL=driver.find_element(By.ID,'inp-standSupLp-button2Link')
+        if addClkThrURL.text=='http://www.groundtruth.com':
+            print('Passed, By default "Additional Button Click-through" Url is correct')
+            addClkThrURL.send_keys('http://www.ads.groundtruth.com')
+        else:
+            print('Failed, By default "Additional Button Click-through" Url is incorrect:',addClkThrURL.text)
+        
+        # testing additional button text  
+        addBtnText=driver.find_element(By.ID,'inp-standSupLp-additionalCTA')
+        if addBtnText.text=='CTA':
+            print('Passed, By default "Additional Button Text" is correct')
+        else:
+            print('Failed, By default "Additional Button Text" is incorrect:',addBtnText.text)
+
+        # testing default coupon image 
+        dfltCupnImage=driver.find_element(By.ID,'inp-standSupLp-couponImageUrl')
+        if dfltCupnImage.text=='http://cf.groundtruth.com/cms/samples/750x704.png':
+            print('Passed, Default Coupon image is correct')
+        else:
+            print('Failed, Default Coupon image is incorrect:',dfltCupnImage.text)
+
+
+        # testing coupon image
+        couponFile=driver.find_element(By.XPATH,"//button[@id='btn-standSupLp-coupleVideoUpload']//input[@type='file']")
+        couponFile.send_keys('/Users/surenderpal/Downloads/Creatives/750X704.png')
+
+
+
+
+
+
+
+
 c=campaignSetUp()
 c.NewCampaignButton()
 c.NewCampaignModel('Regression-Automation-testing-'+str(random.randint(1,100)),'Pet Services','campaign-budget','Save')# 'adgroup-budget','campaign-budget','×','Save'
@@ -1831,16 +2127,17 @@ c.selectAudience('Millennials','Potato Growers','Live Nation',"Costco",'Hispanic
 # c.publisherCategory()
 c.BuildCustomAudience()
 cr=Createives()
-cr.CreativeDetailsVerify()
-cr.newCreativeDetails()
-cr.ImageCreative('Default Image','/Users/surenderpal/Downloads/Creatives/4.jpg','ORMMA','https://ads-release-3-17-np.groundtruth.com/','https://ads-release-3-17-np.groundtruth.com/','https://ads-release-3-16-np.groundtruth.com/','https://ads-release-3-16-np.groundtruth.com/','https://www.groundtruth.com/') #name,Path,apiType,extlTrackerPX1,extlTrackerPX2,extlTrackerScrpt1,extlTrackerScrpt2,clkThrURL
-cr.ScriptCreative('Script',"<ins class='dcmads' style='display:inline-block;width:320px;height:50px' data-dcm-placement='N4789.3009684GROUNDTRUTH.COM/B23990316.271139896' data-dcm-rendering-mode='script' data-dcm-https-only data-dcm-resettable-device-id='%%USER_UID_OPTOUT%%' data-dcm-click-tracker='%%ENCODED_CLICKURL%%' data-dcm-landing-page-escapes=0> <script src='https://www.googletagservices.com/dcm/dcmads.js'></script> </ins>",'string:300x50_0','MRAID1','https://ads-release-3-17-np.groundtruth.com/','https://ads-release-3-17-np.groundtruth.com/','https://ads-release-3-16-np.groundtruth.com/','https://ads-release-3-16-np.groundtruth.com/','www.groundtruth.com') #name,scriptTagCreative,Size,ApiType,extlTrackerPX1,extlTrackerPX2,extlTrackerScrpt1,extlTrackerScrpt2,clkThrURL
-cr.VideoCreative('Video','https://cf.groundtruth.com/swift/2019/11/21/c2a40c8d-989b-4ff4-922e-535c07f35c05.xml','VPAID2','https://ads-release-3-16-np.groundtruth.com/','https://ads-release-3-16-np.groundtruth.com/','https://www.groundtruth.com/') #name,VastTag,ApiType,extlTrackerPX1,extlTrackerPX2,clkThrURL
-cr.HTMLCreative('HTML','Groundtruth','Adtech Domain','www.groundtruth.com') #name,BusName,Caption,clkThrURL
+# cr.CreativeDetailsVerify()
+# cr.newCreativeDetails()
+# cr.ImageCreative('Default Image','/Users/surenderpal/Downloads/Creatives/4.jpg','ORMMA','https://ads-release-3-17-np.groundtruth.com/','https://ads-release-3-17-np.groundtruth.com/','https://ads-release-3-16-np.groundtruth.com/','https://ads-release-3-16-np.groundtruth.com/','https://www.groundtruth.com/') #name,Path,apiType,extlTrackerPX1,extlTrackerPX2,extlTrackerScrpt1,extlTrackerScrpt2,clkThrURL
+# cr.ScriptCreative('Script',"<ins class='dcmads' style='display:inline-block;width:320px;height:50px' data-dcm-placement='N4789.3009684GROUNDTRUTH.COM/B23990316.271139896' data-dcm-rendering-mode='script' data-dcm-https-only data-dcm-resettable-device-id='%%USER_UID_OPTOUT%%' data-dcm-click-tracker='%%ENCODED_CLICKURL%%' data-dcm-landing-page-escapes=0> <script src='https://www.googletagservices.com/dcm/dcmads.js'></script> </ins>",'string:300x50_0','MRAID1','https://ads-release-3-17-np.groundtruth.com/','https://ads-release-3-17-np.groundtruth.com/','https://ads-release-3-16-np.groundtruth.com/','https://ads-release-3-16-np.groundtruth.com/','www.groundtruth.com') #name,scriptTagCreative,Size,ApiType,extlTrackerPX1,extlTrackerPX2,extlTrackerScrpt1,extlTrackerScrpt2,clkThrURL
+# cr.VideoCreative('Video','https://cf.groundtruth.com/swift/2019/11/21/c2a40c8d-989b-4ff4-922e-535c07f35c05.xml','VPAID2','https://ads-release-3-16-np.groundtruth.com/','https://ads-release-3-16-np.groundtruth.com/','https://www.groundtruth.com/') #name,VastTag,ApiType,extlTrackerPX1,extlTrackerPX2,clkThrURL
+# cr.HTMLCreative('HTML','Groundtruth','Adtech Domain','www.groundtruth.com') #name,BusName,Caption,clkThrURL
+cr.StandardLandingCreative('Standard Landing page','/Users/surenderpal/Downloads/Creatives/4.jpg','ORMMA','https://ads-release-3-17-np.groundtruth.com/','https://ads-release-3-17-np.groundtruth.com/','https://ads-release-3-16-np.groundtruth.com/','https://ads-release-3-16-np.groundtruth.com/','https://www.groundtruth.com/')
 sleep(20)
 driver.close() 
 
-Failed,After click On Auto Checkbox CTR THRESHOLD 0% is incorrect
+# Failed,After click On Auto Checkbox CTR THRESHOLD 0% is incorrect
 # Failed, default value inside the input box is incorrect and value is: 0
 # . Is there a way to type in a textbox without using sendKeys()?
 # driver.execute_script("document.getElementById('q').value='value here'")
