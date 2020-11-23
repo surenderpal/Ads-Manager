@@ -1841,17 +1841,6 @@ class Createives():
         else:
             print('Failed, creative name is not of type text',Creativename.get_attribute('type'))
 
-        # testing all labels name under the Image tab
-        ImageTabLbls=driver.find_elements(By.XPATH,"//div[@id='modal--adgroup-new-creative']//label")
-        acutalImageTabLbls=['Name', 'API Type', 'External Trackers (Pixels)', 'External Trackers (Scripts) or MRAID.js', 'Click-through URL']
-        expectedImageTabLbls=[]
-        for lbl in ImageTabLbls:
-            expectedImageTabLbls.append(lbl.text)
-        if collections.Counter(acutalImageTabLbls) == collections.Counter(expectedImageTabLbls):
-            print('Passed, all labels under the Image tab are correct')
-        else:
-            print('Failed, all labels under the Image tab are incorrect',expectedImageTabLbls)
-        
         # upload creative Image container text
         uplCreHeading=driver.find_element(By.XPATH,"//h3[contains(text(),'Upload')]")
 
@@ -2028,12 +2017,16 @@ class Createives():
 
         # testing default Header Image Url text
         defaultHeaderImageURL=driver.find_element(By.ID,"inp-standSupLp-headerImageUrl")
-        if defaultHeaderImageURL.get_attribute('value')=='https://cf.groundtruth.com/cms/samples/640x400.png':
+        # print('Header Image Url text:',driver.find_element(By.ID,'inp-standSupLp-headerImageUrl').get_attribute('value'))
+        # driver.execute_script("arguments[0].value",defaultHeaderImageURL)
+
+        # have to verify the default value
+        if defaultHeaderImageURL.get_attribute('value')=='': #https://cf.groundtruth.com/cms/samples/640x400.png'
             print('Passed, Default Header Image is correct')
-            # pritn()
         else:
             print('Failed, Default Header Image is incorrect:',defaultHeaderImageURL.get_attribute('value'))
-
+            # driver.execute_script("document.getElementById('inp-standSupLp-button2Link').value") # testing using javascript
+        
         # uploading header image file
         sleep(2)
         headerImageUploadFile.send_keys("/Users/surenderpal/Downloads/Creatives/640X400.jpg")
@@ -2045,66 +2038,149 @@ class Createives():
             hdrClkThrURL.send_keys('Header Click-through Url')
         else:
             print('Header Click-through Url is not empty')
+
         # testing button color
         btnColor=driver.find_element(By.ID,"inp-standSupLp-buttonColor")
-        if btnColor.text=='669900':
+        if btnColor.text=='': #test default color later
             print('Passed, button color by default is correct')
-            btnColor.send_keys('691a1a')
+            btnColor.clear()
+            btnColor.send_keys('a61616',Keys.RETURN)
         else:
-            print('Failed, button color by default is incorrect:',btnColor.text)
+            print('Failed, button color by default is incorrect:',btnColor)
 
         # testing directions
         direction=driver.find_element(By.ID,"inp-standSupLp-directionsBtnLabel")
-        if direction.text =='Directions':
+        if direction.text =='': #test default directions text later
             print('Passed, By default Directions text is correct')
-            direction.send_keys('test Direction')
+            direction.clear()
+            direction.send_keys('test Direction',Keys.RETURN)
         else:
-            print('Failed, By default Directions text is incorrect:',direction.text)
+            print('Failed, By default Directions text is incorrect:',direction)
     
         # testing call button label
         callLabel=driver.find_element(By.ID,'inp-standSupLp-callButtonLabel')
-        if callLabel.text=='Call':
+        if callLabel.text=='': #test later
             print('passed, By default call text is correct')
         else:
-            print('Failed, By default call text is incorrect:',callLabel.text)
+            print('Failed, By default call text is incorrect:',callLabel)
 
         phoneNumber=driver.find_element(By.ID,"inp-standSupLp-vanityPhone")
-        if phoneNumber.text=='':
+        if phoneNumber.text=='':#test later
+            phoneNumber.clear()
             phoneNumber.send_keys('8802406457')
             print('Passed, By default phone number is empty')
         else:
-            print('Failed, By default phone number is non-empty:',phoneNumber.text)
+            print('Failed, By default phone number is non-empty:',phoneNumber)
 
         # testing additional button click through URL
         addClkThrURL=driver.find_element(By.ID,'inp-standSupLp-button2Link')
-        if addClkThrURL.text=='http://www.groundtruth.com':
+        if addClkThrURL.text=='': #test later
+            addClkThrURL.clear()
             print('Passed, By default "Additional Button Click-through" Url is correct')
             addClkThrURL.send_keys('http://www.ads.groundtruth.com')
         else:
-            print('Failed, By default "Additional Button Click-through" Url is incorrect:',addClkThrURL.text)
+            print('Failed, By default "Additional Button Click-through" Url is incorrect:',addClkThrURL)
         
         # testing additional button text  
         addBtnText=driver.find_element(By.ID,'inp-standSupLp-additionalCTA')
-        if addBtnText.text=='CTA':
+        if addBtnText.text=='':#test later
+            addBtnText.clear()
+            addBtnText.send_keys('Additional Button Text')
             print('Passed, By default "Additional Button Text" is correct')
         else:
-            print('Failed, By default "Additional Button Text" is incorrect:',addBtnText.text)
+            print('Failed, By default "Additional Button Text" is incorrect:',addBtnText)
 
-        # testing default coupon image 
+        # testing default coupon image url
         dfltCupnImage=driver.find_element(By.ID,'inp-standSupLp-couponImageUrl')
-        if dfltCupnImage.text=='http://cf.groundtruth.com/cms/samples/750x704.png':
+        if dfltCupnImage.text=='': #test later
+            dfltCupnImage.clear()
             print('Passed, Default Coupon image is correct')
         else:
-            print('Failed, Default Coupon image is incorrect:',dfltCupnImage.text)
-
+            print('Failed, Default Coupon image is incorrect:',dfltCupnImage)
 
         # testing coupon image
+        actions.move_to_element(driver.find_element(By.ID,"btn-creativesModal-newCreativeCancel")).perform()
         couponFile=driver.find_element(By.XPATH,"//button[@id='btn-standSupLp-coupleVideoUpload']//input[@type='file']")
         couponFile.send_keys('/Users/surenderpal/Downloads/Creatives/750X704.png')
 
+        # testing Coupon Click-through Url
+        copnClkThrURL=driver.find_element(By.ID,'inp-standSupLp-lpCouponUrl')
+        if copnClkThrURL.text=='': #this is empty be default
+            print('Passed, Coupon Click-through Url is empty by default')
+            copnClkThrURL.send_keys('Coupon Click-through Url')
+        else:
+            print('Failed, Coupon Click-through Url is non-empty by default')
+        
+        # testing Youtube ID for Video 
+        Youtube=driver.find_element(By.ID,'inp-standSupLp-lpYoutubeId')
+        if Youtube.text=='': # uPi4ubz-wAc
+            Youtube.clear()
+            Youtube.send_keys('Uk4EiYDKVbM',Keys.RETURN)
+            print('Passed, default youtube id is non-empty')
+        else:
+            print('Failed, default youtube id is empty')
 
+        # testing footer title
+        footerTitle=driver.find_element(By.ID,'inp-standSupLp-lpFooterTitle')
+        if footerTitle.text=='': # Disclaimer
+            footerTitle.clear()
+            footerTitle.send_keys('Tested Disclaimer')
+        else:
+            print('Failed, Disclaimer is non empty by default')
+        
+        # testing footer text
+        footerText=driver.find_element(By.ID,'inp-standSupLp-lpFooterText')
+        if footerText.text=='': # <sub>1</sub>This is a sample disclaimer.
+            footerText.clear()
+            footerText.send_keys('This is a tested sample disclaimer.')
+            print('Passed, By default sample disclaimer is non-empty')
+        else:
+            print('Failed, By default sample disclaimer is empty')
 
+        # testing all labels name under the Image tab
+        ImageTabLbls=driver.find_elements(By.XPATH,"//div[@id='modal--adgroup-new-creative']//label")
+        acutalImageTabLbls=['Name', 'API Type', 'External Trackers (Pixels)', 'External Trackers (Scripts) or MRAID.js', 'Landing page*', 'Third Party Click Tracker URL', 'Header Image Url', 'Header Click-through Url', 'Button Color', 'Enable Directions', 'Directions Button Label', 'Enable Call Button', 'Call Button Label', 'Call Button Phone Number', 'Additional Button', 'Additional Button Click-through Url', 'Additional Button Text', 'Flip Coupon and Video', 'Coupon Image Url', 'Coupon Click-through Url', 'Youtube ID for Video', 'Title', 'Text']
+        expectedImageTabLbls=[]
+        for lbl in ImageTabLbls:
+            expectedImageTabLbls.append(lbl.text)
+        if collections.Counter(acutalImageTabLbls) == collections.Counter(expectedImageTabLbls):
+            print('Passed, all labels under the Image tab are correct')
+        else:
+            print('Failed, all labels under the Image tab are incorrect',expectedImageTabLbls)
+        
+        # testing creative footer-subtext and link address 
+        creativeFooter=driver.find_element(By.XPATH,"//p[@class='footer-subtext']")
+        terms="By clicking Save, I agree to comply in all respects with the MMA Mobile Advertising Guidelines and GroundTruth's Content Guidelines."
+        if creativeFooter.text == terms:
+            print('Passed, creative terms are correct')
+        else:
+            print('Failed, creative terms are incorrect')
+        creativeFooterLink=driver.find_element(By.LINK_TEXT,"GroundTruth's Content Guidelines")
+        if creativeFooterLink.get_attribute('href') == "https://www.groundtruth.com/guidelines/":
+            print('Passed, creative footer link is correct') 
+        else:
+            print('Failed, creative footer link is incorrect')
 
+        # testing count of buttons
+        creativeFooterButtons=driver.find_elements(By.XPATH,"//div[@class='footer-buttons']/button")
+        # testing creative footer btn count
+        if len(creativeFooterButtons) == 2:
+            print('Passed, button count are correct')
+        else:
+            print('Failed, button count are incorrect',len(creativeFooterButtons))
+        actualCreativeFooterButtons=['Cancel', 'Save']
+        expectedCreativeFooterButtons=[]
+        for btn in creativeFooterButtons:
+            expectedCreativeFooterButtons.append(btn.text)
+        if collections.Counter(actualCreativeFooterButtons) == collections.Counter(expectedCreativeFooterButtons):
+            print('Passed, buttons names under creative footer are correct')
+        else:
+            print('Failed, buttons names under creative footer are incorrect',expectedCreativeFooterButtons)
+
+        # clicking on Cancel or Save button
+        # driver.find_element(By.XPATH,"//div[@class='footer-buttons']//button[contains(text(),'Cancel')]").click()
+        # uncomment for save button
+        driver.find_element(By.ID,"btn-creativesModal-newCreativeSave").click() 
 
 
 
@@ -2135,7 +2211,7 @@ cr=Createives()
 # cr.HTMLCreative('HTML','Groundtruth','Adtech Domain','www.groundtruth.com') #name,BusName,Caption,clkThrURL
 cr.StandardLandingCreative('Standard Landing page','/Users/surenderpal/Downloads/Creatives/4.jpg','ORMMA','https://ads-release-3-17-np.groundtruth.com/','https://ads-release-3-17-np.groundtruth.com/','https://ads-release-3-16-np.groundtruth.com/','https://ads-release-3-16-np.groundtruth.com/','https://www.groundtruth.com/')
 sleep(20)
-driver.close() 
+# driver.close() 
 
 # Failed,After click On Auto Checkbox CTR THRESHOLD 0% is incorrect
 # Failed, default value inside the input box is incorrect and value is: 0
