@@ -56,7 +56,7 @@ class AdsManager():
             print('Please enter valid credentials!!!')
 A=AdsManager()
 # A.linksInLoginPage('a')
-A.login('gt.surender@protonmail.com','Groundtruth@9')
+A.login('selfserveGT@protonmail.com','Groundtruth@9')
 
 class campaignSetUp():
     '''
@@ -1824,7 +1824,7 @@ class Createives():
         driver.find_element(By.XPATH,"//span[contains(text(),'Save')]").click() 
 
 
-    def StandardLandingCreative(self,name,CreativeFilePath,ApiType,extlTrackerPX1,extlTrackerPX2,extlTrackerScrpt1,extlTrackerScrpt2,clkThrURL): #name,Path,apiType,extlTrackerPX1,extlTrackerPX2,extlTrackerScrpt1,extlTrackerScrpt2,clkThrURL
+    def StandardLandingCreative(self,name,CreativeFilePath,ApiType,extlTrackerPX1,extlTrackerPX2,extlTrackerScrpt1,extlTrackerScrpt2,ThirdPrtyClkThrURL,clkThrURL,headerImagePath,HeaderClkThrurl,BtnColor,DirectionText,CallBTnLbl,phnNum,AddBtnClkThrUrl,AddBtnText,CoupnImgPath,CpnClikThrUrl,YoutubeID,FooterTitle,FooterText): #name,CreativeFilePath,ApiType,extlTrackerPX1,extlTrackerPX2,extlTrackerScrpt1,extlTrackerScrpt2,ThirdPrtyClkThrURL,headerImagePath,HeaderClkThrurl,BtnColor,phnNum,AddBtnClkThrUrl,AddBtnText,CoupnImgPath,CpnClikThrUrl,YoutubeID,FooterTitle,FooterText
         creativeBtn = WebDriverWait(driver,40).until(EC.element_to_be_clickable((By.XPATH,"//button[@id='btn-adgCreatives-newCreative']"))) #creative button
         creativeBtn.click() #clicking on the new creative button
         sleep(2)
@@ -1976,7 +1976,7 @@ class Createives():
         # testing 3rd pary URL  
         thirdPartyClkThrURL=driver.find_element(By.ID,"inp-creativeModalImage-thirdPartyPlacementId")
         if thirdPartyClkThrURL.text == '':
-            thirdPartyClkThrURL.send_keys('third party click through URL')
+            thirdPartyClkThrURL.send_keys('https://ads-release-3-16-np.groundtruth.com/campaign/1426273/adgroup/4212535?from_subsession=7f77e090-903f-4a34-9415-21b40ede91a5#creatives')
         else:
             print('third party url is not empry:',thirdPartyClkThrURL.text)
 
@@ -2002,23 +2002,39 @@ class Createives():
         headerImageUploadFile=driver.find_element(By.XPATH,"//button[@id='btn-standSupLp-uploadHeaderImage']//input[@type='file']")
         uploadImagebuttonLandingPage=driver.find_elements(By.XPATH,"//button//span[contains(text(), 'Upload Image')]") 
         OrLabelLandingPage=driver.find_elements(By.XPATH,"//button/../span[contains(text(), 'OR')]")
-        
+        actualUploadImageList=['Upload Image', 'Upload Image']
+        expectedUploadImageList=[]
+        actualORList=['OR', 'OR']
+        expectedORList=[]
+        # testing upload image count
+        if len(uploadImagebuttonLandingPage)==2:
+            print('Passed, Upload image text over button is correct:',len(uploadImagebuttonLandingPage))
+        else:
+            print('Failed, Upload image text over button is incorrect:',len(uploadImagebuttonLandingPage))
         # testing upload image text
-        if uploadImagebuttonLandingPage[0]=='Upload Image': # and len(uploadImagebuttonLandingPage)==2
-            print('Passed, Upload image text is correct')
+        for upload in uploadImagebuttonLandingPage:
+            expectedUploadImageList.append(upload.text)
+        if collections.Counter(actualUploadImageList) == collections.Counter(expectedUploadImageList):
+            print('Passed, Upload Image text over button are correct under landing page')
         else:
-            print('Failed, Upload image text is incorrect',uploadImagebuttonLandingPage)
-        
-        # testing OR text
-        if OrLabelLandingPage[0]=='OR': # and len(OrLabelLandingPage)==2
-            print('Passed, Upload Or text is correct')
+            print('Failed, Upload Image text over button are correct under landing page',expectedUploadImageList)
+
+        # testing OR text count
+        if len(OrLabelLandingPage)==2:
+            print('Passed, Upload Or count is correct:',len(OrLabelLandingPage))
         else:
-            print('Failed, Upload Or text is incorrect',OrLabelLandingPage)
+            print('Failed, Upload Or count is incorrect',len(OrLabelLandingPage))
+        # testing OR text 
+        for ORText in OrLabelLandingPage:
+            expectedORList.append(ORText.text)
+        if collections.Counter(actualORList) == collections.Counter(expectedORList):
+            print('Passed, OR text adjascent to upload image is correct under landing page')
+        else:
+            print('Failed, OR text adjascent to upload image is correct under landing page',expectedORList)
 
         # testing default Header Image Url text
         defaultHeaderImageURL=driver.find_element(By.ID,"inp-standSupLp-headerImageUrl")
-        # print('Header Image Url text:',driver.find_element(By.ID,'inp-standSupLp-headerImageUrl').get_attribute('value'))
-        # driver.execute_script("arguments[0].value",defaultHeaderImageURL)
+
 
         # have to verify the default value
         if defaultHeaderImageURL.get_attribute('value')=='': #https://cf.groundtruth.com/cms/samples/640x400.png'
@@ -2029,37 +2045,39 @@ class Createives():
         
         # uploading header image file
         sleep(2)
-        headerImageUploadFile.send_keys("/Users/surenderpal/Downloads/Creatives/640X400.jpg")
+        headerImageUploadFile.send_keys(headerImagePath)
         sleep(2)
 
         # testing header click through URL
         hdrClkThrURL=driver.find_element(By.ID,'inp-standSupLp-lpPreviewUrl')
         if hdrClkThrURL.text=='':
-            hdrClkThrURL.send_keys('Header Click-through Url')
+            hdrClkThrURL.send_keys(HeaderClkThrurl)
         else:
             print('Header Click-through Url is not empty')
 
         # testing button color
-        btnColor=driver.find_element(By.ID,"inp-standSupLp-buttonColor")
-        if btnColor.text=='': #test default color later
+        ImagebtnColor=driver.find_element(By.ID,"inp-standSupLp-buttonColor")
+        if ImagebtnColor.text=='': #test default color later
             print('Passed, button color by default is correct')
-            btnColor.clear()
-            btnColor.send_keys('a61616',Keys.RETURN)
+            ImagebtnColor.clear()
+            ImagebtnColor.send_keys(BtnColor,Keys.RETURN)
         else:
-            print('Failed, button color by default is incorrect:',btnColor)
+            print('Failed, button color by default is incorrect:',ImagebtnColor)
 
         # testing directions
         direction=driver.find_element(By.ID,"inp-standSupLp-directionsBtnLabel")
         if direction.text =='': #test default directions text later
             print('Passed, By default Directions text is correct')
             direction.clear()
-            direction.send_keys('test Direction',Keys.RETURN)
+            direction.send_keys(DirectionText,Keys.RETURN)
         else:
             print('Failed, By default Directions text is incorrect:',direction)
     
         # testing call button label
         callLabel=driver.find_element(By.ID,'inp-standSupLp-callButtonLabel')
         if callLabel.text=='': #test later
+            callLabel.clear()
+            callLabel.send_keys(CallBTnLbl)
             print('passed, By default call text is correct')
         else:
             print('Failed, By default call text is incorrect:',callLabel)
@@ -2067,7 +2085,7 @@ class Createives():
         phoneNumber=driver.find_element(By.ID,"inp-standSupLp-vanityPhone")
         if phoneNumber.text=='':#test later
             phoneNumber.clear()
-            phoneNumber.send_keys('8802406457')
+            phoneNumber.send_keys(phnNum)
             print('Passed, By default phone number is empty')
         else:
             print('Failed, By default phone number is non-empty:',phoneNumber)
@@ -2077,7 +2095,7 @@ class Createives():
         if addClkThrURL.text=='': #test later
             addClkThrURL.clear()
             print('Passed, By default "Additional Button Click-through" Url is correct')
-            addClkThrURL.send_keys('http://www.ads.groundtruth.com')
+            addClkThrURL.send_keys(AddBtnClkThrUrl)
         else:
             print('Failed, By default "Additional Button Click-through" Url is incorrect:',addClkThrURL)
         
@@ -2085,7 +2103,7 @@ class Createives():
         addBtnText=driver.find_element(By.ID,'inp-standSupLp-additionalCTA')
         if addBtnText.text=='':#test later
             addBtnText.clear()
-            addBtnText.send_keys('Additional Button Text')
+            addBtnText.send_keys(AddBtnText) 
             print('Passed, By default "Additional Button Text" is correct')
         else:
             print('Failed, By default "Additional Button Text" is incorrect:',addBtnText)
@@ -2101,13 +2119,13 @@ class Createives():
         # testing coupon image
         actions.move_to_element(driver.find_element(By.ID,"btn-creativesModal-newCreativeCancel")).perform()
         couponFile=driver.find_element(By.XPATH,"//button[@id='btn-standSupLp-coupleVideoUpload']//input[@type='file']")
-        couponFile.send_keys('/Users/surenderpal/Downloads/Creatives/750X704.png')
+        couponFile.send_keys(CoupnImgPath) 
 
         # testing Coupon Click-through Url
         copnClkThrURL=driver.find_element(By.ID,'inp-standSupLp-lpCouponUrl')
         if copnClkThrURL.text=='': #this is empty be default
             print('Passed, Coupon Click-through Url is empty by default')
-            copnClkThrURL.send_keys('Coupon Click-through Url')
+            copnClkThrURL.send_keys(CpnClikThrUrl) 
         else:
             print('Failed, Coupon Click-through Url is non-empty by default')
         
@@ -2115,7 +2133,7 @@ class Createives():
         Youtube=driver.find_element(By.ID,'inp-standSupLp-lpYoutubeId')
         if Youtube.text=='': # uPi4ubz-wAc
             Youtube.clear()
-            Youtube.send_keys('Uk4EiYDKVbM',Keys.RETURN)
+            Youtube.send_keys(YoutubeID,Keys.RETURN)
             print('Passed, default youtube id is non-empty')
         else:
             print('Failed, default youtube id is empty')
@@ -2124,7 +2142,7 @@ class Createives():
         footerTitle=driver.find_element(By.ID,'inp-standSupLp-lpFooterTitle')
         if footerTitle.text=='': # Disclaimer
             footerTitle.clear()
-            footerTitle.send_keys('Tested Disclaimer')
+            footerTitle.send_keys(FooterTitle)
         else:
             print('Failed, Disclaimer is non empty by default')
         
@@ -2132,7 +2150,7 @@ class Createives():
         footerText=driver.find_element(By.ID,'inp-standSupLp-lpFooterText')
         if footerText.text=='': # <sub>1</sub>This is a sample disclaimer.
             footerText.clear()
-            footerText.send_keys('This is a tested sample disclaimer.')
+            footerText.send_keys(FooterText)
             print('Passed, By default sample disclaimer is non-empty')
         else:
             print('Failed, By default sample disclaimer is empty')
@@ -2160,6 +2178,47 @@ class Createives():
             print('Passed, creative footer link is correct') 
         else:
             print('Failed, creative footer link is incorrect')
+
+        # Testing cout of checkboxs available and no of checked checkbox
+        # print('Is Directions Enable:',driver.find_element(By.ID,"inp-standSupLp-enableDirectionsBtn").is_selected())
+        # print('Is Call Button Enable:',driver.find_element(By.ID,"inp-standSupLp-enablePhoneButton").is_selected())
+        # print('Is Additional Button Enable:',driver.find_element(By.ID,"inp-standSupLp-enableAdditionalCTA").is_selected())
+        # print('Is Flip Coupon and Video Enable:',driver.find_element(By.ID,"inp-standSupLp-flipCouponVideo").is_selected())
+       
+        # testing default checkbox count
+        checkedboxLandingPage=driver.find_elements(By.XPATH,"//fieldset[@class='landing-page-section'][2]//input[@type='checkbox']")
+        if len(checkedboxLandingPage) == 3:
+            print('Passed, Default checked box count is correct:',len(checkedboxLandingPage))
+        else:
+            print('Failed, Default checked box count is incorrect:',len(checkedboxLandingPage))
+
+        # testing default uncheckbox count
+        checkedboxLandingPage=driver.find_elements(By.XPATH,"//fieldset[@class='landing-page-section'][3]//input[@type='checkbox']")
+        if len(checkedboxLandingPage) == 1:
+            print('Passed, Default Unchecked box count is correct:',len(checkedboxLandingPage))
+        else:
+            print('Failed, Default Unchecked box count is incorrect:',len(checkedboxLandingPage))
+
+        # testing default checkbox status
+        if driver.find_element(By.ID,"inp-standSupLp-enableDirectionsBtn").is_selected() == True:
+           print('Passed, By default Directions button is Checked')
+        else:
+            print('Failed, By default Directions button is Unchecked')
+
+        if driver.find_element(By.ID,"inp-standSupLp-enablePhoneButton").is_selected() == True:
+           print('Passed, By default Call Button is Checked')
+        else:
+            print('Failed, By default Call Button is Unchecked')
+        
+        if driver.find_element(By.ID,"inp-standSupLp-enableAdditionalCTA").is_selected() == True:
+           print('Passed, By default Additional Button is Checked')
+        else:
+            print('Failed, By default Additional Button is Unchecked')
+        if driver.find_element(By.ID,"inp-standSupLp-flipCouponVideo").is_selected() == False:
+           print('Passed, By default Flip Coupon and Video is Unchecked')
+        else:
+            print('Failed, By default Flip Coupon and Video is Checked')
+
 
         # testing count of buttons
         creativeFooterButtons=driver.find_elements(By.XPATH,"//div[@class='footer-buttons']/button")
@@ -2209,9 +2268,9 @@ cr=Createives()
 # cr.ScriptCreative('Script',"<ins class='dcmads' style='display:inline-block;width:320px;height:50px' data-dcm-placement='N4789.3009684GROUNDTRUTH.COM/B23990316.271139896' data-dcm-rendering-mode='script' data-dcm-https-only data-dcm-resettable-device-id='%%USER_UID_OPTOUT%%' data-dcm-click-tracker='%%ENCODED_CLICKURL%%' data-dcm-landing-page-escapes=0> <script src='https://www.googletagservices.com/dcm/dcmads.js'></script> </ins>",'string:300x50_0','MRAID1','https://ads-release-3-17-np.groundtruth.com/','https://ads-release-3-17-np.groundtruth.com/','https://ads-release-3-16-np.groundtruth.com/','https://ads-release-3-16-np.groundtruth.com/','www.groundtruth.com') #name,scriptTagCreative,Size,ApiType,extlTrackerPX1,extlTrackerPX2,extlTrackerScrpt1,extlTrackerScrpt2,clkThrURL
 # cr.VideoCreative('Video','https://cf.groundtruth.com/swift/2019/11/21/c2a40c8d-989b-4ff4-922e-535c07f35c05.xml','VPAID2','https://ads-release-3-16-np.groundtruth.com/','https://ads-release-3-16-np.groundtruth.com/','https://www.groundtruth.com/') #name,VastTag,ApiType,extlTrackerPX1,extlTrackerPX2,clkThrURL
 # cr.HTMLCreative('HTML','Groundtruth','Adtech Domain','www.groundtruth.com') #name,BusName,Caption,clkThrURL
-cr.StandardLandingCreative('Standard Landing page','/Users/surenderpal/Downloads/Creatives/4.jpg','ORMMA','https://ads-release-3-17-np.groundtruth.com/','https://ads-release-3-17-np.groundtruth.com/','https://ads-release-3-16-np.groundtruth.com/','https://ads-release-3-16-np.groundtruth.com/','https://www.groundtruth.com/')
+cr.StandardLandingCreative("StandardLandingPage","/Users/surenderpal/Downloads/Creatives/4.jpg","ORMMA","https://ads-release-3-17-np.groundtruth.com/","https://ads-release-3-17-np.groundtruth.com/","https://ads-release-3-16-np.groundtruth.com/","https://ads-release-3-16-np.groundtruth.com/","https://www.ClikckTruoughURL.com/","https://www.ThirdPartyClikckTruoughURL.com/","/Users/surenderpal/Downloads/Creatives/640X400.jpg","https://headerClickThroughURL.com/","a61616","test Direction","Tested Call Button Label","8802406457","http://www.additionalClickThroughURL.com","AdditionalButtonText","/Users/surenderpal/Downloads/Creatives/750X704.png","https://CouponClickThroughURL.com","Uk4EiYDKVbM","Tested Disclaimer","This is a tested sample disclaimer")
 sleep(20)
-# driver.close() 
+driver.close() 
 
 # Failed,After click On Auto Checkbox CTR THRESHOLD 0% is incorrect
 # Failed, default value inside the input box is incorrect and value is: 0
