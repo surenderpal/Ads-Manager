@@ -2710,4 +2710,4 @@ driver.close()
 #     else:
 #           print(str(link) + " isn't available.")
 
-# add page type to landing page
+add page type to landing page
