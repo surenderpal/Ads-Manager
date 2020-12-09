@@ -1826,7 +1826,7 @@ class Createives():
 
     def StandardLandingCreative(self,name,CreativeFilePath,ApiType,extlTrackerPX1,extlTrackerPX2,extlTrackerScrpt1,extlTrackerScrpt2,ThirdPrtyClkThrURL,clkThrURL,headerImagePath,HeaderClkThrurl,BtnColor,DirectionText,CallBTnLbl,phnNum,AddBtnClkThrUrl,AddBtnText,CoupnImgPath,CpnClikThrUrl,YoutubeID,FooterTitle,FooterText): #name,CreativeFilePath,ApiType,extlTrackerPX1,extlTrackerPX2,extlTrackerScrpt1,extlTrackerScrpt2,ThirdPrtyClkThrURL,headerImagePath,HeaderClkThrurl,BtnColor,phnNum,AddBtnClkThrUrl,AddBtnText,CoupnImgPath,CpnClikThrUrl,YoutubeID,FooterTitle,FooterText
         creativeBtn = WebDriverWait(driver,40).until(EC.element_to_be_clickable((By.XPATH,"//button[@id='btn-adgCreatives-newCreative']"))) #creative button
-        creativeBtn.click() #clicking on the new creative button
+        driver.execute_script("arguments[0].click();",creativeBtn) #clicking on the new creative button
         sleep(2)
         ImageTabBtn=WebDriverWait(driver,120).until(EC.element_to_be_clickable((By.XPATH,"//a[contains(text(),'Image')]"))) 
         #click on Image tab
@@ -1959,7 +1959,10 @@ class Createives():
         expectedLandingPage=[]
         select=Select(landingPage)
         print(len(select.options))
-        
+
+        # selecting landing page 
+        select=Select(landingPage)
+        select.select_by_visible_text("Standard Landing Page")    #
         # testing count of page options
         if len(select.options) == 3:
             print('Landing page count is correct')
@@ -1974,10 +1977,11 @@ class Createives():
         else:
             print('Failed, Optins under landing page are incorrect',expectedLandingPage)
         
-        # testing 3rd pary URL  
+        # testing 3rd pary URL 
+        #  
         thirdPartyClkThrURL=driver.find_element(By.ID,"inp-creativeModalImage-thirdPartyPlacementId")
         if thirdPartyClkThrURL.text == '':
-            thirdPartyClkThrURL.send_keys('https://ads-release-3-16-np.groundtruth.com/campaign/1426273/adgroup/4212535?from_subsession=7f77e090-903f-4a34-9415-21b40ede91a5#creatives')
+            thirdPartyClkThrURL.send_keys('https://ThirdPartyClickTrackerURL.com/')
         else:
             print('third party url is not empry:',thirdPartyClkThrURL.text)
 
@@ -2180,12 +2184,6 @@ class Createives():
             print('Passed, creative footer link is correct') 
         else:
             print('Failed, creative footer link is incorrect')
-
-        # Testing cout of checkboxs available and no of checked checkbox
-        # print('Is Directions Enable:',driver.find_element(By.ID,"inp-standSupLp-enableDirectionsBtn").is_selected())
-        # print('Is Call Button Enable:',driver.find_element(By.ID,"inp-standSupLp-enablePhoneButton").is_selected())
-        # print('Is Additional Button Enable:',driver.find_element(By.ID,"inp-standSupLp-enableAdditionalCTA").is_selected())
-        # print('Is Flip Coupon and Video Enable:',driver.find_element(By.ID,"inp-standSupLp-flipCouponVideo").is_selected())
        
         # testing default checkbox count
         checkedboxLandingPage=driver.find_elements(By.XPATH,"//fieldset[@class='landing-page-section'][2]//input[@type='checkbox']")
@@ -2247,7 +2245,7 @@ class Createives():
     def SuperLandingCreative(self,name,CreativeFilePath,ApiType,extlTrackerPX1,extlTrackerPX2,extlTrackerScrpt1,extlTrackerScrpt2,ThirdPrtyClkThrURL,clkThrURL,headerImagePath,HeaderClkThrurl,BtnColor,DirectionText,CallBTnLbl,phnNum,AddBtnClkThrUrl,AddBtnText,CoupnImgPath,CpnClikThrUrl,YoutubeID,FooterTitle,FooterText): #name,CreativeFilePath,ApiType,extlTrackerPX1,extlTrackerPX2,extlTrackerScrpt1,extlTrackerScrpt2,ThirdPrtyClkThrURL,headerImagePath,HeaderClkThrurl,BtnColor,phnNum,AddBtnClkThrUrl,AddBtnText,CoupnImgPath,CpnClikThrUrl,YoutubeID,FooterTitle,FooterText
         sleep(5)
         creativeBtn = WebDriverWait(driver,40).until(EC.element_to_be_clickable((By.XPATH,"//button[@id='btn-adgCreatives-newCreative']"))) #creative button
-        creativeBtn.click() #clicking on the new creative button
+        driver.execute_script("arguments[0].click();",creativeBtn) #clicking on the new creative button
         sleep(2)
         ImageTabBtn=WebDriverWait(driver,120).until(EC.element_to_be_clickable((By.XPATH,"//a[contains(text(),'Image')]"))) 
         #click on Image tab
@@ -2301,6 +2299,7 @@ class Createives():
             print('Failed, P content under the creative upload is incorrect',ExpectedCreativePContent)     
 
         # upload file path
+        # filePath=WebDriverWait(driver,40).until(EC.visibility_of_element_located((By.XPATH,"//ng-form[@name='uploadImageCreativeForm']//input[@type='file']")))
         filePath=driver.find_element(By.XPATH,"//ng-form[@name='uploadImageCreativeForm']//input[@type='file']")
         filePath.send_keys(CreativeFilePath) 
         sleep(5)
@@ -2367,20 +2366,22 @@ class Createives():
         createLandingPage=WebDriverWait(driver,40).until(EC.element_to_be_clickable((By.XPATH,"//div[contains(text(),'Create landing page')]")))
         if createLandingPage.text ==  'Create landing page':
             print('Create landing page text is correct')
+            # driver.execute_script("arguments[0].click();",WebDriverWait(driver,20).until(EC.element_to_be_clickable((By.XPATH,"//div[contains(text(),'Create landing page')]"))))
             driver.execute_script("arguments[0].click();",driver.find_element(By.XPATH,"//input[@type='checkbox' and @ng-model='creative.useLandingPageSwitchSet']")) #interstitial.click()
+            # createLandingPage.click()
         else:
             print('Failed, Create landing page text is incorrect')
-        # testing landing page selecting page type
-        landingPage=driver.find_element(By.ID,"inp-creativeModalImage-lpType")
-        sleep(2)
-        select=Select(landingPage)
-        select.select_by_value('string:Super Landing Page')
-        sleep(2)
+
         # testing landing page
-        expectedLandingPage=[]
+        landingPage=driver.find_element(By.ID,"inp-creativeModalImage-lpType")
         actualLandingPage=['Standard Landing Page','Super Landing Page','Image Landing Page']
+        expectedLandingPage=[]
+        select=Select(landingPage)
         print(len(select.options))
-        
+
+        # selecting landing page 
+        select=Select(landingPage)
+        select.select_by_visible_text("Super Landing Page")    #
         # testing count of page options
         if len(select.options) == 3:
             print('Landing page count is correct')
@@ -2395,10 +2396,11 @@ class Createives():
         else:
             print('Failed, Optins under landing page are incorrect',expectedLandingPage)
         
-        # testing 3rd pary URL  
+        # testing 3rd pary URL 
+        #  
         thirdPartyClkThrURL=driver.find_element(By.ID,"inp-creativeModalImage-thirdPartyPlacementId")
         if thirdPartyClkThrURL.text == '':
-            thirdPartyClkThrURL.send_keys('https://ads-release-3-16-np.groundtruth.com/campaign/1426273/adgroup/4212535?from_subsession=7f77e090-903f-4a34-9415-21b40ede91a5#creatives')
+            thirdPartyClkThrURL.send_keys('https://ThirdPartyClickTrackerURL.com/')
         else:
             print('third party url is not empry:',thirdPartyClkThrURL.text)
 
@@ -2421,6 +2423,7 @@ class Createives():
             print('Failed, Heading texts are incorrect under landing page',expectedLandingPageHeading) 
 
         # testing header Image
+        # headerImageUploadFile=WebDriverWait(driver,40).until(EC.visibility_of_element_located((By.XPATH,"//button[@id='btn-standSupLp-uploadHeaderImage']//input[@type='file']")))
         headerImageUploadFile=driver.find_element(By.XPATH,"//button[@id='btn-standSupLp-uploadHeaderImage']//input[@type='file']")
         uploadImagebuttonLandingPage=driver.find_elements(By.XPATH,"//button//span[contains(text(), 'Upload Image')]") 
         OrLabelLandingPage=driver.find_elements(By.XPATH,"//button/../span[contains(text(), 'OR')]")
@@ -2600,12 +2603,6 @@ class Createives():
             print('Passed, creative footer link is correct') 
         else:
             print('Failed, creative footer link is incorrect')
-
-        # Testing cout of checkboxs available and no of checked checkbox
-        # print('Is Directions Enable:',driver.find_element(By.ID,"inp-standSupLp-enableDirectionsBtn").is_selected())
-        # print('Is Call Button Enable:',driver.find_element(By.ID,"inp-standSupLp-enablePhoneButton").is_selected())
-        # print('Is Additional Button Enable:',driver.find_element(By.ID,"inp-standSupLp-enableAdditionalCTA").is_selected())
-        # print('Is Flip Coupon and Video Enable:',driver.find_element(By.ID,"inp-standSupLp-flipCouponVideo").is_selected())
        
         # testing default checkbox count
         checkedboxLandingPage=driver.find_elements(By.XPATH,"//fieldset[@class='landing-page-section'][2]//input[@type='checkbox']")
@@ -2662,6 +2659,7 @@ class Createives():
         # driver.find_element(By.XPATH,"//div[@class='footer-buttons']//button[contains(text(),'Cancel')]").click()
         # uncomment for save button
         driver.find_element(By.ID,"btn-creativesModal-newCreativeSave").click()
+        sleep(5) 
 
 
 
@@ -2683,8 +2681,8 @@ c.selectAudience('Millennials','Potato Growers','Live Nation',"Costco",'Hispanic
 # c.publisherCategory()
 c.BuildCustomAudience()
 cr=Createives()
-# cr.CreativeDetailsVerify()
-# cr.newCreativeDetails()
+cr.CreativeDetailsVerify()
+cr.newCreativeDetails()
 # cr.ImageCreative('Default Image','/Users/surenderpal/Downloads/Creatives/4.jpg','ORMMA','https://ads-release-3-17-np.groundtruth.com/','https://ads-release-3-17-np.groundtruth.com/','https://ads-release-3-16-np.groundtruth.com/','https://ads-release-3-16-np.groundtruth.com/','https://www.groundtruth.com/') #name,Path,apiType,extlTrackerPX1,extlTrackerPX2,extlTrackerScrpt1,extlTrackerScrpt2,clkThrURL
 # cr.ScriptCreative('Script',"<ins class='dcmads' style='display:inline-block;width:320px;height:50px' data-dcm-placement='N4789.3009684GROUNDTRUTH.COM/B23990316.271139896' data-dcm-rendering-mode='script' data-dcm-https-only data-dcm-resettable-device-id='%%USER_UID_OPTOUT%%' data-dcm-click-tracker='%%ENCODED_CLICKURL%%' data-dcm-landing-page-escapes=0> <script src='https://www.googletagservices.com/dcm/dcmads.js'></script> </ins>",'string:300x50_0','MRAID1','https://ads-release-3-17-np.groundtruth.com/','https://ads-release-3-17-np.groundtruth.com/','https://ads-release-3-16-np.groundtruth.com/','https://ads-release-3-16-np.groundtruth.com/','www.groundtruth.com') #name,scriptTagCreative,Size,ApiType,extlTrackerPX1,extlTrackerPX2,extlTrackerScrpt1,extlTrackerScrpt2,clkThrURL
 # cr.VideoCreative('Video','https://cf.groundtruth.com/swift/2019/11/21/c2a40c8d-989b-4ff4-922e-535c07f35c05.xml','VPAID2','https://ads-release-3-16-np.groundtruth.com/','https://ads-release-3-16-np.groundtruth.com/','https://www.groundtruth.com/') #name,VastTag,ApiType,extlTrackerPX1,extlTrackerPX2,clkThrURL
@@ -2710,4 +2708,4 @@ driver.close()
 #     else:
 #           print(str(link) + " isn't available.")
 
-add page type to landing page
+# test checkboxs under the landing pages
