@@ -2307,3 +2307,4 @@ driver.close()
 #           print(str(link) + " isn't available.")
 
 # test checkboxs under the landing pages
+
